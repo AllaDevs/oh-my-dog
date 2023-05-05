@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// lucia-auth models
+// If you’re looking to use Prisma with MongoDB the only change you need to make is to the id property.
+// You need to change the @unique attribute to @map("_id"). Lucia under the hood generates a short id automatically for the 3 models (user, session, key) which means the id should not be auto-generated.
+
+model AuthUser {
+  id           String        @id @map("_id")
+  auth_session AuthSession[]
+  auth_key     AuthKey[]
+  role         Role          @default(CLIENT)
+  email        String        @unique
+  name         String?
+
+  @@map("auth_user")
+}
+
+enum Role {
+  CLIENT
+  VET
+  ADMIN
+}
+
+model AuthSession {
+  id             String   @id @map("_id")
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  auth_user      AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("auth_session")
+}
+
+model AuthKey {
+  id              String   @id @map("_id")
+  hashed_password String?
+  user_id         String
+  primary_key     Boolean
+  expires         BigInt?
+  auth_user       AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("auth_key")
+}
+
+// data models
