@@ -2,15 +2,20 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { auth } from '$lib/server/lucia';
 
-export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.auth.validate();
+
+export const load: PageServerLoad = async (event) => {
+    const session = await event.locals.auth.validate();
     if (session) {
-        throw redirect(302, '/vet');
+        const redirectTo = event.url.searchParams.get('redirectTo');
+        if (redirectTo) {
+            throw redirect(302, `/${redirectTo.slice(1)}`);
+        }
+        throw redirect(302, '/');
     }
 };
 
 export const actions: Actions = {
-    default: async ({ request, locals }) => {
+    default: async ({ request, locals, url }) => {
         const { email, password } = Object.fromEntries(
             await request.formData(),
         ) as Record<string, string>;
@@ -25,6 +30,10 @@ export const actions: Actions = {
             return fail(400, { message: "Failed to login" });
         }
 
+        const redirectTo = url.searchParams.get('redirectTo');
+        if (redirectTo) {
+            throw redirect(302, `/${redirectTo.slice(1)}`);
+        }
         throw redirect(302, '/');
     }
 };

@@ -1,3 +1,15 @@
+<script lang="ts">
+  import { page } from '$app/stores';
+
+  $: message = $page.url.searchParams.get('message') ?? '';
+</script>
+
+{#if message}
+  <p class="text-red-500 text-sm font-semibold leading-5 mb-4">
+    {message}
+  </p>
+{/if}
+
 <form method="POST">
   <div class="space-y-12">
     <div class="border-b border-gray-900/10 pb-12">
@@ -24,9 +36,18 @@
         </div>
 
         <div class="sm:col-span-3">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          <label
+            for="password"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Password</label
+          >
           <div class="mt-2">
-            <input type="text" name="password" id="password" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            <input
+              type="text"
+              name="password"
+              id="password"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
           </div>
         </div>
       </div>
