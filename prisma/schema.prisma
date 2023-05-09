@@ -175,13 +175,13 @@ model RegisteredDog {
     size        DogSize
     image       Image
 
-    owner          Client           @relation(fields: [ownerId], references: [id])
-    ownerId        String           @db.ObjectId
-    breed          Breed            @relation(fields: [breedId], references: [id])
-    breedId        String           @db.ObjectId
+    owner          Client          @relation(fields: [ownerId], references: [id])
+    ownerId        String          @db.ObjectId
+    breed          Breed           @relation(fields: [breedId], references: [id])
+    breedId        String          @db.ObjectId
     appointment    Appointment[]
-    crossBreedPost CrossBreedPost[]
-    adoptionPost   AdoptionPost[]
+    crossBreedPost CrossBreedPost?
+    adoptionPost   AdoptionPost?
     tracingPost    TracingPost[]
     medicalRecord  MedicalRecord[]
 }
@@ -212,10 +212,10 @@ model TemporalDog {
     observation String?
     photo       Image?
 
-    breed        Breed          @relation(fields: [breedId], references: [id])
-    breedId      String         @db.ObjectId
-    adoptionPost AdoptionPost[]
-    tracingPost  TracingPost[]
+    breed        Breed         @relation(fields: [breedId], references: [id])
+    breedId      String        @db.ObjectId
+    adoptionPost AdoptionPost?
+    tracingPost  TracingPost?
 }
 
 enum DogSize {
@@ -284,6 +284,9 @@ model DogServiceProvider {
     type        DogServiceType
     email       String
     areas       String
+    userName    String?
+    lastName    String?
+    description String?
     review      Review[]
     workingHour WorkingHour[]
 }
@@ -299,7 +302,6 @@ model Review {
     updatedAt DateTime @updatedAt
 
     body          String
-    stars         Int
     author        Client              @relation(fields: [authorId], references: [id])
     authorId      String              @db.ObjectId
     dogService    DogServiceProvider? @relation(fields: [dogServiceId], references: [id])
@@ -404,7 +406,7 @@ model Donation {
 
 enum DonationReason {
     FREE
-    CAMPAIN
+    CAMPAIGN
 }
 
 // ---------------------------------------------------------------------------
