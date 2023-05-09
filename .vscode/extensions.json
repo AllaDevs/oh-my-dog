@@ -1,10 +1,11 @@
 {
-  "recommendations": [
-    "bradlc.vscode-tailwindcss",
-    "prisma.prisma",
-    "usernamehw.errorlens",
-    "yoavbls.pretty-ts-errors",
-    "svelte.svelte-vscode",
-    "pkief.material-icon-theme"
-  ]
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "prisma.prisma",
+        "usernamehw.errorlens",
+        "yoavbls.pretty-ts-errors",
+        "svelte.svelte-vscode",
+        "pkief.material-icon-theme",
+        "pomdtr.excalidraw-editor"
+    ]
 }

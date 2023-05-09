@@ -1,57 +1,430 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// ---------------------------------------------------------------------------
+// Prisma schema configuration
+// docs: https://pris.ly/d/prisma-schema
+// ---------------------------------------------------------------------------
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
 }
 
+// ---------------------------------------------------------------------------
+// Prisma schema model definitions
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
 // lucia-auth models
-// If you’re looking to use Prisma with MongoDB the only change you need to make is to the id property.
-// You need to change the @unique attribute to @map("_id"). Lucia under the hood generates a short id automatically for the 3 models (user, session, key) which means the id should not be auto-generated.
+//
+// If you’re looking to use Prisma with MongoDB the only change you need to
+// make is to the id property. Bread Cambell.
+// You need to change the @unique attribute to @map("_id"). Lucia under the
+// hood generates a short id automatically for the 3 models (user, session,
+// key) which means the id should not be auto-generated.
+// ---------------------------------------------------------------------------
 
 model AuthUser {
-  id           String        @id @map("_id")
-  auth_session AuthSession[]
-  auth_key     AuthKey[]
-  role         Role          @default(CLIENT)
-  email        String        @unique
-  name         String?
+    id           String        @id @map("_id")
+    auth_session AuthSession[]
+    auth_key     AuthKey[]
+    role         Role          @default(CLIENT)
+    email        String        @unique
+    name         String?
+    admin        Admin?
+    vet          Vet?
+    client       Client?
 
-  @@map("auth_user")
+    @@map("auth_user")
 }
 
 enum Role {
-  CLIENT
-  VET
-  ADMIN
+    CLIENT
+    VET
+    ADMIN
 }
 
 model AuthSession {
-  id             String   @id @map("_id")
-  user_id        String
-  active_expires BigInt
-  idle_expires   BigInt
-  auth_user      AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+    id             String   @id @map("_id")
+    user_id        String
+    active_expires BigInt
+    idle_expires   BigInt
+    auth_user      AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
-  @@index([user_id])
-  @@map("auth_session")
+    @@index([user_id])
+    @@map("auth_session")
 }
 
 model AuthKey {
-  id              String   @id @map("_id")
-  hashed_password String?
-  user_id         String
-  primary_key     Boolean
-  expires         BigInt?
-  auth_user       AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+    id              String   @id @map("_id")
+    hashed_password String?
+    user_id         String
+    primary_key     Boolean
+    expires         BigInt?
+    auth_user       AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
-  @@index([user_id])
-  @@map("auth_key")
+    @@index([user_id])
+    @@map("auth_key")
 }
 
-// data models
+// ---------------------------------------------------------------------------
+// user models
+// ---------------------------------------------------------------------------
+
+model Admin {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user     AuthUser @relation(fields: [userId], references: [id])
+    userId   String   @unique
+    userName String
+    lastName String
+    email    String   @unique
+}
+
+model Vet {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user     AuthUser @relation(fields: [userId], references: [id])
+    userId   String   @unique
+    userName String
+    lastName String
+    email    String   @unique
+}
+
+model Client {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user     AuthUser @relation(fields: [userId], references: [id])
+    userId   String   @unique
+    userName String
+    lastName String
+    email    String   @unique
+
+    birth          DateTime
+    phone          String
+    discountAmount Float
+    appointment    Appointment[]
+    dog            RegisteredDog[]
+    crossBreedPost CrossBreedPost[]
+    adoptionPost   AdoptionPost[]
+    tracingPost    TracingPost[]
+    donation       Donation[]
+    review         Review[]
+}
+
+model Appointment {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    date    DateTime
+    daytime Daytime
+    state   AppointmentState
+    reason  AppointmentReason
+
+    client   Client        @relation(fields: [clientId], references: [id])
+    clientId String        @db.ObjectId
+    dog      RegisteredDog @relation(fields: [dogId], references: [id])
+    dogId    String        @db.ObjectId
+}
+
+enum AppointmentState {
+    CLIENT_REQUEST
+    CLIENT_REJECTED
+    VET_REQUEST
+    VET_REJECTED
+    CONFIRMED
+    CANCELLED
+    DONE
+}
+
+enum Daytime {
+    MORNING
+    AFTERNOON
+}
+
+enum AppointmentReason {
+    VACCINE
+    ANTIRABIC
+    DEWORMING
+    CASTRATION
+    GENERAL_CONSULTATION
+}
+
+// ---------------------------------------------------------------------------
+// dog models
+// ---------------------------------------------------------------------------
+
+model RegisteredDog {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    birth       DateTime
+    color       String
+    observation String?
+    size        DogSize
+    image       Image
+
+    owner          Client           @relation(fields: [ownerId], references: [id])
+    ownerId        String           @db.ObjectId
+    breed          Breed            @relation(fields: [breedId], references: [id])
+    breedId        String           @db.ObjectId
+    appointment    Appointment[]
+    crossBreedPost CrossBreedPost[]
+    adoptionPost   AdoptionPost[]
+    tracingPost    TracingPost[]
+    medicalRecord  MedicalRecord[]
+}
+
+model MedicalRecord {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    date        DateTime
+    reason      AppointmentReason
+    observation String?
+
+    dog   RegisteredDog @relation(fields: [dogId], references: [id])
+    dogId String        @db.ObjectId
+}
+
+// NOTE: possibly adding a client field if it was loaded from a client
+model TemporalDog {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    birthDate   DateTime
+    color       String
+    size        DogSize
+    observation String?
+    photo       Image?
+
+    breed        Breed          @relation(fields: [breedId], references: [id])
+    breedId      String         @db.ObjectId
+    adoptionPost AdoptionPost[]
+    tracingPost  TracingPost[]
+}
+
+enum DogSize {
+    SMALL
+    MEDIUM
+    BIG
+}
+
+// Breed means raza xd
+model Breed {
+    id            String          @id @default(auto()) @map("_id") @db.ObjectId
+    name          String
+    registeredDog RegisteredDog[]
+    temporalDog   TemporalDog[]
+}
+
+// ---------------------------------------------------------------------------
+// subsidiary models
+// ---------------------------------------------------------------------------
+
+model Subsidiary {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    location Location?
+    address  Address?
+
+    workingHour WorkingHour[]
+}
+
+// NOTE: refactor for not repeating day?
+model WorkingHour {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    day                  Day
+    start                DateTime
+    end                  DateTime
+    subsidiary           Subsidiary?         @relation(fields: [subsidiaryId], references: [id])
+    subsidiaryId         String?             @db.ObjectId
+    dogServiceProvider   DogServiceProvider? @relation(fields: [dogServiceProviderId], references: [id])
+    dogServiceProviderId String?             @db.ObjectId
+}
+
+enum Day {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+}
+
+// ---------------------------------------------------------------------------
+// third party service models
+// ---------------------------------------------------------------------------
+
+model DogServiceProvider {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    type        DogServiceType
+    email       String
+    areas       String
+    review      Review[]
+    workingHour WorkingHour[]
+}
+
+enum DogServiceType {
+    SITTING
+    WALKING
+}
+
+model Review {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    body          String
+    stars         Int
+    author        Client              @relation(fields: [authorId], references: [id])
+    authorId      String              @db.ObjectId
+    dogService    DogServiceProvider? @relation(fields: [dogServiceId], references: [id])
+    dogServiceId  String?             @db.ObjectId
+    tracingPost   TracingPost?        @relation(fields: [tracingPostId], references: [id])
+    tracingPostId String?             @db.ObjectId
+}
+
+// ---------------------------------------------------------------------------
+// post models
+// ---------------------------------------------------------------------------
+
+model CrossBreedPost {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    publisher   Client        @relation(fields: [publisherId], references: [id])
+    publisherId String        @db.ObjectId
+    dog         RegisteredDog @relation(fields: [dogId], references: [id])
+    dogId       String        @unique @db.ObjectId
+}
+
+model AdoptionPost {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    newOwner    String?
+    state       PostState
+    publisher   Client         @relation(fields: [publisherId], references: [id])
+    publisherId String         @db.ObjectId
+    registered  Boolean
+    dog         RegisteredDog? @relation(fields: [dogId], references: [id])
+    dogId       String?        @unique @db.ObjectId
+    tempDog     TemporalDog?   @relation(fields: [tempDogId], references: [id])
+    tempDogId   String?        @unique @db.ObjectId
+}
+
+model TracingPost {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    type        TracingType
+    state       PostState
+    publisher   Client         @relation(fields: [publisherId], references: [id])
+    publisherId String         @db.ObjectId
+    registered  Boolean
+    dog         RegisteredDog? @relation(fields: [dogId], references: [id])
+    dogId       String?        @unique @db.ObjectId
+    tempDog     TemporalDog?   @relation(fields: [tempDogId], references: [id])
+    tempDogId   String?        @unique @db.ObjectId
+    review      Review[]
+}
+
+enum PostState {
+    RESOLVED
+    WAITING
+}
+
+enum TracingType {
+    OWNER
+    DOG
+}
+
+// ---------------------------------------------------------------------------
+// donation models
+// ---------------------------------------------------------------------------
+
+model DonationCampaign {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    description String
+    banner      Image
+    endDate     DateTime?
+    state       DonationCampaignState
+    donation    Donation[]
+}
+
+enum DonationCampaignState {
+    CREATED
+    ACTIVE
+    PAUSED
+    ENDED
+}
+
+model Donation {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+
+    amount     Float
+    reason     DonationReason
+    client     Client?           @relation(fields: [clientId], references: [id])
+    clientId   String?           @db.ObjectId
+    campaign   DonationCampaign? @relation(fields: [campaingId], references: [id])
+    campaingId String?           @db.ObjectId
+}
+
+enum DonationReason {
+    FREE
+    CAMPAIN
+}
+
+// ---------------------------------------------------------------------------
+// common models, types and enums
+// ---------------------------------------------------------------------------
+
+type Image {
+    width  Int
+    height Int
+    url    String
+}
+
+type Address {
+    street  String
+    number  String
+    city    String
+    country String
+}
+
+type Location {
+    latitude  Float
+    longitude Float
+}
