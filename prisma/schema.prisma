@@ -80,8 +80,8 @@ model Admin {
 
     user     AuthUser @relation(fields: [userId], references: [id])
     userId   String   @unique
-    userName String
-    lastName String
+    username String
+    lastname String
     email    String   @unique
 }
 
@@ -92,8 +92,8 @@ model Vet {
 
     user     AuthUser @relation(fields: [userId], references: [id])
     userId   String   @unique
-    userName String
-    lastName String
+    username String
+    lastname String
     email    String   @unique
 }
 
@@ -104,8 +104,8 @@ model Client {
 
     user     AuthUser @relation(fields: [userId], references: [id])
     userId   String   @unique
-    userName String
-    lastName String
+    username String
+    lastname String
     email    String   @unique
 
     birth          DateTime
@@ -284,8 +284,8 @@ model DogServiceProvider {
     type        DogServiceType
     email       String
     areas       String
-    userName    String?
-    lastName    String?
+    username    String?
+    lastname    String?
     description String?
     review      Review[]
     workingHour WorkingHour[]
