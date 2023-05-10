@@ -17,7 +17,6 @@
     "editor.wordWrap": "off",
     "explorer.compactFolders": false,
     "explorer.decorations.badges": false,
-    "files.autoSave": "off",
     "files.insertFinalNewline": true,
     "javascript.preferences.quoteStyle": "single",
     "material-icon-theme.folders.theme": "specific",
