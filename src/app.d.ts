@@ -1,5 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 
+
 declare global {
     namespace App {
         // interface Error {}
@@ -18,7 +19,6 @@ declare global {
         type UserAttributes = {
             role: import("@prisma/client").Role;
             email: string;
-            name: string;
         };
     }
 }

@@ -30,12 +30,13 @@ model AuthUser {
     id           String        @id @map("_id")
     auth_session AuthSession[]
     auth_key     AuthKey[]
-    role         Role          @default(CLIENT)
-    email        String        @unique
-    name         String?
-    admin        Admin?
-    vet          Vet?
-    client       Client?
+
+    // custom fields
+    role   Role    @default(CLIENT)
+    email  String  @unique
+    admin  Admin?
+    vet    Vet?
+    client Client?
 
     @@map("auth_user")
 }
@@ -108,9 +109,9 @@ model Client {
     lastname String
     email    String   @unique
 
-    birth          DateTime
+    birthdate      DateTime
     phone          String
-    discountAmount Float
+    discountAmount Float            @default(0)
     appointment    Appointment[]
     dog            RegisteredDog[]
     crossBreedPost CrossBreedPost[]
@@ -169,7 +170,7 @@ model RegisteredDog {
     updatedAt DateTime @updatedAt
 
     name        String
-    birth       DateTime
+    birthdate   DateTime
     color       String
     observation String?
     size        DogSize
@@ -206,7 +207,7 @@ model TemporalDog {
     updatedAt DateTime @updatedAt
 
     name        String
-    birthDate   DateTime
+    birthdate   DateTime
     color       String
     size        DogSize
     observation String?

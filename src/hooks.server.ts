@@ -19,6 +19,11 @@ export const handle: Handle = async ({ event, resolve }) => {
             throw redirect(302, '/vet');
         }
     }
+    else {
+        if (event.request.method === 'GET' && session && user && user.role === Role.VET) {
+            throw redirect(302, '/vet');
+        }
+    }
 
     const response = await resolve(event);
 
