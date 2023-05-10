@@ -1,64 +1,96 @@
+<script lang="ts">
+  import type { PageData } from './$types';
+  import { superForm } from 'sveltekit-superforms/client';
+  import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+  import InputField from '$lib/components/InputField.svelte';
+
+  export let data: PageData;
+
+  const { form, errors, constraints } = superForm(data.form);
+</script>
+
+<SuperDebug data={$form} />
+
+{#if $errors._errors}
+  {$errors._errors}
+{/if}
+
 <form method="POST">
   <div class="space-y-12">
     <div class="border-b border-gray-900/10 pb-12">
       <h2 class="text-base font-semibold leading-7 text-gray-900">
-        Client Information
+        Nuevo cliente
       </h2>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <div class="sm:col-span-3">
-          <label
-            for="name"
-            class="block text-sm font-medium leading-6 text-gray-900"
-            >Name</label
-          >
-          <div class="mt-2">
-            <input
-              type="text"
-              name="name"
-              id="name"
-              autocomplete="given-name"
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
-        </div>
-
-        <div class="sm:col-span-4">
-          <label
-            for="email"
-            class="block text-sm font-medium leading-6 text-gray-900"
-            >Email</label
-          >
-          <div class="mt-2">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-          <div class="mt-2">
-            <input type="text" name="password" id="password" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-          </div>
-        </div>
+      <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        <InputField label="Nombre" name="username">
+          <input
+            type="text"
+            name="username"
+            autocomplete="given-name"
+            bind:value={$form.username}
+            {...$constraints.username}
+            data-invalid={$errors.username}
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+        </InputField>
+        <InputField label="Apellido" name="lastname">
+          <input
+            type="text"
+            name="lastname"
+            autocomplete="family-name"
+            bind:value={$form.lastname}
+            {...$constraints.lastname}
+            data-invalid={$errors.lastname}
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+        </InputField>
+        <InputField label="Email" name="email">
+          <input
+            type="email"
+            name="email"
+            autocomplete="email"
+            bind:value={$form.email}
+            {...$constraints.email}
+            data-invalid={$errors.email}
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+        </InputField>
+        <InputField label="Nacimiento" name="birthdate">
+          <input
+            type="date"
+            name="birthdate"
+            bind:value={$form.birthdate}
+            {...$constraints.birthdate}
+            data-invalid={$errors.birthdate}
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+        </InputField>
+        <InputField label="Telefono" name="phone">
+          <input
+          type="tel"
+          name="phone"
+          bind:value={$form.phone}
+          {...$constraints.phone}
+          data-invalid={$errors.phone}
+          class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+          <small class=" text-gray-400" >Formato: 123-456-7890</small>
+        </InputField>
       </div>
     </div>
   </div>
 
   <div class="mt-6 flex items-center justify-end gap-x-6">
-    <button type="button" class="text-sm font-semibold leading-6 text-gray-900"
-      >Cancel</button
+    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">
+      Cancelar</button
     >
     <button
       type="submit"
+      formaction="/vet/register?/client"
       class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >Save</button
+    >
+      Crear</button
     >
   </div>
 </form>
-<p>Already have an account? <a href="/login">Login</a></p>
