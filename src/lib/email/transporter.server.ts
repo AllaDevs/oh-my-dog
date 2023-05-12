@@ -3,9 +3,18 @@ import { createTransport } from 'nodemailer';
 import type SMTPConnection from 'nodemailer/lib/smtp-connection';
 
 
-const SYSTEM_EMAIL = process.env.SENDGRID_SENDER!;
+type EmailAddress = {
+    name: string;
+    address: string;
+};
 
-const config = (
+
+const SYSTEM_ADDRESS = {
+    name: '¡OhMyDog!' as const,
+    address: process.env.SENDGRID_SENDER!
+} satisfies EmailAddress;
+
+const CONFIG = (
     dev ?
         {
             host: 'localhost',
@@ -25,39 +34,20 @@ const config = (
         } as const
 ) satisfies SMTPConnection.Options;
 
-
-export const transporter = createTransport(config);
+const transporter = createTransport(CONFIG);
 
 transporter.verify(function (error, success) {
     if (error) {
         console.error(error);
     } else {
-        console.log(`SMTP server is ready to take system messages at ${config.host}:${config.port}`);
+        console.log(`SMTP server is ready to take system messages at ${CONFIG.host}:${CONFIG.port}`);
     }
 });
 
 
-type EmailAddress = {
-    name: string;
-    address: string;
-};
-
-
 export async function systemEmail(to: EmailAddress, subject: string, text: string, html: string) {
     const result = await transporter.sendMail({
-        from: SYSTEM_EMAIL,
-        to: to,
-        subject,
-        text,
-        html
-    });
-
-    return result;
-}
-
-export async function userMail(from: EmailAddress, to: EmailAddress, subject: string, text: string, html: string) {
-    const result = await transporter.sendMail({
-        from: from,
+        from: SYSTEM_ADDRESS,
         to: to,
         subject,
         text,

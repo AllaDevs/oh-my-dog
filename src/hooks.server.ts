@@ -1,5 +1,5 @@
 import { auth } from '$lib/server/lucia';
-import { handleLoginRedirect } from '$lib/utils';
+import { handleLoginRedirect } from '$lib/utils/functions';
 import { Role } from '@prisma/client';
 import { redirect, type Handle } from '@sveltejs/kit';
 
