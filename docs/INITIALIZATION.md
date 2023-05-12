@@ -17,13 +17,16 @@ Create a .env file in the root of the project with the following content.
 ```bash
 DATABASE_URL="{{prisma schema url}}"
 LAUNCH_EDITOR=".\.launcheditor.bat"
+SENDGRID_SENDER="{{your sendgrid sender email}}}"
+SENDGRID_USERNAME="{{your sendgrid username}}"
+SENDGRID_PASSWORD="{{your sendgrid password}}"
 ```
 
 ## 3. .launcheditor.bat file
 
 Create a .launcheditor.bat file in the root of the project with the following content.
 
-> Replace {{ruta a vscode}} with your vscode path
+> Replace {{path to vscode .exe}} with your vscode path
 
 ```bat
 @echo off
@@ -37,4 +40,10 @@ set column=%3
 
 ```bash
 npx prisma generate
+```
+
+## 5. Start the development server
+
+```bash
+npm run dev -- --open
 ```
