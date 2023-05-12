@@ -3,7 +3,7 @@ import { createTransport } from 'nodemailer';
 import type SMTPConnection from 'nodemailer/lib/smtp-connection';
 
 
-const SYSTEM_EMAIL = 'noreply@ohmydog.vet';
+const SYSTEM_EMAIL = process.env.SENDGRID_SENDER!;
 
 const config = (
     dev ?
@@ -16,11 +16,11 @@ const config = (
             }
         } as const :
         {
-            host: 'smtp.ethereal.email',
+            host: 'smtp.sendgrid.net',
             port: 587,
             auth: {
-                user: '',
-                pass: ''
+                user: process.env.SENDGRID_USERNAME!,
+                pass: process.env.SENDGRID_PASSWORD!
             }
         } as const
 ) satisfies SMTPConnection.Options;

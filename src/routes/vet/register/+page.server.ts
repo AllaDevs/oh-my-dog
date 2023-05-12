@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { prisma } from '$lib/server/prisma';
 import { LuciaError, generateRandomString } from 'lucia-auth';
+import { systemEmail } from '$lib/server/email';
 
 
 const schema = z.object({
@@ -65,12 +66,12 @@ export const actions: Actions = {
                 });
                 clientId = client.id;
 
-                // await systemEmail(
-                //     { name: form.data.username, address: form.data.email },
-                //     'Cuenta creada en OhMyDog!',
-                //     `Bienvenido ${form.data.username} a OhMyDog!. Tu contraseña es: ${generatedPassword}, puedes cambiarla en tu perfil.`,
-                //     `<html><body><h1>Bienvenido ${form.data.username} a OhMyDog!</h1><p>Tu contraseña es: ${generatedPassword}, puedes cambiarla en tu perfil.</p><br/><p>Saludos, <i>OhMyDog!</i></p><br/><br/><small>Este correo es generado automáticamente, por favor no responder.</small></body></html>`
-                // ).catch(console.error);
+                await systemEmail(
+                    { name: form.data.username, address: form.data.email },
+                    'Cuenta creada en OhMyDog!',
+                    `Bienvenido ${form.data.username} a OhMyDog!. Tu contraseña es: ${generatedPassword}, puedes cambiarla en tu perfil.`,
+                    `<html><body><h1>Bienvenido ${form.data.username} a OhMyDog!</h1><p>Tu contraseña es: ${generatedPassword}, puedes cambiarla en tu perfil.</p><br/><p>Saludos, <i>OhMyDog!</i></p><br/><br/><small>Este correo es generado automáticamente, por favor no responder.</small></body></html>`
+                ).catch(console.error);
 
                 // await systemEmail(
                 //     { name: form.data.username, address: form.data.email },
