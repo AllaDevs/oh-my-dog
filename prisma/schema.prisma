@@ -292,8 +292,8 @@ model DogServiceProvider {
     type        DogServiceType
     email       String
     areas       String
-    username    String?
-    lastname    String?
+    username    String
+    lastname    String
     description String?
     review      Review[]
     workingHour WorkingHour[]
@@ -327,6 +327,7 @@ model CrossBreedPost {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
+    inHeatStart DateTime
     publisher   Client        @relation(fields: [publisherId], references: [id])
     publisherId String        @db.ObjectId
     dog         RegisteredDog @relation(fields: [dogId], references: [id])
