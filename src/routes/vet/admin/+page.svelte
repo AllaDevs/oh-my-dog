@@ -3,18 +3,12 @@
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import InputField from '$lib/components/InputField.svelte';
-  // import TestEmail from '$lib/components/TestEmail.svelte';
 
   export let data: PageData;
 
   const { form, errors, constraints } = superForm(data.form);
 </script>
 
-<SuperDebug data={$form} />
-
-{#if $errors._errors}
-  {$errors._errors}
-{/if}
 
 <form method="POST">
   <div class="space-y-12">
@@ -73,19 +67,22 @@
   </div>
 
   <div class="mt-6 flex items-center justify-end gap-x-6">
-    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">
-      Cancelar</button
-    >
+    <div class="flex flex-col">
+      <SuperDebug data={$form} />
+      {#if $errors._errors}
+        {$errors._errors}
+      {/if}
+    </div>
+
     <button
       type="submit"
-      class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    >
-      Crear</button
+      class="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+      >Registrar veterinario</button
     >
   </div>
 </form>
 
-<div class=" flex justify-end p-4">
+<!-- <div class=" flex justify-end p-4">
   <form method="post">
     <button
       class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
@@ -93,4 +90,4 @@
       type="submit">Cerrar Sesión</button
     >
   </form>
-</div>
+</div> -->

@@ -10,6 +10,7 @@
   const { form, errors, constraints } = superForm(data.form);
 </script>
 
+
 <form method="POST">
   <div class="space-y-12">
     <div class="border-b border-gray-900/10 pb-12">
@@ -118,16 +119,17 @@
     {#if $errors._errors}
       {$errors._errors}
     {/if}
-
-    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">
+    <button
+      type="button"
+      class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+    >
       Cancelar</button
     >
     <button
       type="submit"
       formaction="/vet/register/{$form.ownerId}?/register"
-      class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    >
-      Crear</button
+      class="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+      >Registrar perro</button
     >
   </div>
 </form>

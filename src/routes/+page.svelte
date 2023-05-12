@@ -1,6 +1,1 @@
-<script>
-  import TestEmail from '$lib/components/TestEmail.svelte';
-</script>
-
-<h1 class="text-3xl font-bold p">Pagina inicial</h1>
-<TestEmail />
+<h1 class="text-3xl font-bold p">Bienvenido a OhMyDog!</h1>
