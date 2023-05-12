@@ -11,3 +11,10 @@
     <slot />
   </div>
 </div>
+
+<style>
+  div > :global(label:has(+ div > :is(input, select)[required]))::after {
+    content: ' *';
+    color: red;
+  }
+</style>

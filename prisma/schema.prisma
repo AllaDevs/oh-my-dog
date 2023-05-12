@@ -170,11 +170,12 @@ model RegisteredDog {
     updatedAt DateTime @updatedAt
 
     name        String
-    birthdate   DateTime
-    color       String
-    observation String?
     size        DogSize
-    image       Image
+    birthdate   DateTime
+    sex         DogSex
+    color       String
+    image       Image?
+    observation String?
 
     owner          Client          @relation(fields: [ownerId], references: [id])
     ownerId        String          @db.ObjectId
@@ -207,11 +208,12 @@ model TemporalDog {
     updatedAt DateTime @updatedAt
 
     name        String
-    birthdate   DateTime
-    color       String
     size        DogSize
+    birthdate   DateTime
+    sex         DogSex
+    color       String
+    image       Image?
     observation String?
-    photo       Image?
 
     breed        Breed         @relation(fields: [breedId], references: [id])
     breedId      String        @db.ObjectId
@@ -225,10 +227,15 @@ enum DogSize {
     BIG
 }
 
+enum DogSex {
+    MALE
+    FEMALE
+}
+
 // Breed means raza xd
 model Breed {
     id            String          @id @default(auto()) @map("_id") @db.ObjectId
-    name          String
+    name          String          @unique
     registeredDog RegisteredDog[]
     temporalDog   TemporalDog[]
 }

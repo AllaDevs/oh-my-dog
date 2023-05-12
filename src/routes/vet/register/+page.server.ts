@@ -32,21 +32,22 @@ export const actions: Actions = {
         }
 
         let success = false;
+        let clientId = '';
         try {
             success = await prisma.$transaction(async (prisma) => {
+                const generatedPassword = generateRandomString(10);
                 const user = await auth.createUser({
                     primaryKey: {
                         providerId: 'email',
                         providerUserId: form.data.email,
-                        password: generateRandomString(10),
+                        password: generatedPassword,
                     },
                     attributes: {
                         role: Role.CLIENT,
                         email: form.data.email,
                     }
                 });
-
-                await prisma.client.create({
+                const client = await prisma.client.create({
                     data: {
                         user: {
                             connect: {
@@ -62,6 +63,21 @@ export const actions: Actions = {
                         phone: form.data.phone,
                     }
                 });
+                clientId = client.id;
+
+                // await systemEmail(
+                //     { name: form.data.username, address: form.data.email },
+                //     'Cuenta creada en OhMyDog!',
+                //     `Bienvenido ${form.data.username} a OhMyDog!. Tu contraseña es: ${generatedPassword}, puedes cambiarla en tu perfil.`,
+                //     `<html><body><h1>Bienvenido ${form.data.username} a OhMyDog!</h1><p>Tu contraseña es: ${generatedPassword}, puedes cambiarla en tu perfil.</p><br/><p>Saludos, <i>OhMyDog!</i></p><br/><br/><small>Este correo es generado automáticamente, por favor no responder.</small></body></html>`
+                // ).catch(console.error);
+
+                // await systemEmail(
+                //     { name: form.data.username, address: form.data.email },
+                //     'Cuenta creada en OhMyDog!',
+                //     `Bienvenido ${form.data.username} a OhMyDog!. Tu contraseña es: ${generatedPassword}, puedes cambiarla en tu perfil.`,
+                //     EmailTemplateTest.render({ username: form.data.username, password: generatedPassword, lastname: form.data.lastname }).html
+                // );
                 return true;
             });
         }
@@ -76,5 +92,6 @@ export const actions: Actions = {
         if (!success) {
             return fail(400, { message: "Failed to create user" });
         }
+        throw redirect(303, `/vet/register/${clientId}`);
     }
 };
