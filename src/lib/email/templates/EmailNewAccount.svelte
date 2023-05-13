@@ -1,5 +1,5 @@
 <script lang="ts">
-  import EmailFrame from '../EmailFrame.svelte';
+  import EmailFrame from './EmailFrame.svelte';
 
   export let username: string;
   export let lastname: string;
