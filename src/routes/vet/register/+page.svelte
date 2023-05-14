@@ -23,7 +23,7 @@
       </h2>
 
       <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <InputField label="Nombre" name="username">
+        <InputField label="Nombre" for="ername">
           <input
             type="text"
             name="username"
@@ -34,7 +34,7 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </InputField>
-        <InputField label="Apellido" name="lastname">
+        <InputField label="Apellido" for="lastname">
           <input
             type="text"
             name="lastname"
@@ -45,7 +45,7 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </InputField>
-        <InputField label="Email" name="email">
+        <InputField label="Email" for="email">
           <input
             type="email"
             name="email"
@@ -56,7 +56,7 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </InputField>
-        <InputField label="Nacimiento" name="birthdate">
+        <InputField label="Nacimiento" for="birthdate">
           <input
             type="date"
             name="birthdate"
@@ -66,16 +66,16 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </InputField>
-        <InputField label="Telefono" name="phone">
+        <InputField label="Telefono" for="phone">
           <input
-          type="tel"
-          name="phone"
-          bind:value={$form.phone}
-          {...$constraints.phone}
-          data-invalid={$errors.phone}
-          class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            type="tel"
+            name="phone"
+            bind:value={$form.phone}
+            {...$constraints.phone}
+            data-invalid={$errors.phone}
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
-          <small class=" text-gray-400" >Formato: 123-456-7890</small>
+          <small class=" text-gray-400">Formato: 123-456-7890</small>
         </InputField>
       </div>
     </div>

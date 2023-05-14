@@ -21,7 +21,7 @@
 <form method="POST" class=" max-w-sm">
   <div class=" space-y-6">
     <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
-      <InputField label="Direccion de email" name="email">
+      <InputField label="Direccion de email" for="email">
         <input
           name="email"
           type="email"
@@ -38,7 +38,7 @@
           </p>
         {/if}
       </InputField>
-      <InputField label="Contraseña" name="password">
+      <InputField label="Contraseña" for="password">
         <input
           type="password"
           name="password"

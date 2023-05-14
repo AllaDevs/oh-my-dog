@@ -1,8 +1,8 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { DogSex, DogSize } from '@prisma/client';
+import { DogSex, DogSize } from '$lib/enums';
 import { z } from 'zod';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { superValidate } from 'sveltekit-superforms/server';
 import { prisma } from '$lib/server/prisma';
 
 
@@ -24,7 +24,8 @@ const schema = z.object({
 
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-    const clientId = params.clientId;
+    console.log(params);
+    const clientId = params.client_id;
     const breeds = await prisma.breed.findMany({
         select: {
             id: true,
@@ -55,7 +56,6 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        let success = false;
         try {
             console.log(form.data);
             const dog = await prisma.registeredDog.create({

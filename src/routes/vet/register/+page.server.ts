@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/lucia';
-import { Role } from '@prisma/client';
+import { Role } from '$lib/enums';
 import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { prisma } from '$lib/server/prisma';

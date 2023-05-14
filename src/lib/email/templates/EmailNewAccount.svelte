@@ -26,13 +26,3 @@
     <p class="text-center">El equipo de OhMyDog</p>
   </footer>
 </EmailFrame>
-
-<style>
-  :global(html) {
-    font-family: sans-serif;
-  }
-  p {
-    margin: 0;
-    color: red;
-  }
-</style>

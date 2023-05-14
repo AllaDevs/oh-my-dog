@@ -3,13 +3,12 @@
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import InputField from '$lib/components/InputField.svelte';
-  import { DogSex, DogSize } from '@prisma/client';
+  import { DogSex, DogSize } from '$lib/enums';
 
   export let data: PageData;
 
   const { form, errors, constraints } = superForm(data.form);
 </script>
-
 
 <form method="POST">
   <div class="space-y-12">
@@ -19,7 +18,7 @@
       </h2>
 
       <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <InputField label="Nombre" name="name">
+        <InputField label="Nombre" for="name">
           <input
             type="text"
             name="name"
@@ -29,7 +28,7 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </InputField>
-        <InputField label="Nacimiento" name="birthdate">
+        <InputField label="Nacimiento" for="birthdate">
           <input
             type="date"
             name="birthdate"
@@ -39,7 +38,7 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </InputField>
-        <InputField label="Color" name="color">
+        <InputField label="Color" for="color">
           <input
             type="text"
             name="color"
@@ -50,7 +49,7 @@
           />
           <small class=" text-gray-400">Ejemplo: cafe con manchas negras</small>
         </InputField>
-        <InputField label="Observacion" name="observation">
+        <InputField label="Observacion" for="observation">
           <input
             type="text"
             name="observation"
@@ -60,7 +59,7 @@
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </InputField>
-        <InputField label="Tamaño" name="size">
+        <InputField label="Tamaño" for="size">
           <select
             name="size"
             bind:value={$form.size}
@@ -73,7 +72,7 @@
             <option value={DogSize.BIG}>Grande</option>
           </select>
         </InputField>
-        <InputField label="Sexo" name="sex">
+        <InputField label="Sexo" for="sex">
           <select
             name="sex"
             bind:value={$form.sex}
@@ -85,7 +84,7 @@
             <option value={DogSex.MALE} selected>Macho</option>
           </select>
         </InputField>
-        <InputField label="Raza" name="breedId">
+        <InputField label="Raza" for="breedId">
           <select
             name="breedId"
             bind:value={$form.breedId}
@@ -98,7 +97,7 @@
             {/each}
           </select>
         </InputField>
-        <!-- <InputField label="Imagen" name="image">
+        <!-- <InputField label="Imagen" for="image">
           <input
             type="file"
             name="image"

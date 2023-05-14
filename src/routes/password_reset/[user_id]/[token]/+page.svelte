@@ -17,7 +17,7 @@
 <form method="POST" use:enhance class=" max-w-sm">
   <div class="space-y-12">
     <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
-      <InputField label="Nueva contraseña" name="password">
+      <InputField label="Nueva contraseña" for="password">
         <input
           name="password"
           type="password"
@@ -35,7 +35,7 @@
         {/if}
       </InputField>
 
-      <InputField label="Confirmar nueva contraseña" name="passwordConfirm">
+      <InputField label="Confirmar nueva contraseña" for="passwordConfirm">
         <input
           name="passwordConfirm"
           id="passwordConfirm"
