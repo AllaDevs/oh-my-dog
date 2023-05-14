@@ -5,5 +5,5 @@ export function handleLoginRedirect(
     message: string = "Debes iniciar sesión para acceder a esta página"
 ) {
     const redirectTo = event.url.pathname + event.url.search;
-    return `/login?redirectTo=${redirectTo}&message=${encodeURIComponent(message)}`;
+    return `/login?redirect_to=${redirectTo}&message=${encodeURIComponent(message)}`;
 }

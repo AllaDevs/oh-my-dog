@@ -19,12 +19,13 @@
 {/if}
 
 <form method="POST" class=" max-w-sm">
-  <div class="space-y-12">
+  <div class=" space-y-6">
     <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
-      <InputField label="Email" name="email">
+      <InputField label="Direccion de email" name="email">
         <input
           name="email"
           type="email"
+          id="email"
           autocomplete="email"
           bind:value={$form.email}
           {...$constraints.email}
@@ -41,6 +42,7 @@
         <input
           type="password"
           name="password"
+          id="password"
           autocomplete="current-password"
           bind:value={$form.password}
           {...$constraints.password}
@@ -52,31 +54,39 @@
             {$errors.password}
           </p>
         {/if}
+        <div class="text-sm mt-2">
+          <a
+            href="/password_reset"
+            class="font-medium text-gray-500 hover:text-gray-800"
+            >¿Olvidaste tu contraseña?</a
+          >
+        </div>
       </InputField>
     </div>
-  </div>
 
-  <div class="mt-6 flex items-center justify-around gap-x-6">
-    <button
-      type="button"
-      class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-      on:click={() => (noAccountHelp = !noAccountHelp)}
-    >
-      ¿No tienes una cuenta?
-    </button>
-    <button
-      type="submit"
-      class="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-      >Iniciar Sesion</button
-    >
-  </div>
+    <div class="mt-6 flex items-center justify-around gap-x-6">
+      <button
+        type="button"
+        class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+        on:click={() => (noAccountHelp = !noAccountHelp)}
+      >
+        ¿No tienes una cuenta?</button
+      >
+      <button
+        type="submit"
+        class="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+      >
+        Iniciar Sesion</button
+      >
+    </div>
 
-  <p
-    class="mt-10 px-6 text-sm text-gray-600 w-full text-center opacity-0"
-    style:opacity={noAccountHelp ? 1 : 0}
-    style="transition: opacity 0.3s ease-in-out;"
-  >
-    Para crear una cuenta dirigete hacia una sucursal de la veterinaria con uno
-    de tus perros, alli te registraran y te daran un usuario y contraseña.
-  </p>
+    <p
+      class="mt-10 px-6 text-sm text-gray-600 w-full text-center opacity-0"
+      style:opacity={noAccountHelp ? 1 : 0}
+      style="transition: opacity 0.3s ease-in-out;"
+    >
+      Para crear una cuenta dirigete hacia una sucursal de la veterinaria con
+      uno de tus perros, alli te registraran y te daran un usuario y contraseña.
+    </p>
+  </div>
 </form>

@@ -32,11 +32,12 @@ model AuthUser {
     auth_key     AuthKey[]
 
     // custom fields
-    role   Role    @default(CLIENT)
-    email  String  @unique
-    admin  Admin?
-    vet    Vet?
-    client Client?
+    role                 Role                  @default(CLIENT)
+    email                String                @unique
+    admin                Admin?
+    vet                  Vet?
+    client               Client?
+    authPasswordRecovery AuthPasswordRecovery?
 
     @@map("auth_user")
 }
@@ -68,6 +69,24 @@ model AuthKey {
 
     @@index([user_id])
     @@map("auth_key")
+}
+
+// ---------------------------------------------------------------------------
+// user models for password recovery
+// ---------------------------------------------------------------------------
+
+model AuthPasswordRecovery {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user      AuthUser @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    email     String   @unique
+    token     String   @default(uuid())
+    expiresAt DateTime
+
+    @@map("auth_password_recovery")
 }
 
 // ---------------------------------------------------------------------------

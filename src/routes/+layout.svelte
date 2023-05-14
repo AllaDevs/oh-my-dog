@@ -9,7 +9,7 @@
 <div class=" flex justify-end">
   {#if data.user}
     <div class=" flex justify-end p-4">
-      <form method="post">
+      <form method="POST">
         <button
           class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
           formaction="/logout"
@@ -17,7 +17,7 @@
         >
       </form>
     </div>
-  {:else if $page.route.id !== '/login'}
+  {:else if $page.route.id !== '/login' && !$page.route.id?.startsWith('/password_reset')}
     <div class=" flex justify-end p-4">
       <a
         href="/login"

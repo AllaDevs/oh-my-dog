@@ -1,10 +1,10 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import { dev } from '$app/environment';
 import { auth } from '$lib/server/lucia';
 import { z } from 'zod';
-import { setError, superValidate } from 'sveltekit-superforms/server';
 import { LuciaError } from 'lucia-auth';
-import { dev } from '$app/environment';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 
 
 const PASSWORD_MIN_LENGTH = dev ? 2 : 8;
@@ -22,11 +22,11 @@ export const load: PageServerLoad = async (event) => {
     ]);
 
     if (session) {
-        const redirectTo = event.url.searchParams.get('redirectTo');
+        const redirectTo = event.url.searchParams.get('redirect_to');
         if (redirectTo) {
-            throw redirect(302, `/${redirectTo.slice(1)}`);
+            throw redirect(303, `/${redirectTo.slice(1)}`);
         }
-        throw redirect(302, '/');
+        throw redirect(303, '/');
     }
 
     return { form };
@@ -62,10 +62,10 @@ export const actions: Actions = {
             return setError(form, null, `Unexpected error during authentication`);
         }
 
-        const redirectTo = url.searchParams.get('redirectTo');
+        const redirectTo = url.searchParams.get('redirect_to');
         if (redirectTo) {
-            throw redirect(302, `/${redirectTo.slice(1)}`);
+            throw redirect(303, `/${redirectTo.slice(1)}`);
         }
-        throw redirect(302, '/');
+        throw redirect(303, '/');
     }
 };

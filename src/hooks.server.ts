@@ -13,15 +13,15 @@ export const handle: Handle = async ({ event, resolve }) => {
             throw redirect(302, handleLoginRedirect(event));
         }
         if (user.role === Role.CLIENT) {
-            throw redirect(302, '/');
+            throw redirect(303, '/');
         }
         if (event.url.pathname.startsWith('/vet/admin') && user.role !== Role.ADMIN) {
-            throw redirect(302, '/vet');
+            throw redirect(303, '/vet');
         }
     }
     else {
         if (event.request.method === 'GET' && session && user && user.role === Role.VET) {
-            throw redirect(302, '/vet');
+            throw redirect(303, '/vet');
         }
     }
 

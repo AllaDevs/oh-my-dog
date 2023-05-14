@@ -9,7 +9,6 @@
   const { form, errors, constraints } = superForm(data.form);
 </script>
 
-
 <form method="POST">
   <div class="space-y-12">
     <div class="border-b border-gray-900/10 pb-12">
