@@ -1,5 +1,6 @@
 <script lang="ts">
-  import InputField from '$lib/components/InputField.svelte';
+  import Form from '$lib/components/form/Form.svelte';
+  import ImageInput from '$lib/components/form/ImageInput.svelte';
   import type { PageData } from './$types';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -8,31 +9,19 @@
   const { form, constraints, errors, message } = superForm(data.form);
 </script>
 
-<form
+<Form
   method="POST"
   action="?/uploadSingleFile"
   enctype="multipart/form-data"
-  class=" max-w-sm mt-10"
+  class=" max-w-sm"
 >
-  <div class="pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
-    <InputField label="Archivo" for="file">
-      <input
-        name="file"
-        type="file"
-        id="file"
-        bind:value={$form.file}
-        accept="image/jpeg, image/png, image/webp, image/jpg"
-        {...$constraints.file}
-        data-invalid={$errors.file}
-        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
-      />
-      {#if $errors.file}
-        <p class="mt-2 text-sm text-red-500">
-          {$errors.file}
-        </p>
-      {/if}
-    </InputField>
-  </div>
+  <ImageInput
+    label="Imagen"
+    name="file"
+    bind:value={$form.file}
+    constraints={$constraints.file}
+    errors={$errors.file}
+  />
 
   <div class="mt-6 flex items-center justify-around gap-x-6">
     <button
@@ -42,7 +31,7 @@
       Upload file</button
     >
   </div>
-</form>
+</Form>
 
 {#if $message}
   <div class="mt-6 flex items-center justify-around gap-x-6">
