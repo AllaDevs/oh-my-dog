@@ -65,7 +65,6 @@ export async function registerAdmin(name?: string) {
                         email: user.email
                     }
                 },
-                userId: user.id,
                 username: name ?? 'admin username',
                 lastname: name ?? 'admin lastname',
                 email: user.email,

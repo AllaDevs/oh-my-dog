@@ -1,31 +1,45 @@
+import { Role } from '$lib/enums';
 import { auth } from '$lib/server/lucia';
 import { handleLoginRedirect } from '$lib/utils/functions';
-import { Role } from '@prisma/client';
 import { redirect, type Handle } from '@sveltejs/kit';
 
 
-export const handle: Handle = async ({ event, resolve }) => {
+export const handle = (async ({ event, resolve }) => {
     event.locals.auth = auth.handleRequest(event);
     const { session, user } = await event.locals.auth.validateUser();
+    const pathname = event.url.pathname;
 
-    if (event.url.pathname.startsWith('/vet')) {
-        if (!session && !user) {
+    if (!(session && user)) {
+        if (
+            pathname.startsWith('/client') ||
+            pathname.startsWith('/vet') ||
+            pathname.startsWith('/admin')
+        ) {
             throw redirect(302, handleLoginRedirect(event));
-        }
-        if (user.role === Role.CLIENT) {
-            throw redirect(303, '/');
-        }
-        if (event.url.pathname.startsWith('/vet/admin') && user.role !== Role.ADMIN) {
-            throw redirect(303, '/vet');
         }
     }
     else {
-        if (event.request.method === 'GET' && session && user && user.role === Role.VET) {
-            throw redirect(303, '/vet');
+        switch (user.role) {
+            case Role.CLIENT:
+                if (
+                    pathname.startsWith('/vet') ||
+                    pathname.startsWith('/admin')
+                ) {
+                    throw redirect(303, '/');
+                }
+                break;
+            case Role.VET:
+                if (
+                    (event.request.method === 'GET' && !pathname.startsWith('/vet')) ||
+                    pathname.startsWith('/admin')
+                ) {
+                    throw redirect(303, '/vet');
+                }
+                break;
         }
     }
 
     const response = await resolve(event);
 
     return response;
-};
+}) satisfies Handle;

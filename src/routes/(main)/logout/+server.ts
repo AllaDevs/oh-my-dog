@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { auth } from '$lib/server/lucia';
 
 
-export const POST: RequestHandler = async ({ locals }) => {
+export const POST = (async ({ locals }) => {
     const session = await locals.auth.validate();
     if (!session) {
         throw redirect(303, "/");
@@ -13,4 +13,4 @@ export const POST: RequestHandler = async ({ locals }) => {
     locals.auth.setSession(null);
 
     throw redirect(303, "/login");
-};
+}) satisfies RequestHandler;

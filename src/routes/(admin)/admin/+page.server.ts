@@ -54,7 +54,6 @@ export const actions: Actions = {
                                 email: user.email
                             }
                         },
-                        userId: user.id,
                         username: form.data.username,
                         lastname: form.data.lastname,
                         email: form.data.email,
