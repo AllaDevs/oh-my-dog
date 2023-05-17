@@ -1,28 +1,26 @@
 import { fail } from '@sveltejs/kit';
-import { Prisma, Role } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
-import { auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
-import { LuciaError } from 'lucia-auth';
 
 
 const schema = z.object({
-    name: z.string().min(3),
+    name: z.string().min(3)
 });
 
 
-export const load: PageServerLoad = async (event) => {
+export const load = (async (event) => {
     const form = await superValidate(schema);
     const breeds = await prisma.breed.findMany();
 
     return { form, breeds };
-};
+}) satisfies PageServerLoad;
 
 
-export const actions: Actions = {
-    register: async ({ request }) => {
+export const actions = {
+    registerBreed: async ({ request }) => {
         const form = await superValidate(request, schema);
         if (!form.valid) {
             console.error(form);
@@ -61,7 +59,7 @@ export const actions: Actions = {
             return fail(400, { message: "Failed to create breeds" });
         }
     }
-};
+} satisfies Actions;
 
 const smallBreedSample = [
     'Bull Terrier',

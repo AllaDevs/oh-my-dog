@@ -13,7 +13,7 @@ const schema = z.object({
 });
 
 
-export const load: PageServerLoad = async ({ locals, params }) => {
+export const load = (async ({ locals, params }) => {
     const [session, form, passwordRecovery] = await Promise.all([
         locals.auth.validate(),
         superValidate(schema),
@@ -45,10 +45,10 @@ export const load: PageServerLoad = async ({ locals, params }) => {
     }
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
 
-export const actions: Actions = {
+export const actions = {
     default: async ({ request, locals, params }) => {
         const form = await superValidate(request, schema);
         if (!form.valid) {
@@ -90,12 +90,13 @@ export const actions: Actions = {
                 passwordRecovery.email,
                 form.data.password
             );
+            await auth.invalidateAllUserSessions(passwordRecovery.userId);
         }
         catch (error) {
             console.log(error);
-            return setError(form, null, '');
+            return setError(form, null, 'No se pudo actualizar la contraseña');
         }
 
         throw redirect(303, '/login');
     }
-};
+} satisfies Actions;

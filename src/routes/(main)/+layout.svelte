@@ -1,9 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import '../../app.css';
-  import type { PageData } from './$types';
 
-  export let data: PageData;
+  export let data;
 </script>
 
 <div class=" flex justify-end">

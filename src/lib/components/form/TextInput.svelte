@@ -3,7 +3,7 @@
 
   export let label: string;
   export let name: string;
-  export let autocomplete: string | undefined = undefined;
+  export let autocomplete: string = 'off';
   export let constraints: InputConstraint | undefined = undefined;
   export let value: string;
   export let errors: string[] | undefined = undefined;

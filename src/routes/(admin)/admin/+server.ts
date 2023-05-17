@@ -1,8 +1,8 @@
 import { dev } from '$app/environment';
 import { clearDB, registerAdmin } from '$lib/server/db';
-import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST = (async ({ request }) => {
     if (!dev) {
         return new Response(null, { status: 404 });
     }
@@ -13,4 +13,4 @@ export const POST: RequestHandler = async ({ request }) => {
         await registerAdmin();
     }
     return new Response('OK');
-};
+}) satisfies RequestHandler;

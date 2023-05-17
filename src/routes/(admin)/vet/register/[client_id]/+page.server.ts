@@ -23,7 +23,7 @@ const schema = z.object({
 });
 
 
-export const load: PageServerLoad = async ({ locals, params }) => {
+export const load = (async ({ locals, params }) => {
     console.log(params);
     const clientId = params.client_id;
     const breeds = await prisma.breed.findMany({
@@ -45,9 +45,10 @@ export const load: PageServerLoad = async ({ locals, params }) => {
     });
     const form = await superValidate({ ownerId: owner!.id }, schema);
     return { owner, breeds, form };
-};
+}) satisfies PageServerLoad;
 
-export const actions: Actions = {
+
+export const actions = {
     register: async ({ request }) => {
         const form = await superValidate(request, schema);
         console.log(form);
@@ -87,4 +88,4 @@ export const actions: Actions = {
 
         return { form };
     }
-};
+} satisfies Actions;

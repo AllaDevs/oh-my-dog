@@ -1,7 +1,5 @@
 <script lang="ts">
-  import type { PageData } from './$types';
-
-  export let data: PageData;
+  export let data;
 </script>
 
 <p class="text-3xl font-semibold text-gray-900">

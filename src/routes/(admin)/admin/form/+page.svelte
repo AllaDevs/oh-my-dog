@@ -1,6 +1,5 @@
 <script lang="ts">
   import { superForm } from 'sveltekit-superforms/client';
-  import type { PageData } from './$types';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
@@ -9,7 +8,7 @@
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import Form from '$lib/components/form/Form.svelte';
 
-  export let data: PageData;
+  export let data;
 
   const { form, errors, constraints, enhance } = superForm(data.form);
 </script>
@@ -35,6 +34,7 @@
     <PasswordInput
       label="Contraseña"
       name="password"
+      isNew={false}
       autocomplete={true}
       constraints={$constraints.password}
       bind:value={$form.password}

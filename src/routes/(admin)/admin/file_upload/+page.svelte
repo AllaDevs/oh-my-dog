@@ -1,10 +1,9 @@
 <script lang="ts">
   import Form from '$lib/components/form/Form.svelte';
   import ImageInput from '$lib/components/form/ImageInput.svelte';
-  import type { PageData } from './$types';
   import { superForm } from 'sveltekit-superforms/client';
 
-  export let data: PageData;
+  export let data;
 
   const { form, constraints, errors, message } = superForm(data.form);
 </script>

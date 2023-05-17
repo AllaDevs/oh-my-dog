@@ -31,14 +31,14 @@ function validateFiles(data: unknown) {
 }
 
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load = (async ({ locals }) => {
     const form = await superValidate(schema);
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
 
-export const actions: Actions = {
+export const actions = {
     uploadSingleFile: async ({ request, locals }) => {
         const formData = await request.formData();
         const form = await superValidate(formData, schema);
@@ -86,4 +86,4 @@ export const actions: Actions = {
 
         // some file transformation
     }
-};
+} satisfies Actions;

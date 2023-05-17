@@ -16,14 +16,14 @@ const schema = z.object({
 });
 
 
-export const load: PageServerLoad = async (event) => {
+export const load = (async (event) => {
     const form = await superValidate(schema);
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
 
-export const actions: Actions = {
+export const actions = {
     default: async ({ request }) => {
         const form = await superValidate(request, schema);
         if (!form.valid) {
@@ -76,4 +76,4 @@ export const actions: Actions = {
 
         return { form };
     }
-};
+} satisfies Actions;

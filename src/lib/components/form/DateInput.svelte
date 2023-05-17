@@ -1,10 +1,12 @@
 <script lang="ts">
   import type { InputConstraint } from 'sveltekit-superforms/index';
 
+  type DateFormat = `${number}-${number}-${number}`;
+
   export let label: string;
   export let name: string;
-  export let isNew: boolean = false;
-  export let autocomplete: boolean = false;
+  export let max: DateFormat | undefined = undefined;
+  export let min: DateFormat | undefined = undefined;
   export let constraints: InputConstraint | undefined = undefined;
   export let value: string;
   export let errors: string[] | undefined = undefined;
@@ -16,10 +18,12 @@
   </label>
   <div class="mt-2">
     <input
-      type="password"
+      type="date"
       {name}
       id={name}
-      autocomplete={isNew ? 'off' : autocomplete ? 'current-password' : 'off'}
+      autocomplete="off"
+      {min}
+      {max}
       {...constraints}
       bind:value
       data-invalid={errors}

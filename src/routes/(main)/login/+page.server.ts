@@ -15,7 +15,7 @@ const schema = z.object({
 });
 
 
-export const load: PageServerLoad = async (event) => {
+export const load = (async (event) => {
     const [session, form] = await Promise.all([
         event.locals.auth.validate(),
         superValidate(schema),
@@ -30,10 +30,10 @@ export const load: PageServerLoad = async (event) => {
     }
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
 
-export const actions: Actions = {
+export const actions = {
     default: async ({ request, locals, url }) => {
         const form = await superValidate(request, schema);
         if (!form.valid) {
@@ -68,4 +68,4 @@ export const actions: Actions = {
         }
         throw redirect(303, '/');
     }
-};
+} satisfies Actions;

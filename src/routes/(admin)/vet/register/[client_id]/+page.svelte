@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { PageData } from './$types';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import InputField from '$lib/components/InputField.svelte';
   import { DogSex, DogSize } from '$lib/enums';
 
-  export let data: PageData;
+  export let data;
 
   const { form, errors, constraints } = superForm(data.form);
 </script>

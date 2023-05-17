@@ -1,6 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
+import type { Actions, PageServerLoad } from './$types';
 
 
 const schema = z.object({
@@ -11,10 +12,10 @@ const schema = z.object({
 });
 
 
-export const load = async (event) => {
+export const load = (async (event) => {
     const form = superValidate(schema);
     return { form };
-};
+}) satisfies PageServerLoad;
 
 
 export const actions = {
@@ -32,4 +33,4 @@ export const actions = {
             return setError(form, 'email', 'Nor registered email');
         return { form };
     }
-};
+} satisfies Actions;

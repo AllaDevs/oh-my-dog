@@ -11,7 +11,7 @@ const schema = z.object({
 });
 
 
-export const load: PageServerLoad = async (event) => {
+export const load = (async (event) => {
     const [session, form] = await Promise.all([
         event.locals.auth.validate(),
         superValidate<typeof schema, true>(schema),
@@ -22,10 +22,10 @@ export const load: PageServerLoad = async (event) => {
     }
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
 
-export const actions: Actions = {
+export const actions = {
     default: async ({ request, locals, url }) => {
         const form = await superValidate<typeof schema, true>(request, schema);
         if (!form.valid) {
@@ -82,6 +82,6 @@ export const actions: Actions = {
             // TODO: handle errors
         }
 
-        return message(form, true)
+        return message(form, true);
     }
-};
+} satisfies Actions;

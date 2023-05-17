@@ -1,72 +1,55 @@
 <script lang="ts">
-  import type { PageData } from './$types';
   import { superForm } from 'sveltekit-superforms/client';
+  import Form from '$lib/components/form/Form.svelte';
+  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-  import InputField from '$lib/components/InputField.svelte';
+  import TextInput from '$lib/components/form/TextInput.svelte';
 
-  export let data: PageData;
+  export let data;
 
-  const { form, errors, constraints } = superForm(data.form);
-  const breeds = data.breeds;
+  const { form, errors, constraints, enhance } = superForm(data.form);
 </script>
-
-<SuperDebug data={$form} />
 
 {#if $errors._errors}
   {$errors._errors}
 {/if}
-<form method="POST">
-  <div class="space-y-12">
-    <div class="border-b border-gray-900/10 pb-12">
-      <h2 class="text-base font-semibold leading-7 text-gray-900">
-        Nuevo veterinario
+
+<div class=" mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+  <div>
+    <h2 class=" text-lg font-semibold leading-7 text-gray-900">
+      Razas cargadas
+    </h2>
+    <ul class=" mt-6">
+      {#each data.breeds as breed}
+        <li class=" p-1 border-b border-y-cyan-900 border-opacity-25">
+          <p>{breed.name}</p>
+        </li>
+      {:else}
+        <li>
+          <p>No hay razas cargadas</p>
+        </li>
+      {/each}
+    </ul>
+    <Form method="POST" action="?/registerTestBreeds" class=" mt-6">
+      <SubmitButton>Cargar razas de prueba</SubmitButton>
+    </Form>
+  </div>
+  <div>
+    <Form method="POST" action="?/registerBreed" {enhance}>
+      <h2 class=" text-lg font-semibold leading-7 text-gray-900">
+        Cargar nueva raza
       </h2>
-
-      <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <InputField label="Nombre de la raza" for="name">
-          <input
-            type="text"
-            name="name"
-            bind:value={$form.name}
-            {...$constraints.name}
-            data-invalid={$errors.name}
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </InputField>
+      <div class="mt-6 flex items-end gap-x-6">
+        <TextInput
+          label="Nombre de la raza"
+          name="name"
+          constraints={$constraints.name}
+          bind:value={$form.name}
+          errors={$errors.name}
+        />
+        <SubmitButton>Cargar</SubmitButton>
       </div>
-    </div>
+      <SuperDebug data={$form} />
+    </Form>
   </div>
-
-  <div class="mt-6 flex items-center justify-end gap-x-6">
-    <button type="button" class="text-sm font-semibold leading-6 text-gray-900">
-      Cancelar</button
-    >
-    <button
-      type="submit"
-      formaction="?/register"
-      class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    >
-      Crear</button
-    >
-  </div>
-</form>
-
-<form method="POST">
-  <div class="mt-6 flex items-center justify-end gap-x-6">
-    <button
-      type="submit"
-      formaction="?/registerTestBreeds"
-      class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    >
-      Registrar razas prueba</button
-    >
-  </div>
-</form>
-
-<ul>
-  {#each breeds as breed}
-    <li>
-      <p>{breed.name}</p>
-    </li>
-  {/each}
-</ul>
+</div>

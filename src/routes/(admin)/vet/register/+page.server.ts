@@ -18,13 +18,14 @@ const schema = z.object({
 });
 
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load = (async ({ locals }) => {
     const form = await superValidate(schema);
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
-export const actions: Actions = {
+
+export const actions = {
     client: async ({ request }) => {
         const form = await superValidate(request, schema);
         if (!form.valid) {
@@ -53,7 +54,6 @@ export const actions: Actions = {
                         user: {
                             connect: {
                                 id: user.userId,
-                                email: user.email
                             }
                         },
                         username: form.data.username,
@@ -88,4 +88,4 @@ export const actions: Actions = {
         }
         throw redirect(303, `/vet/register/${clientId}`);
     }
-};
+} satisfies Actions;
