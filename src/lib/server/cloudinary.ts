@@ -34,7 +34,7 @@ export async function uploadFile(file: File, options: UploadApiOptions) {
 }
 
 
-type UploadImageOptions = ResolveTypes<UploadApiOptions & { resource_type: 'image'; }>;
+type UploadImageOptions = ResolveTypes<UploadApiOptions & { asset_folder?: string; }>;
 
 
 type UploadImageResponse = {
@@ -76,7 +76,7 @@ async function uploadImageCloudinary(file: File, options: UploadImageOptions): P
  * 
  * use options.asset_folder = 'user' for any user uploaded image
  */
-async function uploadImageLocal(file: File, options: UploadImageOptions) {
+async function uploadImageLocal(file: File, options: UploadImageOptions): Promise<UploadImageResponse> {
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -84,31 +84,31 @@ async function uploadImageLocal(file: File, options: UploadImageOptions) {
 
     try {
         await fs.promises.writeFile(`${BASE_LOCAL_PATH}/${path}`, buffer);
-        return { success: true, result: { secure_url: `${BASE_LOCAL_URL}/${path}`, width: 256, height: 256 } };
+        return { success: true, result: ({ url: `${BASE_LOCAL_URL}/${path}`, secure_url: `${BASE_LOCAL_URL}/${path}`, width: 256, height: 256 } as UploadApiResponse) };
     }
     catch (error) {
         switch ((error as NodeJS.ErrnoException)?.code) {
             case 'EACCES':
                 console.error(`No se tiene permiso de escritura en el archivo ${path}`);
-                return { success: false, error };
+                return { success: false, error } as any;
             case 'EADDRINUSE':
                 console.error(`El puerto ${path} está en uso`);
-                return { success: false, error };
+                return { success: false, error } as any;
             case 'ENOENT':
                 console.error(`No existe el archivo o el directorio ${path}`);
                 try {
                     await fs.promises.mkdir(`${BASE_LOCAL_PATH}/${path.split('/').slice(0, -1).join('/')}`, { recursive: true });
 
                     await fs.promises.writeFile(`${BASE_LOCAL_PATH}/${path}`, buffer);
-                    return { success: true, result: { secure_url: `${BASE_LOCAL_URL}/${path}`, width: 256, height: 256 } };
+                    return { success: true, result: ({ secure_url: `${BASE_LOCAL_URL}/${path}`, url: `${BASE_LOCAL_URL}/${path}`, width: 256, height: 256 } as UploadApiResponse) };
                 }
                 catch (error) {
                     console.error(`No se pudo crear el directorio ${path.split('/').slice(0, -1).join('/')}`);
-                    return { success: false, error };
+                    return { success: false, error } as any;
                 }
             default:
                 console.error(error);
-                return { success: false, error };
+                return { success: false, error } as any;
         }
     }
 }

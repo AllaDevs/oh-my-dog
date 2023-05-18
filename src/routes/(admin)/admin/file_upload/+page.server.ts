@@ -8,7 +8,7 @@ const MAX_FILE_SIZE = (2 * 1024 * 1024); // 2mb
 
 const schema = z.object({
     file: z.any(),
-    // files: z.any(),
+    files: z.any(),
 });
 
 function validateFiles(data: unknown) {

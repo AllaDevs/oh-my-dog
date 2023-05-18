@@ -4,7 +4,7 @@
   export let label: string;
   export let name: string;
   export let constraints: InputConstraint | undefined = undefined;
-  export let value: string;
+  export let value: string | undefined;
   export let errors: string[] | undefined = undefined;
 </script>
 
@@ -44,9 +44,9 @@ Example:
   <ImageInput
     label="Image"
     name="image"
-    constraints={someConstrains}
-    bind:value={someVariable}
-    errors={someErros}
+    constraints={$constraints.image}
+    bind:value={$form.image}
+    errors={$errors.image}
   />
   <button type="submit">Upload</button>
 </form>

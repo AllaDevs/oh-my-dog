@@ -3,12 +3,13 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "dev": "dotenv -e .env.dev -- vite dev || vite dev",
+        "dev": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "postinstall": "prisma generate",
+        "dev:pro": "dotenv -e .env.dev -- vite dev --open",
         "dev:prisma-gen": "dotenv -e .env.dev -- npx prisma generate",
         "dev:prisma-push": "dotenv -e .env.dev -- npx prisma db push",
         "prod:db-push": "npx prisma db push"

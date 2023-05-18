@@ -2,7 +2,7 @@
   import type { InputConstraint } from 'sveltekit-superforms/index';
 
   export let label: string;
-  export let unselectedLabel: string;
+  export let unselectedLabel: string | undefined;
   export let name: string;
   export let constraints: InputConstraint | undefined = undefined;
   export let value: string;
@@ -25,7 +25,7 @@
       {...$$restProps}
       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
     >
-      <option value="" disabled>{unselectedLabel}</option>
+      <option value="">{unselectedLabel}</option>
       {#each options as option}
         <option value={option.value}>{option.label}</option>
       {/each}

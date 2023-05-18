@@ -17,8 +17,8 @@
   <ImageInput
     label="Imagen"
     name="file"
-    bind:value={$form.file}
     constraints={$constraints.file}
+    bind:value={$form.file}
     errors={$errors.file}
   />
 

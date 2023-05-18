@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { InputConstraint } from 'sveltekit-superforms/index';
+  import type { InputConstraint } from 'sveltekit-superforms';
 
   export let label: string;
   export let name: string;
   export let autocomplete: string = 'off';
   export let constraints: InputConstraint | undefined = undefined;
-  export let value: string;
+  export let value: string | undefined;
   export let errors: string[] | undefined = undefined;
 </script>
 
