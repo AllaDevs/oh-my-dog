@@ -1,5 +1,6 @@
 import type { SvelteComponent, ComponentProps } from 'svelte';
 import EmailNewAccount from './templates/EmailNewAccount.svelte';
+import EmailResetPassword from './templates/EmailResetPassword.svelte';
 
 
 // function addGeneratedStyle(html: string, css: string) {
@@ -23,6 +24,12 @@ export function newAccountHTML(username: string, lastname: string, password: str
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
+export function resetPasswordHTML(href: string) {
+    const r = (EmailResetPassword as unknown as Renderable<EmailResetPassword>).render({ href });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
 export default {
     newAccountHTML,
+    resetPasswordHTML
 }

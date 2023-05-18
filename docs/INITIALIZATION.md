@@ -12,7 +12,7 @@ npm i
 
 Create a .env file in the root of the project with the following content.
 
-> Replace {{prisma schema url}} with your prisma schema url for your database
+> Replace {{...}} with your actual credentials
 
 ```bash
 DATABASE_URL="{{prisma schema url}}"
@@ -20,6 +20,7 @@ LAUNCH_EDITOR=".\.launcheditor.bat"
 SENDGRID_SENDER="{{your sendgrid sender email}}}"
 SENDGRID_USERNAME="{{your sendgrid username}}"
 SENDGRID_PASSWORD="{{your sendgrid password}}"
+CLOUDINARY_URL="{{your cloudinary url}}"
 ```
 
 ## 3. .launcheditor.bat file

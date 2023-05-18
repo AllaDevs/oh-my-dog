@@ -48,12 +48,12 @@ export async function registerAdmin(name?: string) {
         const user = await auth.createUser({
             primaryKey: {
                 providerId: 'email',
-                providerUserId: `${name ?? 'admin'}@a.com`,
+                providerUserId: `${name ?? 'a'}@a.com`,
                 password: 'adminadmin',
             },
             attributes: {
                 role: Role.ADMIN,
-                email: `${name ?? 'admin'}@a.com`,
+                email: `${name ?? 'a'}@a.com`,
             }
         });
 
@@ -65,7 +65,6 @@ export async function registerAdmin(name?: string) {
                         email: user.email
                     }
                 },
-                userId: user.id,
                 username: name ?? 'admin username',
                 lastname: name ?? 'admin lastname',
                 email: user.email,

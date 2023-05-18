@@ -15,11 +15,8 @@ declare global {
 
     /// <reference types="lucia-auth" />
     namespace Lucia {
-        type Auth = import("$lib/lucia").Auth;
-        type UserAttributes = {
-            role: import("@prisma/client").Role;
-            email: string;
-        };
+        type Auth = import("$lib/server/lucia").Auth;
+        type UserAttributes = Omit<import("@prisma/client").AuthUser, 'id'>;
     }
 }
 

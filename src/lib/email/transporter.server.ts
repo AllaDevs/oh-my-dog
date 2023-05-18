@@ -6,7 +6,7 @@ import type SMTPConnection from 'nodemailer/lib/smtp-connection';
 type EmailAddress = {
     name: string;
     address: string;
-};
+} | string;
 
 
 const SYSTEM_ADDRESS = {
