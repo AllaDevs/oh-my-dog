@@ -29,6 +29,9 @@ npm i nodemailer
 
 # add svelte libraries
 npm i -D sveltekit-superforms zod
+
+# add cloudinary
+npm i cloudinary
 ```
 
 This project is meant to be deployed to vercel, so we need to add the following script into the `package.json` in order to generate the prisma client before the builded project starts:
@@ -65,6 +68,12 @@ Resources:
 - [superforms](https://superforms.vercel.app/)
 - [superforms tutorial](https://youtu.be/MiKzH3kcVfs)
 
+## Cloudinary
+
+Resources:
+
+- [cloudinary](https://cloudinary.com/documentation/node_integration)
+- [upload image api reference](https://cloudinary.com/documentation/image_upload_api_reference)
 
 ## For later?
 
