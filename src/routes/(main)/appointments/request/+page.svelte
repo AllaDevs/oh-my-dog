@@ -11,7 +11,7 @@
   const { form, errors, constraints, message } = superForm(data.form);
   const clientDogs = data.clientDogs.map((dog) => ({
     value: dog.id,
-    label: `${dog.name} - ${dog.birthdate}`,
+    label: `${dog.name} - ${dog.birthdate.toLocaleDateString()}`,
   }));
   const formDate = dateProxy(form, 'date', { format: 'date' });
   const today = new Date()
@@ -22,11 +22,16 @@
   const yearFromString = yearFrom
     .toISOString()
     .split('T')[0] as `${number}-${number}-${number}`;
+  $: if ($message) console.log($message);
 </script>
 
 <form method="POST" class=" max-w-sm">
   <div class="space-y-12">
     <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
+      <!-- min={new Date().toISOString().split('T')[0]}
+        max={new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+          .toISOString()
+          .split('T')[0]} -->
       <DateInput
         label="Fecha"
         name="date"
@@ -70,7 +75,7 @@
       <SelectInput
         label="Perro"
         name="dogId"
-        unselectedLabel="Seleccione un perro"
+        unselectedLabel="Seleccione uno de sus perros"
         constraints={$constraints.dogId}
         bind:value={$form.dogId}
         errors={$errors.dogId}
@@ -82,13 +87,15 @@
   <div class="mt-6 flex items-center justify-around gap-x-6">
     <SubmitButton>Pedir Turno</SubmitButton>
   </div>
-  {#if $message}
-    <p
-      class="text-{$message === 'Pedido de turno rechazado!'
-        ? 'red'
-        : 'green'}-500 text-sm font-semibold leading-5 mb-4"
-    >
-      {$message}
-    </p>
-  {/if}
+  <div class="flex items-center justify-around mt-10 text-xl max-w-full">
+    {#if $message}
+      <p
+        class="text-{$message === 'Pedido de turno exitoso!'
+          ? 'green'
+          : 'red'}-500 text-sm font-semibold leading-5 mb-4 text-center"
+      >
+        {$message}
+      </p>
+    {/if}
+  </div>
 </form>

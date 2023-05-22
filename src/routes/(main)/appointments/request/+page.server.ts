@@ -73,8 +73,8 @@ export const actions: Actions = {
 
         // if the dog is younger than 4 months and the reason is antirabic, the appointment is not valid
         if (form.data.reason === AppointmentReason.ANTIRABIC &&
-            dog!.birthdate > new Date(Date.now() - 1000 * 60 * 60 * 24 * 30 * 4)) {
-            return setError(form, null, `El perro debe tener al menos 4 meses para recibir la vacuna antirrábica`);
+            dog!.birthdate > new Date(form.data.date.getTime() - 1000 * 60 * 60 * 24 * 30 * 4)) {
+            return message(form, "El perro debe tener al menos 4 meses para recibir la vacuna antirrábica", { status: 400 });
         }
 
         try {

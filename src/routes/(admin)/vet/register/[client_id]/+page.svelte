@@ -19,6 +19,9 @@
 
   const { form, errors, constraints } = superForm(data.form);
   const birthdate = dateProxy(form, 'birthdate', { format: 'date' });
+  const today = new Date()
+    .toISOString()
+    .split('T')[0] as `${number}-${number}-${number}`;
 </script>
 
 <Form method="POST" action="?/register" enctype="multipart/form-data">
@@ -36,8 +39,8 @@
       <DateInput
         label="Nacimiento"
         name="birthdate"
-        min="1923-01-01"
-        max="2007-12-31"
+        min="1980-01-01"
+        max={today}
         constraints={$constraints.birthdate}
         bind:value={$birthdate}
         errors={$errors.birthdate}
