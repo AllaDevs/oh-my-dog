@@ -7,7 +7,7 @@
 </script>
 
 <EmailFrame title="Veterinaria OhMyDog">
-  <header class=" bg-teal-500 text-white py-4">
+  <header class=" bg-teal-500 py-4 text-white">
     <h1 class="text-center font-bold">¡Has sido registrado en OhMyDog!</h1>
   </header>
 
@@ -21,7 +21,7 @@
     <p>¡Esperamos verte pronto!</p>
   </main>
 
-  <footer class="bg-gray-200 text-white py-4">
+  <footer class="bg-gray-200 py-4 text-white">
     <p class="text-center">Atentamente,</p>
     <p class="text-center">El equipo de OhMyDog</p>
   </footer>

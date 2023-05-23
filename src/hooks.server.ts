@@ -13,7 +13,7 @@ export const handle = (async ({ event, resolve }) => {
         if (
             pathname.startsWith('/client') ||
             pathname.startsWith('/vet') ||
-            pathname.startsWith('/admin')
+            pathname.startsWith('/dev')
         ) {
             throw redirect(302, handleLoginRedirect(event));
         }
@@ -23,7 +23,7 @@ export const handle = (async ({ event, resolve }) => {
             case Role.CLIENT:
                 if (
                     pathname.startsWith('/vet') ||
-                    pathname.startsWith('/admin')
+                    pathname.startsWith('/dev')
                 ) {
                     throw redirect(303, '/');
                 }
@@ -31,7 +31,7 @@ export const handle = (async ({ event, resolve }) => {
             case Role.VET:
                 if (
                     (event.request.method === 'GET' && !pathname.startsWith('/vet')) ||
-                    pathname.startsWith('/admin')
+                    pathname.startsWith('/dev')
                 ) {
                     throw redirect(303, '/vet');
                 }

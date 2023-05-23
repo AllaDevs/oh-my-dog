@@ -32,4 +32,4 @@ export function resetPasswordHTML(href: string) {
 export default {
     newAccountHTML,
     resetPasswordHTML
-}
+};

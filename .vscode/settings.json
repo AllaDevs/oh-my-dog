@@ -25,5 +25,5 @@
     "svelte.enable-ts-plugin": true,
     "svelte.plugin.svelte.format.config.singleQuote": true,
     "typescript.format.semicolons": "insert",
-    "typescript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single"
 }
