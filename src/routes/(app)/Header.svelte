@@ -8,7 +8,7 @@
   const navLinks = [
     { href: '/', text: 'Inicio' },
     { href: '/me/appointments', text: 'Turnos' },
-    { href: '/me', text: 'Mi cuenta' },
+    { href: '/me', text: 'Mi cuenta', requiresLogin: true },
   ];
 
   $: onHome = $page.url.pathname === '/';
@@ -64,7 +64,7 @@
           Cerrar Sesión
         </button>
       </form>
-    {:else if $page.url.pathname !== '/login' && $page.url.pathname !== '/password_reset'}
+    {:else if $page.url.pathname !== '/login'}
       <div class="p-1 sm:p-2 md:p-4">
         <a
           href="/login"

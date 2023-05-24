@@ -1,36 +1,35 @@
 <script lang="ts">
-	import Form from '$lib/components/form/Form.svelte';
-	import ImageInput from '$lib/components/form/ImageInput.svelte';
-	import { superForm } from 'sveltekit-superforms/client';
+  import ImageInput from '$lib/components/form/ImageInput.svelte';
+  import { superForm } from 'sveltekit-superforms/client';
 
-	export let data;
+  export let data;
 
-	const { form, constraints, errors, message } = superForm(data.form);
+  const sForm = superForm(data.form);
+  const { form, constraints, errors, message } = sForm;
 </script>
 
-<Form method="POST" action="?/uploadSingleFile" enctype="multipart/form-data" class=" max-w-sm">
-	<ImageInput
-		label="Imagen"
-		name="file"
-		constraints={$constraints.file}
-		bind:value={$form.file}
-		errors={$errors.file}
-	/>
+<form
+  method="POST"
+  action="?/uploadSingleFile"
+  enctype="multipart/form-data"
+  class=" max-w-sm"
+>
+  <ImageInput label="Imagen" field="file" form={sForm} />
 
-	<div class="mt-6 flex items-center justify-around gap-x-6">
-		<button
-			type="submit"
-			class="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-		>
-			Upload file</button
-		>
-	</div>
-</Form>
+  <div class="mt-6 flex items-center justify-around gap-x-6">
+    <button
+      type="submit"
+      class="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+    >
+      Upload file</button
+    >
+  </div>
+</form>
 
 {#if $message}
-	<div class="mt-6 flex items-center justify-around gap-x-6">
-		<img src={$message} alt="test" />
-	</div>
+  <div class="mt-6 flex items-center justify-around gap-x-6">
+    <img src={$message} alt="test" />
+  </div>
 {/if}
 
 <!-- <form method="POST" action="?/uploadMultipleFile" class=" max-w-sm mt-10">

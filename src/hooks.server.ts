@@ -30,8 +30,8 @@ export const handle = (async ({ event, resolve }) => {
                 break;
             case Role.VET:
                 if (
-                    (event.request.method === 'GET' && !pathname.startsWith('/vet')) ||
-                    pathname.startsWith('/dev')
+                    event.request.method === 'GET' &&
+                    !pathname.startsWith('/vet')
                 ) {
                     throw redirect(303, '/vet');
                 }
