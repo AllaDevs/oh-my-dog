@@ -1,4 +1,4 @@
-# ¡OhMyDog! Website
+# ¡Oh my dog! Website
 
 idk what to put here
 

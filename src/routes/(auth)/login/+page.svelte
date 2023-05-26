@@ -35,23 +35,22 @@
     <PasswordInput
       label="Contraseña"
       isNew={true}
-      autocomplete={true}
-      field="password"
       form={sForm}
+      field="password"
     >
       <a
         href="/password_reset"
         slot="belowInput"
-        class="text-sm font-medium text-gray-500 hover:text-gray-800"
+        class="text-sm font-medium text-gray-500 underline-offset-2 hover:text-gray-800 hover:underline"
         >¿Olvidaste tu contraseña?</a
       >
     </PasswordInput>
   </div>
 
-  <div class="mt-6 flex items-center justify-around gap-x-6">
+  <div class=" mt-6 flex items-center justify-around gap-x-6">
     <button
       type="button"
-      class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+      class=" rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
       on:click={() => (noAccountHelp = !noAccountHelp)}
     >
       ¿No tienes una cuenta?
@@ -64,8 +63,7 @@
     style:opacity={noAccountHelp ? 1 : 0}
     style="transition: opacity 0.3s ease-in-out;"
   >
-    Para crear una cuenta dirigete hacia una sucursal de la veterinaria con
-    uno de tus perros, alli te registraran y te daran un usuario y
-    contraseña.
+    Para crear una cuenta dirigete hacia una sucursal de la veterinaria con uno
+    de tus perros, alli te registraran y te daran un usuario y contraseña.
   </p>
 </form>
