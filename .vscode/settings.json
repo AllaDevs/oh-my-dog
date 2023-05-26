@@ -3,20 +3,23 @@
         "editor.defaultFormatter": "svelte.svelte-vscode",
         "editor.tabSize": 2
     },
-    "files.associations": {
-        "*.css": "tailwindcss"
-    },
-    "editor.tabSize": 4,
     "editor.bracketPairColorization.enabled": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
     "editor.detectIndentation": false,
     "editor.formatOnSave": true,
     "editor.guides.bracketPairs": "active",
     "editor.guides.highlightActiveIndentation": true,
+    "editor.tabSize": 4,
     "editor.unicodeHighlight.ambiguousCharacters": true,
     "editor.unicodeHighlight.invisibleCharacters": true,
     "editor.wordWrap": "off",
     "explorer.compactFolders": false,
     "explorer.decorations.badges": false,
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
     "files.insertFinalNewline": true,
     "javascript.preferences.quoteStyle": "single",
     "material-icon-theme.folders.theme": "specific",
@@ -25,5 +28,5 @@
     "svelte.enable-ts-plugin": true,
     "svelte.plugin.svelte.format.config.singleQuote": true,
     "typescript.format.semicolons": "insert",
-    "typescript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single"
 }

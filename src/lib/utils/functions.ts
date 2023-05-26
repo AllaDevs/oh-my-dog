@@ -3,7 +3,7 @@ import type { RequestEvent } from '@sveltejs/kit';
 
 export function handleLoginRedirect(
     event: RequestEvent,
-    message: string = "Debes iniciar sesión para acceder a esta página"
+    message: string = 'Debes iniciar sesión para acceder a esta página'
 ) {
     const redirectTo = event.url.pathname + event.url.search;
     return `/login?redirect_to=${redirectTo}&message=${encodeURIComponent(message)}`;
@@ -19,9 +19,24 @@ export function getImage(formData: FormData, name: string, maxFileSize: number =
         return 'FILE_TOO_BIG';
     }
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#image_types
-    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/webp' && file.type !== 'image/avif') {
+    if (
+        file.type !== 'image/jpeg' &&
+        file.type !== 'image/png' &&
+        file.type !== 'image/webp' &&
+        file.type !== 'image/avif'
+    ) {
         console.log('file.type', file.type);
         return 'NOT_AN_IMAGE';
     }
     return file;
+}
+
+export function objectInfo(obj: Record<string, unknown>, reference?: string): void {
+    console.info(
+        `Object info${reference ? ' for ' + reference : ''}:
+    - typeof: ${typeof obj}
+    - constructor.name: ${obj.constructor.name}
+    - Object.getPrototypeOf(obj).constructor.name: ${Object.getPrototypeOf(obj).constructor.name}
+`
+    );
 }

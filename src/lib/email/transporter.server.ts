@@ -3,6 +3,22 @@ import { createTransport } from 'nodemailer';
 import type SMTPConnection from 'nodemailer/lib/smtp-connection';
 
 
+type ErrorCode = "EMAIL_CONNECTION_FAILED" | "EMAIL_UNABLE_TO_SEND" | "EMAIL_OTHER_ERROR";
+
+export class EmailError extends Error {
+    static readonly CONNECTION_FAILED = 'EMAIL_CONNECTION_FAILED';
+    static readonly UNABLE_TO_SEND = 'EMAIL_UNABLE_TO_SEND';
+    static readonly OTHER_ERROR = 'EMAIL_OTHER_ERROR';
+
+    readonly code: ErrorCode;
+
+    constructor(code: ErrorCode, message?: string) {
+        super(message);
+        this.code = code;
+    }
+}
+
+
 type EmailAddress = {
     name: string;
     address: string;
@@ -10,7 +26,7 @@ type EmailAddress = {
 
 
 const SYSTEM_ADDRESS = {
-    name: '¡OhMyDog!' as const,
+    name: '¡Oh my dog!' as const,
     address: process.env.SENDGRID_SENDER!
 } satisfies EmailAddress;
 
@@ -38,7 +54,7 @@ const transporter = createTransport(CONFIG);
 
 transporter.verify(function (error, success) {
     if (error) {
-        console.error(error);
+        console.error(error, '\nSMTP server is not ready to take system messages, application keeps running but emails will not be sent');
     } else {
         console.log(`SMTP server is ready to take system messages at ${CONFIG.host}:${CONFIG.port}`);
     }
@@ -46,13 +62,21 @@ transporter.verify(function (error, success) {
 
 
 export async function systemEmail(to: EmailAddress, subject: string, text: string, html: string) {
-    const result = await transporter.sendMail({
-        from: SYSTEM_ADDRESS,
-        to: to,
-        subject,
-        text,
-        html
-    });
-
-    return result;
+    try {
+        return await transporter
+            .sendMail({
+                from: SYSTEM_ADDRESS,
+                to: to,
+                subject,
+                text,
+                html
+            });
+    }
+    catch (error) {
+        if ((error as Record<string, unknown>)?.code === 'ESOCKET') {
+            throw new EmailError(EmailError.CONNECTION_FAILED, 'Connection to SMTP server failed');
+        }
+        console.error(JSON.stringify(error, null, 2));
+        throw new EmailError(EmailError.OTHER_ERROR, 'A problem occurred while sending the email');
+    }
 }

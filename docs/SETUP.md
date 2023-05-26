@@ -28,7 +28,7 @@ npm i @lucia-auth/adapter-prisma
 npm i nodemailer
 
 # add svelte libraries
-npm i -D sveltekit-superforms zod
+npm i -D sveltekit-superforms zod svelte-french-toast
 
 # add cloudinary
 npm i cloudinary
@@ -67,6 +67,8 @@ Resources:
 
 - [superforms](https://superforms.vercel.app/)
 - [superforms tutorial](https://youtu.be/MiKzH3kcVfs)
+- [svelte-french-toast](https://svelte-french-toast.com/)
+
 
 ## Cloudinary
 
@@ -74,6 +76,7 @@ Resources:
 
 - [cloudinary](https://cloudinary.com/documentation/node_integration)
 - [upload image api reference](https://cloudinary.com/documentation/image_upload_api_reference)
+
 
 ## For later?
 
