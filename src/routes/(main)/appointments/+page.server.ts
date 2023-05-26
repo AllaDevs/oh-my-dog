@@ -27,7 +27,13 @@ export const load: PageServerLoad = async (event) => {
             daytime: true,
             state: true,
             reason: true,
-            dogId: true
+            dogId: true,
+            dog: {
+                select: {
+                    name: true,
+                    birthdate: true
+                }
+            }
         }
     });
 

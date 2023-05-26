@@ -18,7 +18,9 @@
             <dt class="text-sm font-medium text-gray-500 truncate">
               Número de turno
             </dt>
-            <dd class="mt-1 text-xl font-semibold text-gray-900">
+            <dd
+              class="mt-1 text-xl font-semibold max-w-[16ch] text-ellipsis overflow-hidden text-gray-900"
+            >
               {appointment.id}
             </dd>
             <dt class="text-sm font-medium text-gray-500 truncate">
@@ -51,11 +53,9 @@
             <dd class="mt-1 text-xl font-semibold text-gray-900">
               {appointmentReasonMapper(appointment.reason)}
             </dd>
-            <dt class="text-sm font-medium text-gray-500 truncate">
-              Id del Perro
-            </dt>
+            <dt class="text-sm font-medium text-gray-500 truncate">Perro</dt>
             <dd class="mt-1 text-xl font-semibold text-gray-900">
-              {appointment.dogId}
+              {appointment.dog.name} - {appointment.dog.birthdate.toLocaleDateString()}
             </dd>
             <dt class="text-sm font-medium text-gray-500 truncate">Estado</dt>
             <dd class="mt-1 text-xl font-semibold text-gray-900">

@@ -12,13 +12,15 @@ export const load: PageServerLoad = async (event) => {
         },
         select: {
             id: true,
-            name: true
+            username: true
         }
     });
-
+    if (!client) {
+        return fail(404, { error: 'User not found' });
+    }
     const clientAppointments = await prisma.appointment.findMany({
         where: {
-            clientId: client!.id,
+            clientId: client.id,
         },
         select: {
             id: true,
