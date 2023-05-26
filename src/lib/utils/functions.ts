@@ -30,3 +30,13 @@ export function getImage(formData: FormData, name: string, maxFileSize: number =
     }
     return file;
 }
+
+export function objectInfo(obj: Record<string, unknown>, reference?: string): void {
+    console.info(
+        `Object info${reference ? ' for ' + reference : ''}:
+    - typeof: ${typeof obj}
+    - constructor.name: ${obj.constructor.name}
+    - Object.getPrototypeOf(obj).constructor.name: ${Object.getPrototypeOf(obj).constructor.name}
+`
+    );
+}

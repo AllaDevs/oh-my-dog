@@ -1,6 +1,8 @@
 <script lang="ts">
   import { dev } from '$app/environment';
   import '../app.css';
+
+  import { Toaster } from 'svelte-french-toast';
 </script>
 
 {#if dev}
@@ -8,6 +10,8 @@
     DEV
   </div>
 {/if}
+
+<Toaster />
 
 <slot />
 

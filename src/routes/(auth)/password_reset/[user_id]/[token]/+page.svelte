@@ -1,21 +1,53 @@
 <script lang="ts">
-  import { superForm } from 'sveltekit-superforms/client';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
+  import toast from 'svelte-french-toast';
+  import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
 
-  const sForm = superForm(data.form);
-  const { errors, enhance } = sForm;
+  let errorOnSubmit = false;
+
+  const sForm = superForm(data.form, {
+    onSubmit: ({ data, cancel }) => {
+      if ($form.password !== $form.passwordConfirm) {
+        sForm.errors.update((errors) => {
+          errors.passwordConfirm = ['Las contraseñas no coinciden'];
+          return errors;
+        });
+        cancel();
+        return;
+      }
+    },
+    onResult: ({ result, formEl, cancel }) => {
+      if (result.type === 'redirect') {
+        toast.success(
+          'Se ha restablecido tu contraseña, ya puedes iniciar sesion'
+        );
+        // goto(result.location);
+      }
+    },
+    onUpdated: ({ form }) => {
+      if (form.errors._errors?.length) {
+        errorOnSubmit = true;
+        toast.error(form.errors._errors[0], { duration: 5000 });
+      }
+    },
+  });
+  const { form, errors, message, enhance } = sForm;
+
+  form.subscribe(() => (errorOnSubmit = false));
+
+  $: noEnhanceError = !errorOnSubmit && $errors._errors?.length;
 </script>
 
 <svelte:head>
   <title>Restablecer contraseña - ¡Oh my dog!</title>
 </svelte:head>
 
-{#if $errors._errors}
-  <p class="py-6 text-center text-sm font-semibold leading-5 text-red-500">
-    Se produjo un error al actualizar la contraseña, intenta mas tarde
+{#if noEnhanceError}
+  <p class="py-4 text-center text-sm font-semibold leading-5 text-red-500">
+    {String($errors._errors)}
   </p>
 {/if}
 
@@ -23,8 +55,8 @@
   Restablecer contraseña
 </h1>
 
-<form method="POST" use:enhance>
-  <div class="mt-6">
+<form method="POST" use:enhance class=" mt-2 py-4">
+  <div class="mt-2 flex flex-col gap-2">
     <PasswordInput
       label="Nueva contraseña"
       field="password"
@@ -39,7 +71,7 @@
     />
   </div>
 
-  <div class="mt-6 flex items-center justify-around">
+  <div class="mt-8 flex items-center justify-around">
     <SubmitButton>Cambiar contraseña</SubmitButton>
   </div>
 </form>

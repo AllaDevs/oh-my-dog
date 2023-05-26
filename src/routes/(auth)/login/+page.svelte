@@ -1,14 +1,29 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { superForm } from 'sveltekit-superforms/client';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
+  import toast from 'svelte-french-toast';
+  import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
 
-  const sForm = superForm(data.form);
-  const { errors, enhance } = sForm;
+  const sForm = superForm(data.form, {
+    onResult: ({ result, formEl, cancel }) => {
+      if (result.type === 'redirect') {
+        toast.success('Inicio de sesion exitoso');
+        // goto(result.location);
+      }
+    },
+    onUpdated: ({ form }) => {
+      if (form.errors._errors?.length) {
+        const message = form.errors._errors[0].startsWith('AUTH')
+          ? 'Ocurrio un error durante el proceso de autenticacion, intenta de nuevo'
+          : 'Ocurrio un error en el servidor, intenta de nuevo';
+        toast.error(message, { duration: 5000 });
+      }
+    },
+  });
 
   $: authorizationMessage = $page.url.searchParams.get('message') ?? '';
 
@@ -20,7 +35,7 @@
 </svelte:head>
 
 {#if authorizationMessage}
-  <p class="py-6 text-center text-sm font-semibold leading-5 text-red-500">
+  <p class="py-4 text-center text-sm font-semibold leading-5 text-red-500">
     {authorizationMessage}
   </p>
 {/if}
@@ -29,8 +44,8 @@
   Iniciar sesión
 </h1>
 
-<form method="POST" use:enhance>
-  <div class="mt-6">
+<form method="POST" use:sForm.enhance class=" mt-2 py-4">
+  <div class="mt-2 flex flex-col gap-2">
     <EmailInput label="Direccion de email" form={sForm} field="email" />
     <PasswordInput
       label="Contraseña"
@@ -47,7 +62,7 @@
     </PasswordInput>
   </div>
 
-  <div class=" mt-6 flex items-center justify-around gap-x-6">
+  <div class=" mt-8 flex items-center justify-around gap-4">
     <button
       type="button"
       class=" rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
@@ -59,11 +74,11 @@
   </div>
 
   <p
-    class="mt-10 w-full px-6 text-center text-sm text-gray-600 opacity-0"
+    class="mt-8 w-full px-6 text-center text-sm text-gray-600 opacity-0"
     style:opacity={noAccountHelp ? 1 : 0}
     style="transition: opacity 0.3s ease-in-out;"
   >
     Para crear una cuenta dirigete hacia una sucursal de la veterinaria con uno
-    de tus perros, alli te registraran y te daran un usuario y contraseña.
+    de tus perros, alli te registraran y te indicaran como iniciar sesion.
   </p>
 </form>
