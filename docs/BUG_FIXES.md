@@ -10,16 +10,16 @@ import { defineConfig } from 'vite';
 
 // fix for prisma client in vite, see issue https://github.com/prisma/prisma/issues/12504
 // - fix start
-import { createRequire } from 'module'
-import path from 'path'
+import { createRequire } from 'module';
+import path from 'path';
 
-const require = createRequire(import.meta.url)
+const require = createRequire(import.meta.url);
 
 const prismaClient = require
     .resolve('@prisma/client')
-    .replace(/@prisma(\/|\\)client(\/|\\)index\.js/, '.prisma/client/index-browser.js')
+    .replace(/@prisma(\/|\\)client(\/|\\)index\.js/, '.prisma/client/index-browser.js');
 
-const prismaIndexBrowser = path.normalize(path.relative(process.cwd(), prismaClient))
+const prismaIndexBrowser = path.normalize(path.relative(process.cwd(), prismaClient));
 // - fix end
 
 export default defineConfig({

@@ -3,21 +3,22 @@ import { auth } from './lucia';
 import { prisma } from './prisma';
 
 
-type ClearDBResult = {
-    success: true;
-    clearedModels: number;
-} | {
-    success: false;
-    clearedModels: number;
-    errors: unknown[];
-};
+type ClearDBResult =
+    | {
+        success: true;
+        clearedModels: number;
+    }
+    | {
+        success: false;
+        clearedModels: number;
+        errors: unknown[];
+    };
 
 export async function clearDB() {
     const modelNames = [];
     for (const key of Object.keys(prisma)) {
         const preffix = key[0];
-        if (preffix && (preffix === '_' || preffix === '$'))
-            continue;
+        if (preffix && (preffix === '_' || preffix === '$')) continue;
         modelNames.push(key);
     }
 
@@ -38,7 +39,7 @@ export async function clearDB() {
     return {
         success: clearedModels === modelNames.length,
         clearedModels,
-        errors: errors.length ? errors : undefined,
+        errors: errors.length ? errors : undefined
     } as ClearDBResult;
 }
 
@@ -49,11 +50,11 @@ export async function registerAdmin(name?: string) {
             primaryKey: {
                 providerId: 'email',
                 providerUserId: `${name ?? 'a'}@a.com`,
-                password: 'adminadmin',
+                password: 'adminadmin'
             },
             attributes: {
                 role: Role.ADMIN,
-                email: `${name ?? 'a'}@a.com`,
+                email: `${name ?? 'a'}@a.com`
             }
         });
 
@@ -61,18 +62,15 @@ export async function registerAdmin(name?: string) {
             data: {
                 user: {
                     connect: {
-                        id: user.userId,
-                        email: user.email
+                        id: user.userId
                     }
                 },
                 username: name ?? 'admin username',
                 lastname: name ?? 'admin lastname',
-                email: user.email,
+                email: user.email
             }
         });
-
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
         return false;
     }
