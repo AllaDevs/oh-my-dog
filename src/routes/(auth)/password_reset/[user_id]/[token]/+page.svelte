@@ -9,7 +9,7 @@
   let errorOnSubmit = false;
 
   const sForm = superForm(data.form, {
-    onSubmit: ({ data, cancel }) => {
+    onSubmit: ({ cancel }: any) => {
       if ($form.password !== $form.passwordConfirm) {
         sForm.errors.update((errors) => {
           errors.passwordConfirm = ['Las contraseñas no coinciden'];

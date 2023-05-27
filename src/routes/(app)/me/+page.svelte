@@ -2,9 +2,9 @@
 	export let data;
 </script>
 
-<h1>{data.me?.username}</h1>
+<h1>{data.me.username}</h1>
 
-<div class=" grid max-w-sm grid-cols-2 gap-6">
+<div class=" grid max-w-sm md:grid-cols-2 gap-4">
 	<!-- <LinkCard
 		href="/me/account"
 		title="Mi cuenta"

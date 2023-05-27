@@ -18,7 +18,9 @@ const clientBaseSchema = z.object({
 export const clientRegisterSchema = clientBaseSchema;
 
 export const clientUpdateSchema = clientBaseSchema.merge(z.object({
-
+    currentPassword: z.string().min(8).optional(),
+    newPassword: z.string().min(8).optional(),
+    newPasswordConfirm: z.string().min(8).optional()
 }));
 
 

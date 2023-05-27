@@ -1,32 +1,25 @@
 import { EmailError, newAccountHTML, systemEmail } from '$lib/email';
 import { Role } from '$lib/enums';
-import { clientCompleteRegisterSchema } from '$lib/schemas/clientSchema';
+import { clientCompleteRegisterSchema, dogRegisterSchema } from '$lib/schemas/clientSchema';
 import { uploadImage, type UploadImageResponse } from '$lib/server/cloudinary';
-import { auth } from '$lib/server/lucia';
+import { Lucia, auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
-import { validateImage, validateImages } from '$lib/utils/functions';
+import { validateImages } from '$lib/utils/functions';
 import type { SuccessOf } from '$lib/utils/types';
 import { Prisma } from '@prisma/client';
 import { fail } from '@sveltejs/kit';
-import * as Lucia from 'lucia-auth';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 
-const defaultDog = {
-    name: '',
-    size: undefined,
-    birthdate: undefined,
-    sex: undefined,
-    color: '',
-    image: undefined,
-    observation: undefined,
-    breedId: '',
+const initialFormData = {
+    dogs: [defaultData(dogRegisterSchema)]
 };
+
 
 export const load = (async ({ locals }) => {
     const form = await superValidate(
-        { dogs: [defaultDog as any] },
+        initialFormData,
         clientCompleteRegisterSchema,
         { errors: false }
     );
@@ -36,53 +29,27 @@ export const load = (async ({ locals }) => {
             name: true
         }
     });
+
     return { form, breeds };
 }) satisfies PageServerLoad;
-
-
 
 
 export const actions = {
     client: async ({ request }) => {
         const formData = await request.formData();
         const form = await superValidate(formData, clientCompleteRegisterSchema);
-        for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-        console.log(JSON.stringify(form.data, null, 2));
-        const formImage = validateImage(formData, form, 'dogs');
-        const formImages = validateImages(formData, form, form.data.dogs.length, ['dogs'], 'image');
+
+        const formImages = validateImages(formData, form, ['dogs'], ['image']);
+
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
 
-        console.log(formImages);
-        const generatedPassword = Lucia.generateRandomString(10);
         let authUser: Lucia.User;
         try {
-            authUser = await auth.createUser({
-                primaryKey: {
-                    providerId: 'email',
-                    providerUserId: form.data.email,
-                    password: generatedPassword
-                },
-                attributes: {
-                    role: Role.CLIENT,
-                    email: form.data.email
-                }
-            });
-        }
-        catch (error) {
-            if (error instanceof Lucia.LuciaError) {
-                // TODO: handle especifi errors
-                return setError(form, 'email', 'El correo ya está en uso');
-            }
-            console.error(error);
-            return setError(form, null, 'Error al crear el usuario');
-        }
-        try {
             await prisma.$transaction(async (tx) => {
+                // this could be replaced with creating user first and creating dogs after maybe that can link the owner and breed too?
                 const dogsData = [];
                 for (const dog of form.data.dogs) {
                     dogsData.push({
@@ -92,11 +59,6 @@ export const actions = {
                         sex: dog.sex,
                         color: dog.color,
                         observation: dog.observation,
-                        // breed: {
-                        //     connect: {
-                        //         id: dog.breedId
-                        //     }
-                        // },
                         breedId: dog.breedId,
                         image: null
                     });
@@ -104,11 +66,6 @@ export const actions = {
 
                 const client = await tx.client.create({
                     data: {
-                        user: {
-                            connect: {
-                                id: authUser.userId
-                            }
-                        },
                         username: form.data.username,
                         lastname: form.data.lastname,
                         email: form.data.email,
@@ -123,6 +80,21 @@ export const actions = {
                     },
                     include: {
                         dog: true
+                    }
+                });
+
+                const generatedPassword = Lucia.generateRandomString(10);
+
+                authUser = await auth.createUser({
+                    primaryKey: {
+                        providerId: 'email',
+                        providerUserId: form.data.email,
+                        password: generatedPassword
+                    },
+                    attributes: {
+                        userId: client.id,
+                        role: Role.CLIENT,
+                        email: form.data.email
                     }
                 });
 
@@ -172,16 +144,24 @@ export const actions = {
                 }
             });
         } catch (error) {
-            try {
-                await auth.deleteUser(authUser.userId);
+            // @ts-expect-error
+            if (authUser) {
+                try {
+                    await auth.deleteUser(authUser.authId);
+                }
+                catch (error) {
+                    console.error(error);
+                }
             }
-            catch (error) {
-                console.error(error);
+            if (error instanceof Lucia.LuciaError) {
+                // TODO: handle lucia specific errors
+                return setError(form, 'email', 'Error de autenticacion al crear el usuario, intente mas tarde');
             }
             if (error instanceof EmailError) {
                 return setError(form, null, 'Error al enviar el correo con la contraseña, intente mas tarde');
             }
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                // TODO: handle db specific errors
                 return setError(form, null, 'Error al crear el usuario con la base de datos, intente mas tarde');
             }
             console.error(error);

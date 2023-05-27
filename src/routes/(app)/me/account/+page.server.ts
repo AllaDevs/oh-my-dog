@@ -37,25 +37,8 @@ export const actions = {
         let clientId = '';
         try {
             success = await prisma.$transaction(async (prisma) => {
-                const generatedPassword = generateRandomString(10);
-                const user = await auth.createUser({
-                    primaryKey: {
-                        providerId: 'email',
-                        providerUserId: form.data.email,
-                        password: generatedPassword
-                    },
-                    attributes: {
-                        role: Role.CLIENT,
-                        email: form.data.email
-                    }
-                });
                 const client = await prisma.client.create({
                     data: {
-                        user: {
-                            connect: {
-                                id: user.userId
-                            }
-                        },
                         username: form.data.username,
                         lastname: form.data.lastname,
                         email: form.data.email,
@@ -65,6 +48,19 @@ export const actions = {
                     }
                 });
                 clientId = client.id;
+                const generatedPassword = generateRandomString(10);
+                const user = await auth.createUser({
+                    primaryKey: {
+                        providerId: 'email',
+                        providerUserId: form.data.email,
+                        password: generatedPassword
+                    },
+                    attributes: {
+                        userId: client.id,
+                        role: Role.CLIENT,
+                        email: form.data.email
+                    }
+                });
 
                 await systemEmail(
                     { name: form.data.username, address: form.data.email },

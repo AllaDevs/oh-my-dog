@@ -44,34 +44,35 @@ export async function clearDB() {
 }
 
 
-export async function registerAdmin(name?: string) {
+export async function registerAdmin(name?: string, password?: string) {
     try {
+        const finalEmail = `${name ?? 'a'}@a.com`;
+        const finalPassword = password ?? 'adminadmin';
+        const finalName = name ?? 'default username';
+        const admin = await prisma.admin.create({
+            data: {
+                username: finalName,
+                lastname: name ?? 'default lastname',
+                email: finalEmail
+            }
+        });
         const user = await auth.createUser({
             primaryKey: {
                 providerId: 'email',
-                providerUserId: `${name ?? 'a'}@a.com`,
-                password: 'adminadmin'
+                providerUserId: finalEmail,
+                password: finalPassword
             },
             attributes: {
+                userId: admin.id,
                 role: Role.ADMIN,
-                email: `${name ?? 'a'}@a.com`
+                email: finalEmail
             }
         });
-
-        await prisma.admin.create({
-            data: {
-                user: {
-                    connect: {
-                        id: user.userId
-                    }
-                },
-                username: name ?? 'admin username',
-                lastname: name ?? 'admin lastname',
-                email: user.email
-            }
-        });
-    } catch (e) {
-        console.error(e);
+        console.info("Success at creating admin account: ", finalName);
+        return true;
+    }
+    catch (e) {
+        console.error("Error at creating admin account:\n",e);
         return false;
     }
 }

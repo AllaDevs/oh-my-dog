@@ -7,8 +7,8 @@ export const load: PageServerLoad = async ({}) => {
 			id: true,
 			username: true,
 			lastname: true,
-			email: true
-		}
+			email: true,
+		},
 	});
 	return { clients };
 };

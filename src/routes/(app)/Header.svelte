@@ -5,8 +5,8 @@
 
   const navLinks = [
     { href: '/', text: 'Inicio' },
-    { href: '/me/appointments', text: 'Turnos', requiresLogin: true },
     { href: '/me', text: 'Mi cuenta', requiresLogin: true },
+    // { href: '/me/account', text: 'Mi cuenta', requiresLogin: true },
   ];
 
   $: onHome = $page.url.pathname === '/';

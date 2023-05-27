@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { dev } from '$app/environment';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import ClientDogForm from '$lib/components/vet/ClientDogForm.svelte';
-    import ClientDogFormIndexed from '$lib/components/vet/ClientDogFormIndexed.svelte';
-  import ClientForm from '$lib/components/vet/ClientForm.svelte';
+  import ClientRegisterFieldset from '$lib/components/vet/ClientRegisterFieldset.svelte';
+  import DogRegisterFieldset from '$lib/components/vet/DogRegisterFieldset.svelte';
+
+  import { fieldCloner } from '$lib/utils/functions';
   import toast from 'svelte-french-toast';
-  import {copyFactory} from '$lib/utils/functions';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
@@ -15,9 +16,7 @@
     breeds.push({ value: breed.id, text: breed.name });
   }
 
-  
-
-  const clientSuperForm = superForm(data.form, {
+  const registerSForm = superForm(data.form, {
     dataType: 'json',
     onUpdated: ({ form }) => {
       if (form.valid) {
@@ -25,47 +24,58 @@
       }
     },
   });
-  const { form: formStore, errors } = clientSuperForm;
-  const dogCopy = copyFactory($formStore, ['dogs', 0]);
+  const { form: registerData, errors } = registerSForm;
+
+  const cloneDogDefault = fieldCloner($registerData, ['dogs', 0]);
+
   function addDog() {
-    $formStore.dogs.push(dogCopy())
-    $formStore.dogs = $formStore.dogs
+    $registerData.dogs.push(cloneDogDefault());
+    $registerData.dogs = $registerData.dogs;
   }
 </script>
 
 <main class=" flex flex-col gap-4 p-4 max-w-md md:max-w-2xl mx-auto">
-  <SuperDebug data={$formStore} />
+  {#if dev}
+    <SuperDebug data={$registerData} />
 
-  {#if $errors._errors}
-    {$errors._errors}
+    {#if $errors._errors}
+      {$errors._errors}
+    {/if}
   {/if}
 
   <form
     method="POST"
     class=" mt-2 py-4"
     enctype="multipart/form-data"
-    use:clientSuperForm.enhance
+    use:registerSForm.enhance
   >
     <div class=" pb-12 flex flex-col gap-4">
-      <ClientForm sForm={clientSuperForm} />
-
-      {#each $formStore.dogs as _, i}
-        <ClientDogFormIndexed sForm={clientSuperForm} index={i} {breeds} />
+      <ClientRegisterFieldset sForm={registerSForm} legend="Nuevo cliente" />
+      {#each $registerData.dogs as _, i}
+        {@const legend =
+          $registerData.dogs.length > 1
+            ? `Nuevo perro ${i + 1}`
+            : 'Nuevo perro'}
+        <DogRegisterFieldset
+          sForm={registerSForm}
+          index={i}
+          {legend}
+          {breeds}
+        />
       {/each}
       <button
         type="button"
         on:click={addDog}
         class="rounded-md bg-teal-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300"
       >
-        Agregar perro
+        Agregar otro perro
       </button>
     </div>
 
     <div class="mt-6 flex items-center justify-around">
-      
       <button
         type="button"
-        on:click={() => clientSuperForm.reset()}
+        on:click={() => registerSForm.reset()}
         class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
       >
         Cancelar

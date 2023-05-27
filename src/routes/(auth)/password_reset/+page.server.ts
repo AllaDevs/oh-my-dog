@@ -34,16 +34,16 @@ export const actions = {
         }
 
         try {
-            const user = await prisma.authUser.findUnique({
+            const authUser = await prisma.authUser.findUnique({
                 where: { email: form.data.email }
             });
 
-            if (!user) {
+            if (!authUser) {
                 return setError(form, 'email', 'Email no registrado');
             }
 
             const token = await prisma.authPasswordRecovery.findUnique({
-                where: { userId: user.id }
+                where: { authUserId: authUser.id }
             });
 
             if (token) {
@@ -63,12 +63,12 @@ export const actions = {
 
             const newToken = await prisma.authPasswordRecovery.create({
                 data: {
-                    user: {
+                    authUser: {
                         connect: {
-                            id: user.id
+                            id: authUser.id
                         }
                     },
-                    email: user.email,
+                    email: authUser.email,
                     expiresAt: new Date(Date.now() + TOKEN_EXPIRATION)
                 }
             });
@@ -76,7 +76,7 @@ export const actions = {
             const resetLink = `${url.origin}/password_reset/${newToken.id}/${newToken.token}`;
 
             await systemEmail(
-                user.email,
+                authUser.email,
                 'Recuperación de contraseña',
                 `Para recuperar tu contraseña, haz click en el siguiente enlace: ${resetLink}`,
                 resetPasswordHTML(resetLink)

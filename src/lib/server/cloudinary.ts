@@ -2,12 +2,12 @@ import { dev } from '$app/environment';
 import type { ResolveTypes } from '$lib/utils/types';
 import {
     v2 as cloudinary,
+    type UploadApiErrorResponse,
     type UploadApiOptions,
-    type UploadApiResponse,
-    type UploadApiErrorResponse
+    type UploadApiResponse
 } from 'cloudinary';
-import fs from 'fs';
 import { randomUUID } from 'crypto';
+import fs from 'fs';
 
 
 const BASE_LOCAL_PATH = 'static/.dev';

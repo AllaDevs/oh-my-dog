@@ -2,13 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    /* Scrollbar For Firefox */
+    .scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(13 148 136) rgb(240 253 250);
+    }
+    /* Scrollbar For Chrome, EDGE, Opera, Others */
+    .scrollbar::-webkit-scrollbar {
+        @apply w-2 rounded
+    }
+    .scrollbar::-webkit-scrollbar-track { 
+        @apply bg-teal-50
+    }
+    .scrollbar::-webkit-scrollbar-thumb { 
+        @apply bg-teal-600 rounded
+    }
+}
+
+
 @font-face {
     font-family: 'Inter';
     /* For multiple files use commas, ex: url(), url(), ... */
     src: url('/fonts/Inter-VariableFont_slnt,wght.ttf');
 }
 
+
 :root {
     font-family: 'Inter', sans-serif;
     --theme-font-family-heading: 'Inter', sans-serif;
+}
+
+body {
+    @apply scrollbar;
 }

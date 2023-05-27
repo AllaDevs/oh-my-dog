@@ -37,8 +37,8 @@ export function getImage(formData: FormData, name: string, maxFileSize: number =
 }
 
 
-export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, field: keyof z.infer<T> & string) {
-    const imageFile = formData.get(field);
+export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, field: keyof z.infer<T> | FieldPath<T>) {
+    const imageFile = formData.get(String(field));
 
     if (!imageFile) {
         return null;
@@ -66,10 +66,15 @@ export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData:
     return imageFile;
 }
 
-export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>,length:number, prePath: (number| string)[], field: string) {
-    const images : File[] = [];
-    for (let i = 0; i < length; i++) {
-        const image = validateImage(formData, form, [...prePath, i, field] as any);
+export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, pathToImageArray: (number | string)[], pathToImageField: (number | string)[]) {
+    let arrayField = form.data;
+    for (const key of pathToImageArray) {
+        arrayField = arrayField[key];
+    }
+
+    const images: File[] = [];
+    for (let i = 0; i < (arrayField as any[]).length; i++) {
+        const image = validateImage(formData, form, [...pathToImageArray, i, ...pathToImageField] as keyof z.infer<T> | FieldPath<T>);
         if (!image) {
             return [];
         }
@@ -77,7 +82,22 @@ export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData
     }
     return images;
 }
-
+// export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, length: number, prePath: (number | string)[], field: string) {
+//     let arrayField = form.data;
+//     for (const key of prePath) {
+//         arrayField = arrayField[key];
+//     }
+    
+//     const images: File[] = [];
+//     for (let i = 0; i < (arrayField as any[]).length; i++) {
+//         const image = validateImage(formData, form, [...prePath, i, field] as any);
+//         if (!image) {
+//             return [];
+//         }
+//         images.push(image);
+//     }
+//     return images;
+// }
 
 export function objectInfo(obj: Record<string, unknown>, reference?: string): void {
     console.info(
@@ -90,7 +110,7 @@ export function objectInfo(obj: Record<string, unknown>, reference?: string): vo
 }
 
 
-export function copyFactory<T extends Record<string, unknown>, P extends FieldPath<T>>(formData: T, path: P): () => PathType<T, P> {
+export function fieldCloner<T extends Record<string, unknown>, P extends FieldPath<T>>(formData: T, path: P): () => PathType<T, P> {
     let data = structuredClone(formData);
     for (const key of path) {
         data = (data as any)[key];

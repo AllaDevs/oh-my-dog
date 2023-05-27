@@ -1,20 +1,21 @@
+import { prisma } from '$lib/server/prisma';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import { prisma } from '$lib/server/prisma';
+
 
 export const load = (async ({ locals, request }) => {
-	const { session, user } = await locals.auth.validateUser();
-	if (!session) {
-		throw redirect(303, '/');
-	}
+    const { session, user } = await locals.auth.validateUser();
+    if (!session) {
+        throw redirect(303, '/');
+    }
 
-	const client = await prisma.client.findFirst({
-		where: {
-			userId: user.userId
-		}
-	});
+    const client = await prisma.client.findFirst({
+        where: {
+            id: user.userId
+        },
+    });
 
-	return {
-		me: client!
-	};
+    return {
+        me: client!
+    };
 }) satisfies LayoutServerLoad;

@@ -3,7 +3,7 @@ import { error } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
-import { clientSchema } from '$lib/schemas/clientSchema';
+import { clientRegisterSchema } from '$lib/schemas/clientSchema';
 
 
 export const load = (async ({ locals, params, url }) => {
@@ -23,7 +23,7 @@ export const load = (async ({ locals, params, url }) => {
 
 	const editable = url.searchParams.get('editable') === 'true';
 
-	const form = superValidate(client, clientSchema);
+	const form = superValidate(client, clientRegisterSchema);
 
 	return { client, editable, form };
 }) satisfies PageServerLoad;
