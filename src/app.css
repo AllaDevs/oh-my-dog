@@ -12,8 +12,3 @@
     font-family: 'Inter', sans-serif;
     --theme-font-family-heading: 'Inter', sans-serif;
 }
-
-html,
-body {
-    @apply h-full;
-}

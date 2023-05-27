@@ -3,11 +3,8 @@ import { error } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
-import { clientSchema } from '$lib/schemas/client';
+import { clientSchema } from '$lib/schemas/clientSchema';
 
-const schema = z.object({
-	email: z.string().email()
-});
 
 export const load = (async ({ locals, params, url }) => {
 	const client = await prisma.client.findUnique({

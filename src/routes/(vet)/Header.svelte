@@ -17,7 +17,7 @@
   $: onVetHome = $page.url.pathname === '/vet';
 </script>
 
-<header class=" sticky top-0 flex w-full justify-between bg-teal-100/75 p-2">
+<header class=" sticky top-0 flex z-10 w-full justify-between bg-teal-100 p-2">
   <div class=" flex items-center p-1 sm:p-2 md:p-4">
     <button class="btn btn-sm mr-4 lg:hidden">
       <span>

@@ -13,7 +13,7 @@
   }
 
   export let form: SuperForm<UnwrapEffects<T>, unknown>;
-  export let field: (keyof z.infer<T> | FieldPath<z.infer<T>>) & string;
+  export let field: keyof z.infer<T> | FieldPath<z.infer<T>>;
 
   export let label: string;
   export let hint: string | undefined = undefined;
@@ -26,7 +26,7 @@
 
 <div class=" mt-2">
   <div class=" flex justify-between text-sm font-medium">
-    <label for={field} class=" max-w-fit text-gray-900">
+    <label for={String(field)} class=" max-w-fit text-gray-900">
       {label}
     </label>
     {#if $$slots.opossiteToLabel}
@@ -38,8 +38,8 @@
   <div class=" flex flex-col gap-2">
     <input
       type="password"
-      id={field}
-      name={field}
+      id={String(field)}
+      name={String(field)}
       autocomplete={isNew ? 'off' : autocomplete ? 'current-password' : 'off'}
       {readonly}
       bind:value={$value}
