@@ -1,6 +1,5 @@
 <script lang="ts">
   import { AppointmentState } from '$lib/enums';
-  import type { Appointment } from '$lib/types/index';
   import {
     appointmentReasonMapper,
     appointmentStateMapper,
@@ -19,34 +18,6 @@
     'Perro',
     'Acción',
   ];
-
-  const appointmentChanges = {
-    requestChange: 'change',
-    cancel: 'cancel',
-    confirm: 'confirm',
-    reject: 'reject',
-    do: 'do',
-  };
-
-  export async function handleAppointment(
-    appointment: Appointment,
-    change: string
-  ): Promise<void> {
-    const response = await fetch('/api/appointments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        appointmentId: appointment.id,
-        change,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update appointment');
-    }
-  }
 </script>
 
 <svelte:head>

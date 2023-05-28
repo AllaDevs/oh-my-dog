@@ -39,6 +39,6 @@ export function appointmentStateMapper(state: AppointmentState) {
         case AppointmentState.CANCELLED:
             return 'Cancelada';
         case AppointmentState.DONE:
-            return 'Realizada';
+            return 'Realizado';
     }
 }
