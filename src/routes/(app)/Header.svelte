@@ -5,7 +5,7 @@
 
   const navLinks = [
     { href: '/', text: 'Inicio' },
-    { href: '/me/appointments', text: 'Turnos', requiresLogin: true },
+    { href: '/me/appointment', text: 'Turnos', requiresLogin: true },
     { href: '/me', text: 'Mi cuenta', requiresLogin: true },
   ];
 

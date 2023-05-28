@@ -1,13 +1,24 @@
 <script lang="ts">
   import {
-    dayTimeMapper,
-    appointmentStateMapper,
     appointmentReasonMapper,
+    appointmentStateMapper,
+    dayTimeMapper,
   } from '$lib/utils/mappers';
   export let data;
 </script>
 
-<p class="text-3xl font-semibold text-gray-900">Mis turnos</p>
+<svelte:head>
+  <title>Mis Turnos</title>
+</svelte:head>
+
+<div
+  class="flex flex-row space-between mt-10 mb-10 ml-12 mr-12 justify-between"
+>
+  <p class="text-3xl font-semibold text-gray-900">Mis turnos</p>
+  <a href="/me/appointment/request" class="btn variant-filled btn-sm"
+    >Nuevo Turno</a
+  >
+</div>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
   {#each data.clientAppointments as appointment}

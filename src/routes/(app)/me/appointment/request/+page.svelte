@@ -1,14 +1,15 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { dateProxy, superForm } from 'sveltekit-superforms/client';
-  import { Daytime, AppointmentReason } from '$lib/enums';
   import DateInput from '$lib/components/form/DateInput.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
+  import { AppointmentReason, Daytime } from '$lib/enums';
+  import { dateProxy, superForm } from 'sveltekit-superforms/client';
 
   export let data;
 
-  const { form, errors, constraints, message } = superForm(data.form);
+  const sForm = superForm(data.form);
+  const { form, errors, constraints, message } = sForm;
+
   const clientDogs = data.clientDogs.map((dog) => ({
     value: dog.id,
     label: `${dog.name} - ${dog.birthdate.toLocaleDateString()}`,
@@ -26,29 +27,21 @@
 </script>
 
 <form method="POST" class=" max-w-sm">
-  <div class="space-y-12">
+  <div class="space-y-12 space-x-12 flex items-center justify-around">
     <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
-      <!-- min={new Date().toISOString().split('T')[0]}
-        max={new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-          .toISOString()
-          .split('T')[0]} -->
       <DateInput
         label="Fecha"
-        name="date"
+        field="date"
         unsetLabel="Seleccione una fecha"
         min={today}
         max={yearFromString}
-        constraints={$constraints.date}
-        bind:value={$formDate}
-        errors={$errors.date}
+        form={sForm}
       />
       <SelectInput
         label="Horario"
-        name="daytime"
+        field="daytime"
         unselectedLabel="Seleccione un horario"
-        constraints={$constraints.daytime}
-        bind:value={$form.daytime}
-        errors={$errors.daytime}
+        form={sForm}
         options={[
           { value: Daytime.MORNING, label: 'Mañana' },
           { value: Daytime.AFTERNOON, label: 'Tarde' },
@@ -56,11 +49,9 @@
       />
       <SelectInput
         label="Motivo"
-        name="reason"
+        field="reason"
         unselectedLabel="Seleccione un motivo"
-        constraints={$constraints.reason}
-        bind:value={$form.reason}
-        errors={$errors.reason}
+        form={sForm}
         options={[
           { value: AppointmentReason.VACCINE, label: 'Vacuna' },
           { value: AppointmentReason.ANTIRABIC, label: 'Antirrábica' },
@@ -74,11 +65,9 @@
       />
       <SelectInput
         label="Perro"
-        name="dogId"
+        field="dogId"
         unselectedLabel="Seleccione uno de sus perros"
-        constraints={$constraints.dogId}
-        bind:value={$form.dogId}
-        errors={$errors.dogId}
+        form={sForm}
         options={clientDogs}
       />
     </div>

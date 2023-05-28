@@ -1,44 +1,44 @@
-import type { Daytime, AppointmentReason, AppointmentState } from '$lib/enums';
+import { AppointmentReason, AppointmentState, Daytime } from '$lib/enums';
 
-export function dayTimeMapper(dayTime: Daytime): string {
+export function dayTimeMapper(dayTime: Daytime) {
     switch (dayTime) {
-        case 'MORNING':
+        case Daytime.MORNING:
             return 'Mañana';
-        case 'AFTERNOON':
+        case Daytime.AFTERNOON:
             return 'Tarde';
     }
 }
 
-export function appointmentReasonMapper(reason: AppointmentReason): string {
+export function appointmentReasonMapper(reason: AppointmentReason) {
     switch (reason) {
-        case 'VACCINE':
+        case AppointmentReason.VACCINE:
             return 'Vacuna';
-        case 'DEWORMING':
+        case AppointmentReason.DEWORMING:
             return 'Desparasitación';
-        case 'GENERAL_CONSULTATION':
+        case AppointmentReason.GENERAL_CONSULTATION:
             return 'Consulta general';
-        case 'CASTRATION':
+        case AppointmentReason.CASTRATION:
             return 'Castración';
-        case 'ANTIRABIC':
+        case AppointmentReason.ANTIRABIC:
             return 'Antirrábica';
     }
 }
 
-export function appointmentStateMapper(state: AppointmentState): string {
+export function appointmentStateMapper(state: AppointmentState) {
     switch (state) {
-        case 'CLIENT_REQUEST':
+        case AppointmentState.CLIENT_REQUEST:
             return 'Solicitud del cliente';
-        case 'CLIENT_REJECTED':
+        case AppointmentState.CLIENT_REJECTED:
             return 'Rechazada por el cliente';
-        case 'VET_REQUEST':
+        case AppointmentState.VET_REQUEST:
             return 'Solicitud del veterinario';
-        case 'VET_REJECTED':
+        case AppointmentState.VET_REJECTED:
             return 'Rechazada por el veterinario';
-        case 'CONFIRMED':
+        case AppointmentState.CONFIRMED:
             return 'Confirmada';
-        case 'CANCELLED':
+        case AppointmentState.CANCELLED:
             return 'Cancelada';
-        case 'DONE':
+        case AppointmentState.DONE:
             return 'Realizada';
     }
 }

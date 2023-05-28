@@ -1,11 +1,9 @@
-import { fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
-import { z } from 'zod';
-import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { LuciaError } from 'lucia-auth';
-import { dev } from '$app/environment';
-import { Daytime, AppointmentReason, AppointmentState } from '$lib/enums';
+import { AppointmentReason, AppointmentState, Daytime } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
+import { fail } from '@sveltejs/kit';
+import { message, superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
+import type { Actions, PageServerLoad } from './$types';
 
 const schema = z.object({
     date: z.date(),
