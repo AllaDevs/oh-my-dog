@@ -1,6 +1,13 @@
-import { fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
 import { prisma } from '$lib/server/prisma';
+import { AppointmentState } from '@prisma/client';
+import { fail } from '@sveltejs/kit';
+import { z } from 'zod';
+import type { Actions, PageServerLoad } from './$types';
+
+const appointmentIdSchema = z.object(
+    {
+        appointmentId: z.string()
+    });
 
 export const load: PageServerLoad = async (event) => {
 
@@ -42,5 +49,17 @@ export const load: PageServerLoad = async (event) => {
 
 
 export const actions: Actions = {
-
+    confirm: async ({ request, locals, url }) => {
+        const formData = await request.formData();
+        const data = appointmentIdSchema.safeParse(formData.get('appointmentId'));
+        if (!data.success) return fail(400, { error: 'No appointment id' });
+        const appointment = await prisma.appointment.update({
+            where: {
+                id: data.data.appointmentId
+            },
+            data: {
+                state: AppointmentState.CONFIRMED
+            }
+        });
+    }
 };
