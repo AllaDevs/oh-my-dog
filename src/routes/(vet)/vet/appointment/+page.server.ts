@@ -3,8 +3,10 @@ import { AppointmentState } from '@prisma/client';
 import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
-
-const appointmentIdSchema = z.object(
+import { superValidate } from 'sveltekit-superforms/server';
+import { systemEmail } from '$lib/email';
+import {dayTimeMapper} from '$lib/utils/mappers';
+const schema = z.object(
     {
         appointmentId: z.string()
     })
@@ -35,152 +37,118 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
-confirm: async ({ request, locals, url }) => {
-    const formData = await request.formData();
-    const data = appointmentIdSchema.safeParse(formData.get('appointmentId'));
-    if(!data.success) return fail(400, {error: 'No appointment id'});
-    const appointment = await prisma.appointment.update({
-        where: {
-            id: data.data.appointmentId
-        },
-        data: {
-            state: AppointmentState.CONFIRMED
+    confirm: async ({ request, locals, url }) => {
+        const form = await superValidate(request, schema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
         }
-    });
-
-    // Send confirmation email to client¬
-    // Change appointment status to confirmed
-    //appointment.state = AppointmentState.CONFIRMED;
-
-},
-reject: async ({ request, locals, url }) => {
-    const formData = await request.formData();
-    const data = appointmentIdSchema.safeParse(formData.get('appointmentId'));
-    if(!data.success) return fail(400, {error: 'No appointment id'});
-    const appointment = await prisma.appointment.update({
-        where: {
-            id: data.data.appointmentId
-        },
-        data: {
-            state: AppointmentState.VET_REJECTED
+        const appointment = await prisma.appointment.update({
+            where: {
+                id: form.data.appointmentId
+            },
+            data: {
+                state: AppointmentState.CONFIRMED
+            }
+        });
+        // Send confirmation email to client
+        // Change appointment status to confirmed
+        const client = await prisma.client.findUnique({
+            where: {
+                id: appointment.clientId
+            },
+            select: {
+                username: true,
+                email: true
+            }
+        });
+        await systemEmail(
+            { name: client.username, address: client.email },
+            'Turno aceptado!',
+            `Hola ${client.username}. Queríamos informarte que tu pedido de turno para el día ${appointment.date.toLocaleDateString()} ha sido confirmado!
+Te esperamos a la ${dayTimeMapper(appointment.daytime)}.`
+        );
+    },
+    reject: async ({ request, locals, url }) => {
+        const form = await superValidate(request, schema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
         }
-    });
+        const appointment = await prisma.appointment.update({
+            where: {
+                id: form.data.appointmentId
+            },
+            data: {
+                state: AppointmentState.VET_REJECTED
+            }
+        });
 
-    // Send confirmation email to client
-    // Change appointment status to vet rejected
-    //appointment.state = AppointmentState.VET_REJECTED;
+        // Send confirmation email to client
+        // Change appointment status to vet rejected
+        const client = await prisma.client.findUnique({
+            where: {
+                id: appointment.clientId
+            },
+            select: {
+                username: true,
+                email: true
+            }
+        });
+        await systemEmail(
+            { name: client.username, address: client.email },
+            'Turno rechazado',
+            `Hola ${client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${appointment.date.toLocaleDateString()} a la ${dayTimeMapper(appointment.daytime)}, el mismo ha sido rechazado.
+Por favor pedí un turno para una nueva fecha y nos pondremos en contacto!`
+        );
 
-},
-cancel: async ({ request, locals, url }) => {
-    const formData = await request.formData();
-    const data = appointmentIdSchema.safeParse(formData.get('appointmentId'));
-    if(!data.success) return fail(400, {error: 'No appointment id'});
-    const appointment = await prisma.appointment.update({
-        where: {
-            id: data.data.appointmentId
-        },
-        data: {
-            state: AppointmentState.CANCELLED
+    },
+    cancel: async ({ request, locals, url }) => {
+        const form = await superValidate(request, schema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
         }
-    });
-    // Send cancellation email to client
-    // Change appointment status to cancelled
-
-},
-complete: async ({ request, locals, url }) => {
-
-    const formData = await request.formData();
-    const data = appointmentIdSchema.safeParse(formData.get('appointmentId'));
-    if(!data.success) return fail(400, {error: 'No appointment id'});
-    const appointment = await prisma.appointment.update({
-        where: {
-            id: data.data.appointmentId
-        },
-        data: {
-            state: AppointmentState.DONE
+        const appointment = await prisma.appointment.update({
+            where: {
+                id: form.data.appointmentId
+            },
+            data: {
+                state: AppointmentState.CANCELLED
+            }
+        });
+        // Send cancellation email to client
+        // Change appointment status to cancelled
+        const client = await prisma.client.findUnique({
+            where: {
+                id: appointment.clientId
+            },
+            select: {
+                username: true,
+                email: true
+            }
+        });
+        await systemEmail(
+            { name: client.username, address: client.email },
+            'Turno cancelado',
+            `Hola ${client.username}. Queríamos informarte que lamentablemente hemos tenido que cancelar tu turno para el ${appointment.date.toLocaleDateString()} a la ${dayTimeMapper(appointment.daytime)}.
+Por favor pedí un nuevo turno y nos pondremos en contacto!`
+        );
+    },
+    complete: async ({ request, locals, url }) => {
+        const form = await superValidate(request, schema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
         }
-    });
-    // Change appointment status to done
-
-},
-change: async ({ request, locals, url }) => {
-    const formData = await request.formData();
-    const data = appointmentIdSchema.safeParse(formData.get('appointmentId'));
-    if(!data.success) return fail(400, {error: 'No appointment id'});
-    const appointment = await prisma.appointment.update({
-        where: {
-            id: data.data.appointmentId
-        },
-        data: {
-            state: AppointmentState.VET_REQUEST
-        }
-    });
-    // Send change request email to client
-    // Change appointment status to vet_request
-    
-}
+        const appointment = await prisma.appointment.update({
+            where: {
+                id: form.data.appointmentId
+            },
+            data: {
+                state: AppointmentState.DONE
+            }
+        });
+        // Change appointment status to done
+    },
 };
-
-
-//     default: async ({ request, locals, url }) => {
-//         const { appointment, action } = request.body as {
-//             appointment: Appointment;
-//             action: string;
-//         };
-//         const { session, user } = await locals.auth.validateUser();
-//         const client = await prisma.client.findUnique({
-//             where: {
-//                 id: user!.userId
-//             },
-//             select: {
-//                 id: true
-//             }
-//         });
-
-//         switch (action) {
-//             case "confirm": {
-//                 // Send confirmation email to client
-//                 // Change appointment status to confirmed
-                
-
-//                 break;
-//             }
-//             case "reject": {
-//                 // Send rejection email to client
-//                 // Change appointment status to rejected
-//                 appointment.state = AppointmentState.VET_REJECTED;
-
-//                 break;
-//             }
-//             case "cancel": {
-//                 // Send cancellation email to client
-//                 // Change appointment status to cancelled
-//                 appointment.state = AppointmentState.CANCELLED;
-
-//                 break;
-//             }
-//             case "do": {
-//                 // Change appointment status to done
-//                 // If a new appointment is needed, create it
-//                 appointment.state = AppointmentState.DONE;
-
-//                 break;
-//             }
-//             case "change": {
-//                 // Change appointment status to vet_request
-//                 // Send email to client
-//                 appointment.state = AppointmentState.VET_REQUEST;
-
-//                 break;
-//             }
-//             default:
-//                 return {
-//                     status: 400,
-//                     body: {
-//                         message: 'Invalid appointment change',
-//                     },
-//                 };
-//             // else fail
-
-//     }
-// };

@@ -27,8 +27,8 @@
   class="flex flex-row space-between mt-10 mb-10 ml-12 mr-12 justify-between"
 >
   <p class="text-3xl font-semibold text-gray-900">Listado de turnos</p>
-  <a href="/vet/appointment/request" class="btn variant-filled btn-sm"
-    >Filtrar</a
+  <a href="/me/appointment/request" class="btn variant-filled btn-sm"
+    >Nuevo Turno</a
   >
 </div>
 <div class="m-12">
@@ -55,7 +55,7 @@
               appointment.dog.name
             } - ${appointment.dog.birthdate.toLocaleDateString()}`}</td
           >
-          <td class="flex flex-row justify-between mr-3 ml-1">
+          <td class="flex flex-row justify-around mr-3 ml-1">
             {#if appointment.state == AppointmentState.VET_REQUEST}
               <form action="?/confirm" method="post">
                 <input
