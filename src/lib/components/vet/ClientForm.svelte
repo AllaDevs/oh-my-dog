@@ -18,14 +18,12 @@
   <svelte:fragment slot="fields">
     <TextInput
       label="Nombre"
-      name="username"
       autocomplete="given-name"
       form={sForm}
       field="username"
     />
     <TextInput
       label="Apellido"
-      name="lastname"
       autocomplete="family-name"
       form={sForm}
       field="lastname"

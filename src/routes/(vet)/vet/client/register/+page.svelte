@@ -4,7 +4,7 @@
   import ClientRegisterFieldset from '$lib/components/vet/ClientRegisterFieldset.svelte';
   import DogRegisterFieldset from '$lib/components/vet/DogRegisterFieldset.svelte';
 
-  import { fieldCloner } from '$lib/utils/functions';
+  import { createFieldCopier } from '$lib/utils/functions';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
@@ -26,7 +26,7 @@
   });
   const { form: registerData, errors } = registerSForm;
 
-  const cloneDogDefault = fieldCloner($registerData, ['dogs', 0]);
+  const cloneDogDefault = createFieldCopier($registerData, ['dogs', 0]);
 
   function addDog() {
     $registerData.dogs.push(cloneDogDefault());

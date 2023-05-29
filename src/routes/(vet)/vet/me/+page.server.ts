@@ -2,32 +2,34 @@ import { Role } from '$lib/enums';
 import { accountAuthUpdateSchema, vetAccountSchema } from '$lib/schemas';
 import { Lucia, auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
-import { fail } from '@sveltejs/kit';
-import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
+import { handleLoginRedirect } from '$lib/utils/functions';
+import { error, fail, redirect } from '@sveltejs/kit';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 
-const initialFormData = defaultData(accountAuthUpdateSchema);
+export const load = (async (event) => {
+    const { user } = await event.locals.auth.validateUser();
+    if (!user) {
+        throw redirect(303, handleLoginRedirect(event, "Debes iniciar sesion en tu cuenta de veterinario para continuar"));
+    }
 
-export const load = (async ({ locals }) => {
-    const { session, user } = await locals.auth.validateUser();
     const vet = await prisma.vet.findUnique({
         where: {
-            id: user!.userId
-        },
-        select: {
-            username: true,
-            lastname: true
+            id: user.userId
         }
     });
+    if (!vet) {
+        throw error(403, 'No eres un veterinario');
+    }
 
     const accountForm = await superValidate(
-        vet!,
+        vet,
         vetAccountSchema,
         { id: 'accountForm' }
     );
     const accountAuthForm = await superValidate(
-        { ...initialFormData, currentEmail: user!.email },
+        { currentEmail: vet.email },
         accountAuthUpdateSchema,
         { id: 'accountAuthForm' }
     );

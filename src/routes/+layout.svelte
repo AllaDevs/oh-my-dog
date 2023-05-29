@@ -11,6 +11,10 @@
   </div>
 {/if}
 
+<svelte:head>
+  <title>Veterinaria ¡Oh my dog!</title>
+</svelte:head>
+
 <Toaster />
 
 <slot />

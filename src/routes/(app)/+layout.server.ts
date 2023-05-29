@@ -5,12 +5,25 @@ import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
     const { user } = await locals.auth.validateUser();
+    if (!user) {
+        return {
+            user: null,
+            client: null,
+        };
+    }
 
-    const client = user ? await prisma[user.role === Role.CLIENT ? 'client' : 'admin' as "client"].findUnique({
+    const client = await prisma[user.role === Role.CLIENT ? 'client' : 'admin' as "client"].findUnique({
         where: {
             id: user.userId,
         }
-    }) : null;
-    console.log(client);
-    return { user, client };
+    });
+
+    return {
+        user: {
+            userId: user.userId,
+            email: user.email,
+            role: user.role,
+        },
+        client
+    };
 }) satisfies LayoutServerLoad;

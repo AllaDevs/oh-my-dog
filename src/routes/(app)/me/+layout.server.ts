@@ -1,5 +1,5 @@
 import { prisma } from '$lib/server/prisma';
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
 
@@ -14,8 +14,11 @@ export const load = (async ({ locals, request }) => {
             id: user.userId
         },
     });
+    if (!client) {
+        throw error(403, 'No eres un veterinario');
+    }
 
     return {
-        me: client!
+        me: client
     };
 }) satisfies LayoutServerLoad;

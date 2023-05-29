@@ -17,3 +17,9 @@ export const accountAuthUpdateSchema = z.object({
 export const devAccountSchema = accountBaseSchema;
 
 export const vetAccountSchema = accountBaseSchema;
+
+export const clientAccountSchema = accountBaseSchema.extend({
+    dni: z.string().min(8),
+    birthdate: z.date(),
+    phone: z.string().regex(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/)
+});

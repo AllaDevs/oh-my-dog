@@ -82,22 +82,7 @@ export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData
     }
     return images;
 }
-// export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, length: number, prePath: (number | string)[], field: string) {
-//     let arrayField = form.data;
-//     for (const key of prePath) {
-//         arrayField = arrayField[key];
-//     }
-    
-//     const images: File[] = [];
-//     for (let i = 0; i < (arrayField as any[]).length; i++) {
-//         const image = validateImage(formData, form, [...prePath, i, field] as any);
-//         if (!image) {
-//             return [];
-//         }
-//         images.push(image);
-//     }
-//     return images;
-// }
+
 
 export function objectInfo(obj: Record<string, unknown>, reference?: string): void {
     console.info(
@@ -110,7 +95,7 @@ export function objectInfo(obj: Record<string, unknown>, reference?: string): vo
 }
 
 
-export function fieldCloner<T extends Record<string, unknown>, P extends FieldPath<T>>(formData: T, path: P): () => PathType<T, P> {
+export function createFieldCopier<T extends Record<string, unknown>, P extends FieldPath<T>>(formData: T, path: P): () => PathType<T, P> {
     let data = structuredClone(formData);
     for (const key of path) {
         data = (data as any)[key];

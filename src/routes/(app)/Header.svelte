@@ -12,7 +12,7 @@
   $: onHome = $page.url.pathname === '/';
 </script>
 
-<header class=" sticky top-0 flex w-full justify-between bg-teal-100/75 p-2">
+<header class=" z-10 sticky top-0 flex w-full justify-between bg-teal-100 p-2">
   <div class=" flex items-center p-1 sm:p-2 md:p-4">
     <button class=" btn btn-sm mr-4 lg:hidden">
       <span>
@@ -56,6 +56,14 @@
 
   <div class=" flex items-center">
     {#if user}
+      <div class="p-1 sm:p-2 md:p-4">
+        <a
+          href="/me"
+          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
+        >
+          Mi cuenta
+        </a>
+      </div>
       <form method="POST" action="/logout" class=" inline p-1 sm:p-2 md:p-4">
         <button
           type="submit"

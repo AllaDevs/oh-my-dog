@@ -5,7 +5,7 @@ import lucia, { LuciaError, generateRandomString } from 'lucia-auth';
 import { sveltekit } from 'lucia-auth/middleware';
 
 
-export const auth = lucia({
+const auth = lucia({
     adapter: prismaAdapter(prisma),
     env: dev ? 'DEV' : 'PROD',
     middleware: sveltekit(),
@@ -18,6 +18,8 @@ export const auth = lucia({
         };
     }
 });
+
+export { auth };
 
 export type Auth = typeof auth;
 

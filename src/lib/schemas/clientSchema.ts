@@ -15,6 +15,10 @@ const clientBaseSchema = z.object({
     })
 });
 
+const clientAccountInfoSchema = clientBaseSchema.extend({
+    email: z.string().email(),
+})
+
 export const clientRegisterSchema = clientBaseSchema;
 
 export const clientUpdateSchema = clientBaseSchema.merge(z.object({

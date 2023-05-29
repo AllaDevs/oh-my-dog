@@ -41,7 +41,7 @@
     aria-label="Main navigation"
     class=" mx-auto hidden max-w-7xl items-center justify-between md:flex lg:px-8"
   >
-    <ul class=" flex">
+    <ul class=" flex" class:hidden={onVetHome}>
       {#each navLinks as { href, text }}
         {@const current = $page.url.pathname === href}
         <li class=" p-1 sm:p-2 md:p-4">
@@ -59,10 +59,10 @@
 
   <div class=" flex items-center">
     {#if user}
-      <form method="POST" action="/logout" class="inline p-1 sm:p-2 md:p-4">
+      <form method="POST" action="/vet/logout" class="inline p-1 sm:p-2 md:p-4">
         <button
           type="submit"
-          class="  rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
+          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
         >
           Cerrar Sesión
         </button>
