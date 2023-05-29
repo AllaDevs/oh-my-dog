@@ -20,7 +20,7 @@ export const handle = (async ({ event, resolve }) => {
     }
     else {
         switch (user.role) {
-            case Role.CLIENT:
+            case Role.CLIENT: {
                 if (
                     pathname.startsWith('/vet') ||
                     pathname.startsWith('/dev')
@@ -28,14 +28,13 @@ export const handle = (async ({ event, resolve }) => {
                     throw redirect(303, '/');
                 }
                 break;
-            case Role.VET:
-                if (
-                    event.request.method === 'GET' &&
-                    !pathname.startsWith('/vet')
-                ) {
+            }
+            case Role.VET: {
+                if (!pathname.startsWith('/vet')) {
                     throw redirect(303, '/vet');
                 }
                 break;
+            }
         }
     }
 

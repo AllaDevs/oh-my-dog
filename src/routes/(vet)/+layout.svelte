@@ -4,7 +4,7 @@
   export let data;
 </script>
 
-<Header user={data.vet} />
+<Header user={data.user} />
 
 <slot />
 

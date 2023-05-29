@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FieldPath, UnwrapEffects } from 'sveltekit-superforms';
   import type { SuperForm } from 'sveltekit-superforms/client';
-  import type { z, AnyZodObject } from 'zod';
+  import type { AnyZodObject, z } from 'zod';
 
   import { formFieldProxy } from 'sveltekit-superforms/client';
 
@@ -13,7 +13,7 @@
   }
 
   export let form: SuperForm<UnwrapEffects<T>, unknown>;
-  export let field: (keyof z.infer<T> | FieldPath<z.infer<T>>) & string;
+  export let field: keyof z.infer<T> | FieldPath<z.infer<T>>;
 
   export let label: string;
   export let hint: string | undefined = undefined;
@@ -24,8 +24,8 @@
 </script>
 
 <div class=" mt-2">
-  <div class="flex justify-between text-sm font-medium">
-    <label for={field} class=" max-w-fit text-gray-900">
+  <div class=" flex justify-between text-sm font-medium">
+    <label for={String(field)} class=" max-w-fit text-gray-900">
       {label}
     </label>
     {#if $$slots.opossiteToLabel}
@@ -37,8 +37,8 @@
   <div class=" flex flex-col gap-2">
     <input
       type="text"
-      id={field}
-      name={field}
+      id={String(field)}
+      name={String(field)}
       {autocomplete}
       {readonly}
       bind:value={$value}

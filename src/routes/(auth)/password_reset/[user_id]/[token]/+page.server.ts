@@ -90,7 +90,7 @@ export const actions = {
                 }
             });
             await auth.updateKeyPassword('email', passwordRecovery.email, form.data.password);
-            await auth.invalidateAllUserSessions(passwordRecovery.userId);
+            await auth.invalidateAllUserSessions(passwordRecovery.authUserId);
         } catch (error) {
             console.log(error);
             return setError(form, null, 'No se pudo actualizar la contraseña');

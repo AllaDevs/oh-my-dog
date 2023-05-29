@@ -17,25 +17,28 @@
   <title>¡Oh my dog!</title>
 </svelte:head>
 
-<main id="main" class="mx-auto px-6 py-4">
+<main id="main" class=" container mx-auto px-6 py-4">
   <header>
-    <h2 class=" mt-4 text-2xl">Bienvenido {data.vet.username}</h2>
+    <h2 class=" mt-4 text-2xl">Bienvenido <b>{data.vet.username}</b></h2>
     <h6 class=" mt-1 text-sm text-gray-500">
       Que tengas un buen dia de trabajo!
     </h6>
   </header>
   <article class="px-4 py-2">
-    <ul
-      class="mx-auto mt-6 grid max-w-7xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-10 lg:grid-cols-3"
-    >
-      {#each navLinks as link}
-        <li class="h-full">
-          <PageCard href={link.href}>
-            <h3 slot="header" class="h3">{link.text}</h3>
-            <p slot="content" />
-          </PageCard>
-        </li>
-      {/each}
-    </ul>
+    <div class=" max-w-7xl mx-auto">
+      <h3 class=" text-xl mt-4 lg:mt-10">Areas de gestion</h3>
+      <ul
+        class=" mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-10 lg:grid-cols-3"
+      >
+        {#each navLinks as link}
+          <li class="h-full">
+            <PageCard href={link.href}>
+              <h3 slot="header" class="h3">{link.text}</h3>
+              <p slot="content" />
+            </PageCard>
+          </li>
+        {/each}
+      </ul>
+    </div>
   </article>
 </main>

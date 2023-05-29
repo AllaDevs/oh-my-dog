@@ -2,12 +2,12 @@ import { dev } from '$app/environment';
 import type { ResolveTypes } from '$lib/utils/types';
 import {
     v2 as cloudinary,
+    type UploadApiErrorResponse,
     type UploadApiOptions,
-    type UploadApiResponse,
-    type UploadApiErrorResponse
+    type UploadApiResponse
 } from 'cloudinary';
-import fs from 'fs';
 import { randomUUID } from 'crypto';
+import fs from 'fs';
 
 
 const BASE_LOCAL_PATH = 'static/.dev';
@@ -41,10 +41,10 @@ export async function uploadFile(file: File, options: UploadApiOptions) {
 
 type UploadImageOptions = ResolveTypes<UploadApiOptions & { asset_folder?: string; }>;
 
-type UploadImageResponse =
+export type UploadImageResponse =
     | {
         success: true;
-        result: UploadApiResponse;
+        data: UploadApiResponse;
     }
     | {
         success: false;
@@ -72,7 +72,7 @@ async function uploadImageCloudinary(
                 if (error) {
                     return reject({ success: false, error });
                 }
-                return resolve({ success: true, result: result as UploadApiResponse });
+                return resolve({ success: true, data: result as UploadApiResponse });
             })
             .end(buffer);
     });
@@ -96,7 +96,7 @@ async function uploadImageLocal(
         await fs.promises.writeFile(`${BASE_LOCAL_PATH}/${path}`, buffer);
         return {
             success: true,
-            result: {
+            data: {
                 url: `${BASE_LOCAL_URL}/${path}`,
                 secure_url: `${BASE_LOCAL_URL}/${path}`,
                 width: 256,
@@ -124,7 +124,7 @@ async function uploadImageLocal(
                     await fs.promises.writeFile(`${BASE_LOCAL_PATH}/${path}`, buffer);
                     return {
                         success: true,
-                        result: {
+                        data: {
                             secure_url: `${BASE_LOCAL_URL}/${path}`,
                             url: `${BASE_LOCAL_URL}/${path}`,
                             width: 256,

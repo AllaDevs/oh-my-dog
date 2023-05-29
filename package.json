@@ -9,9 +9,9 @@
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "postinstall": "prisma generate",
-        "dev:pro": "dotenv -e .env.dev -- vite dev --open",
+        "dev:start": "dotenv -e .env.dev -- vite dev --open",
         "dev:prisma-gen": "dotenv -e .env.dev -- npx prisma generate",
-        "dev:prisma-push": "dotenv -e .env.dev -- npx prisma db push",
+        "dev:db-push": "dotenv -e .env.dev -- npx prisma db push",
         "prod:db-push": "npx prisma db push"
     },
     "devDependencies": {
@@ -28,7 +28,7 @@
         "sveltekit-superforms": "^0.8.6",
         "tailwindcss": "^3.3.2",
         "tslib": "^2.4.1",
-        "typescript": "^5.0.0",
+        "typescript": "^5.0.4",
         "vite": "^4.3.0",
         "zod": "^3.21.4"
     },

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { superForm } from 'sveltekit-superforms/client';
-  import TextInput from '$lib/components/form/TextInput.svelte';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
+  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
+  import TextInput from '$lib/components/form/TextInput.svelte';
+  import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
   export let data;
@@ -32,9 +32,9 @@
       field="city"
       form={sForm}
       options={[
-        { value: 'bsas', label: 'Buenos aires' },
-        { value: 'med', label: 'Medellin' },
-        { value: 'bar', label: 'Barcelona' },
+        { value: 'bsas', text: 'Buenos aires' },
+        { value: 'med', text: 'Medellin' },
+        { value: 'bar', text: 'Barcelona' },
       ]}
     />
   </div>

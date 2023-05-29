@@ -1,10 +1,10 @@
-import { fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
 import { dev } from '$app/environment';
 import { auth } from '$lib/server/lucia';
-import { z } from 'zod';
+import { fail, redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
 import { setError, superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
+import type { Actions, PageServerLoad } from './$types';
 
 
 const PASSWORD_MIN_LENGTH = dev ? 2 : 8;
