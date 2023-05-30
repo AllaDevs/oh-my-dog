@@ -1,0 +1,29 @@
+<script lang="ts">
+  import EmailFrame from './EmailFrame.svelte';
+
+  export let username: string;
+  export let date: string;
+  export let daytime: string;
+</script>
+
+<EmailFrame title="Veterinaria OhMyDog">
+  <header class=" bg-teal-500 py-4 text-white">
+    <h1 class="text-center font-bold">Turno Cancelado</h1>
+  </header>
+
+  <main class="py-4">
+    <p>
+      Hola {username}!
+    </p>
+    <p>
+      Queríamos informarte que lamentablemente hemos tenido que cancelar tu
+      turno para el <b>{date}</b> a la <b>{daytime}</b>.
+    </p>
+    <p>Esperamos que pidas un nuevo turno, nos pondremos en contacto!</p>
+  </main>
+
+  <footer class="bg-gray-200 py-4 text-white">
+    <p class="text-center">Atentamente,</p>
+    <p class="text-center">El equipo de OhMyDog</p>
+  </footer>
+</EmailFrame>

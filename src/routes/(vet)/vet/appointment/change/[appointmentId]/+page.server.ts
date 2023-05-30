@@ -1,10 +1,11 @@
-import { AppointmentReason, AppointmentState, Daytime } from '$lib/enums';
+import { changedAppoinmentHTML, systemEmail } from '$lib/email';
+import { AppointmentState, Daytime } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
-import { fail } from '@sveltejs/kit';
+import { dayTimeMapper } from '$lib/utils/mappers';
+import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
-import { systemEmail } from '$lib/email';
 
 const schema = z.object({
     date: z.date(),
@@ -12,7 +13,7 @@ const schema = z.object({
     message: z.string()
 });
 
-export const load: PageServerLoad = async (locals, params) => {
+export const load = (async ({ locals, params, url }) => {
     const appointment = await prisma.appointment.findUnique({
         where: {
             id: params.appointmentId
@@ -35,14 +36,14 @@ export const load: PageServerLoad = async (locals, params) => {
     if (!appointment) {
         return fail(404, { error: 'Appointment not found' });
     }
-    if(appointment.state != AppointmentState.CLIENT_REQUEST){
+    if (appointment.state != AppointmentState.CLIENT_REQUEST) {
         return fail(404, { error: 'Appointment not valid' });
     }
 
     const form = await superValidate(schema);
 
     return { form, appointment };
-};
+}) satisfies PageServerLoad;
 
 
 export const actions: Actions = {
@@ -53,45 +54,54 @@ export const actions: Actions = {
             return fail(400, { form });
         }
         // can´t be same day and same daytime
-        const appointment = await prisma.appointment.findUnique({
+        let oldAppointment = await prisma.appointment.findUnique({
             where: {
                 id: params.appointmentId,
             },
             select: {
+                id: true,
                 date: true,
                 daytime: true
             }
         });
-        if(appointment.date == data.data.date && appointment.daytime == data.data.daytime){
-            return message(form, "No puede solicitarse un cambio para el mismo día en el mismo horario!", { status: 400 });
+        if (!oldAppointment) return message(form, "Turno no encontrado", { status: 404 });
 
-        const appointment = await prisma.appointment.update({
+        if (oldAppointment.date == form.data.date && oldAppointment.daytime == form.data.daytime) {
+            return message(form, "No puede solicitarse un cambio para el mismo día en el mismo horario!", { status: 400 });
+        };
+
+        let newAppointment = await prisma.appointment.update({
             where: {
-                id: form.data.appointmentId
+                id: oldAppointment.id
             },
             data: {
                 state: AppointmentState.VET_REQUEST,
                 date: form.data.date,
                 daytime: form.data.daytime
+            },
+            select: {
+                date: true,
+                daytime: true,
+                client: {
+                    select: {
+                        id: true,
+                        username: true,
+                        email: true
+                    }
+                }
             }
         });
         // Send change request email to client
         // Change appointment status to vet_request
-        const client = await prisma.client.findUnique({
-            where: {
-                id: appointment.clientId
-            },
-            select: {
-                username: true,
-                email: true
-            }
-        });
         await systemEmail(
-            { name: client.username, address: client.email },
+            { name: newAppointment.client.username, address: newAppointment.client.email },
             'Propuesta de cambio',
-            `Hola ${client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${appointment.date.toLocaleDateString()} a la ${dayTimeMapper(appointment.daytime)}.
-Se ha generado una propuesta de cambio para el día ${form.data.date.toLocaleDateString()} a la ${dayTimeMapper(form.data.daytime)}, por favor, ingresa a tu cuenta para aceptarla o rechazarla.`
+            `Hola ${newAppointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${newAppointment.date.toLocaleDateString()} a la ${dayTimeMapper(newAppointment.daytime)}.
+            Se ha generado una propuesta de cambio para el día ${form.data.date.toLocaleDateString()} a la ${dayTimeMapper(form.data.daytime)}, por favor, ingresa a tu cuenta para aceptarla o rechazarla.`,
+            changedAppoinmentHTML(newAppointment.client.username, newAppointment.date.toLocaleDateString(), dayTimeMapper(newAppointment.daytime), form.data.date.toLocaleDateString(), dayTimeMapper(form.data.daytime), form.data.message)
         );
+
+        throw redirect(303, '/vet/appointment');
     }
 }
-}
+
