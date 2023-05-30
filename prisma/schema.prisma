@@ -141,6 +141,7 @@ model Client {
     tracingPost    TracingPost[]
     donation       Donation[]
     review         Review[]
+    temporalDog    TemporalDog[]
 }
 
 model Appointment {
@@ -224,7 +225,6 @@ model MedicalRecord {
     dogId String        @db.ObjectId
 }
 
-// NOTE: possibly adding a client field if it was loaded from a client
 model TemporalDog {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
@@ -238,6 +238,8 @@ model TemporalDog {
     image       Image?
     observation String?
 
+    owner        Client        @relation(fields: [ownerId], references: [id])
+    ownerId      String        @db.ObjectId
     breed        Breed         @relation(fields: [breedId], references: [id])
     breedId      String        @db.ObjectId
     adoptionPost AdoptionPost?
@@ -362,15 +364,14 @@ model AdoptionPost {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    newOwner    String?
-    state       PostState
-    publisher   Client         @relation(fields: [publisherId], references: [id])
-    publisherId String         @db.ObjectId
-    registered  Boolean
-    dog         RegisteredDog? @relation(fields: [dogId], references: [id])
-    dogId       String?        @unique @db.ObjectId
-    tempDog     TemporalDog?   @relation(fields: [tempDogId], references: [id])
-    tempDogId   String?        @unique @db.ObjectId
+    newOwner      String?
+    state         PostState
+    publisher     Client         @relation(fields: [publisherId], references: [id])
+    publisherId   String         @db.ObjectId
+    registered    Boolean
+    registeredDog RegisteredDog? @relation(fields: [dogId], references: [id])
+    temporalDog   TemporalDog?   @relation(fields: [dogId], references: [id])
+    dogId         String         @unique @db.ObjectId
 }
 
 model TracingPost {

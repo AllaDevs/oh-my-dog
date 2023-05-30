@@ -27,7 +27,7 @@
       min="1923-01-01"
       max="2007-12-31"
       form={sForm}
-      info="Si se desconoce la fecha, ingrese la estimada"
+      hint="Si se desconoce la fecha, ingrese la estimada"
     />
     <TextInput
       label="Color"

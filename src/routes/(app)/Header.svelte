@@ -56,7 +56,7 @@
 
   <div class=" flex items-center">
     {#if user}
-      <div class="p-1 sm:p-2 md:p-4">
+      <div class="p-1 sm:p-2 md:p-4 md:hidden">
         <a
           href="/me"
           class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"

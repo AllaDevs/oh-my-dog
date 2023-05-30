@@ -40,7 +40,7 @@ export const actions = {
     uploadSingleFile: async ({ request, locals }) => {
         const formData = await request.formData();
         const form = await superValidate(formData, schema);
-        console.log(formData);
+
         const file = formData.get('file');
         if (!file || !(file instanceof File)) {
             console.log('file', JSON.stringify(file, null, 2));

@@ -22,6 +22,9 @@
       if (form.valid) {
         toast.success('Cliente registrado con exito');
       }
+      else if (form.errors._errors) {
+        toast.error(String(form.errors._errors));
+      }
     },
   });
   const { form: registerData, errors } = registerSForm;

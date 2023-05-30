@@ -3,16 +3,19 @@ import { auth } from './lucia';
 import { prisma } from './prisma';
 
 
-type ClearDBResult =
-    | {
-        success: true;
-        clearedModels: number;
-    }
-    | {
-        success: false;
-        clearedModels: number;
-        errors: unknown[];
-    };
+export function logError(source: string, message: string, error: unknown) {
+    console.error(`[${source}] ${message}\n`, error);
+}
+
+
+type ClearDBResult = {
+    success: true;
+    clearedModels: number;
+} | {
+    success: false;
+    clearedModels: number;
+    errors: unknown[];
+};
 
 export async function clearDB() {
     const modelNames = [];
@@ -31,7 +34,7 @@ export async function clearDB() {
             await prisma[name].deleteMany();
             clearedModels += 1;
         } catch (e) {
-            console.error(`Error while deleting ${name}`);
+            logError('ClearDB', `Error while deleting ${name}`, e);
             errors.push(e);
         }
     }
@@ -71,8 +74,8 @@ export async function registerAdmin(name?: string, password?: string) {
         console.info("Success at creating admin account: ", finalName);
         return true;
     }
-    catch (e) {
-        console.error("Error at creating admin account:\n",e);
+    catch (error) {
+        logError('Register Admin', 'Error at creating an admin account', error);
         return false;
     }
 }
