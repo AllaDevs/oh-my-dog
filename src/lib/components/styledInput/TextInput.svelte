@@ -14,7 +14,7 @@
   export let autocomplete: string = 'off';
 </script>
 
-<div class=" mt-2">
+<div class=" mt-2 w-full">
   <div class=" flex justify-between text-sm font-medium">
     <label for={String(field)} class=" max-w-fit text-gray-900">
       {label}

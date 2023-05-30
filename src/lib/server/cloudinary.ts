@@ -41,15 +41,13 @@ export async function uploadFile(file: File, options: UploadApiOptions) {
 
 type UploadImageOptions = ResolveTypes<UploadApiOptions & { asset_folder?: string; }>;
 
-export type UploadImageResponse =
-    | {
-        success: true;
-        data: UploadApiResponse;
-    }
-    | {
-        success: false;
-        error: UploadApiErrorResponse;
-    };
+export type UploadImageResponse = {
+    success: true;
+    data: UploadApiResponse;
+} | {
+    success: false;
+    error: UploadApiErrorResponse;
+};
 
 
 /**

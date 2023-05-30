@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import { logError } from '$lib/server/utils';
 import { createTransport } from 'nodemailer';
 import type SMTPConnection from 'nodemailer/lib/smtp-connection';
 
@@ -54,7 +55,7 @@ const transporter = createTransport(CONFIG);
 
 transporter.verify(function (error, success) {
     if (error) {
-        console.error(error, '\nSMTP server is not ready to take system messages, application keeps running but emails will not be sent');
+        logError('email', 'SMTP server is not ready to take system messages, application keeps running but emails will not be sent', error);
     } else {
         console.log(`SMTP server is ready to take system messages at ${CONFIG.host}:${CONFIG.port}`);
     }
@@ -76,7 +77,8 @@ export async function systemEmail(to: EmailAddress, subject: string, text: strin
         if ((error as Record<string, unknown>)?.code === 'ESOCKET') {
             throw new EmailError(EmailError.CONNECTION_FAILED, 'Connection to SMTP server failed');
         }
-        console.error(JSON.stringify(error, null, 2));
+
+        logError('email', 'Unhandled error while sending email', error);
         throw new EmailError(EmailError.OTHER_ERROR, 'A problem occurred while sending the email');
     }
 }

@@ -11,7 +11,6 @@
 
 <div class=" flex flex-col gap-8">
   <Fieldset disabled={true}>
-    <svelte:fragment slot="legend">Datos personales</svelte:fragment>
     <svelte:fragment slot="fields">
       <TextInput
         label="Nombre"
@@ -28,7 +27,7 @@
       <EmailInput
         label="Direccion de email"
         field="email"
-        value={client.username}
+        value={client.email}
         readonly={true}
       />
       <DateInput
