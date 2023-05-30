@@ -29,15 +29,15 @@ export function appointmentStateMapper(state: AppointmentState) {
         case AppointmentState.CLIENT_REQUEST:
             return 'Solicitud del cliente';
         case AppointmentState.CLIENT_REJECTED:
-            return 'Rechazada por el cliente';
+            return 'Rechazado por el cliente';
         case AppointmentState.VET_REQUEST:
             return 'Solicitud del veterinario';
         case AppointmentState.VET_REJECTED:
-            return 'Rechazada por el veterinario';
+            return 'Rechazado por el veterinario';
         case AppointmentState.CONFIRMED:
-            return 'Confirmada';
+            return 'Confirmado';
         case AppointmentState.CANCELLED:
-            return 'Cancelada';
+            return 'Cancelado';
         case AppointmentState.DONE:
             return 'Realizado';
     }

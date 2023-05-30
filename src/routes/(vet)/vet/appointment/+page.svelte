@@ -10,7 +10,7 @@
   const tableHeaders = [
     'Número de turno',
     'Pedido en',
-    'Última modificación',
+    'Cliente',
     'Día del turno',
     'Hora del turno',
     'Motivo',
@@ -49,7 +49,7 @@
           <tr class="border-b bg-teal-100/75 hover:bg-teal-200">
             <td>{appointment.id}</td>
             <td>{appointment.createdAt.toLocaleDateString()}</td>
-            <td>{appointment.updatedAt.toLocaleDateString()}</td>
+            <td>{appointment.client.email}</td>
             <td>{appointment.date.toLocaleDateString()}</td>
             <td>{dayTimeMapper(appointment.daytime)}</td>
             <td>{appointmentReasonMapper(appointment.reason)}</td>

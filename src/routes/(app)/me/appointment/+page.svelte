@@ -65,7 +65,18 @@
                   class="hidden"
                 />
                 <button type="submit" class="btn variant-filled btn-sm"
-                  >Aceptar Cambio</button
+                  >Aceptar</button
+                >
+              </form>
+              <form action="?/reject" method="post">
+                <input
+                  type="text"
+                  name="appointmentId"
+                  value={appointment.id}
+                  class="hidden"
+                />
+                <button type="submit" class="btn variant-filled btn-sm"
+                  >Rechazar</button
                 >
               </form>
             {:else}

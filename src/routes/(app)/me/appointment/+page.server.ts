@@ -1,10 +1,11 @@
 import { prisma } from '$lib/server/prisma';
 import { AppointmentState } from '@prisma/client';
 import { fail } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-const appointmentIdSchema = z.object(
+const schema = z.object(
     {
         appointmentId: z.string()
     });
@@ -50,15 +51,54 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
     confirm: async ({ request, locals, url }) => {
-        const formData = await request.formData();
-        const data = appointmentIdSchema.safeParse(formData.get('appointmentId'));
-        if (!data.success) return fail(400, { error: 'No appointment id' });
+        const form = await superValidate(request, schema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
+        }
         const appointment = await prisma.appointment.update({
             where: {
-                id: data.data.appointmentId
+                id: form.data.appointmentId
             },
             data: {
                 state: AppointmentState.CONFIRMED
+            },
+            select: {
+                date: true,
+                daytime: true,
+                client: {
+                    select: {
+                        id: true,
+                        username: true,
+                        email: true
+                    }
+                }
+            }
+        });
+    },
+    reject: async ({ request, locals, url }) => {
+        const form = await superValidate(request, schema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
+        }
+        const appointment = await prisma.appointment.update({
+            where: {
+                id: form.data.appointmentId
+            },
+            data: {
+                state: AppointmentState.CLIENT_REJECTED
+            },
+            select: {
+                date: true,
+                daytime: true,
+                client: {
+                    select: {
+                        id: true,
+                        username: true,
+                        email: true
+                    }
+                }
             }
         });
     }

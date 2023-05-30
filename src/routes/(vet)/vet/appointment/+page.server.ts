@@ -17,7 +17,6 @@ export const load: PageServerLoad = async (event) => {
         select: {
             id: true,
             createdAt: true,
-            updatedAt: true,
             date: true,
             daytime: true,
             state: true,
@@ -28,6 +27,11 @@ export const load: PageServerLoad = async (event) => {
                     id: true,
                     name: true,
                     birthdate: true
+                }
+            },
+            client: {
+                select: {
+                    email: true
                 }
             }
         }

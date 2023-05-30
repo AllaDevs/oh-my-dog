@@ -18,11 +18,6 @@
   const today = new Date()
     .toISOString()
     .split('T')[0] as `${number}-${number}-${number}`;
-  let yearFrom = new Date();
-  yearFrom.setFullYear(new Date().getFullYear() + 1);
-  const yearFromString = yearFrom
-    .toISOString()
-    .split('T')[0] as `${number}-${number}-${number}`;
   $: if ($message) console.log($message);
 </script>
 
@@ -34,7 +29,6 @@
         field="date"
         unsetLabel="Seleccione una fecha"
         min={today}
-        max={yearFromString}
         form={sForm}
       />
       <SelectInput
