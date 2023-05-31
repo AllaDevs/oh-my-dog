@@ -3,7 +3,7 @@
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import TelInput from '$lib/components/form/TelInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
-  import SubForm from './SubForm.svelte';
+  import SubForm from '../../../../.dev_local/SubForm.svelte';
 
   import type { UnwrapEffects } from 'sveltekit-superforms';
   import type { SuperForm } from 'sveltekit-superforms/client';

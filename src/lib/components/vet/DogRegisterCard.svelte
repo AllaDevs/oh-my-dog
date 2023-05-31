@@ -1,39 +1,53 @@
 <script lang="ts">
   import DateInput from '$lib/components/form/DateInput.svelte';
-  import Fieldset from '$lib/components/form/Fieldset.svelte';
   import ImageInput from '$lib/components/form/ImageInput.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
 
   import { DogSex, DogSize } from '$lib/enums';
   import type { ClientCompleteRegisterSchema } from '$lib/schemas';
+  import { createEventDispatcher } from 'svelte';
   import type { SuperForm } from 'sveltekit-superforms/client';
+  import FieldGroup from '../form/FieldGroup.svelte';
 
   export let sForm: SuperForm<ClientCompleteRegisterSchema, unknown>;
   export let index: number;
-  export let legend: string;
+  export let title: string | undefined = undefined;
   export let breeds: { value: string; text: string }[];
+  export let allowRemoval: boolean = true;
+
+  const dispatch = createEventDispatcher<{ remove: number }>();
 </script>
 
-<Fieldset>
-  <svelte:fragment slot="legend">
-    {legend || `Nuevo perro ${index + 1}`}
+<FieldGroup>
+  <svelte:fragment slot="title">
+    <h3 class=" text-xl font-semibold text-gray-900">
+      {title}
+    </h3>
+    {#if allowRemoval}
+      <button
+        type="button"
+        class="rounded-md bg-red-700/95 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+        on:click={() => dispatch('remove', index)}
+      >
+        Remover
+      </button>
+    {/if}
   </svelte:fragment>
   <svelte:fragment slot="fields">
     <TextInput label="Nombre" field={['dogs', index, 'name']} form={sForm} />
     <DateInput
-      label="Nacimiento"
+      label="Fecha de nacimiento o aproximada"
       field={['dogs', index, 'birthdate']}
       min="1923-01-01"
       max="2007-12-31"
       form={sForm}
-      hint="Si se desconoce la fecha, ingrese la estimada"
+      hint=""
     />
     <TextInput
-      label="Color"
+      label="Color o descripción pequeña"
       field={['dogs', index, 'color']}
       form={sForm}
-      hint="Un color o una descripcion pequeña"
     />
     <TextInput
       label="Observacion"
@@ -70,4 +84,5 @@
     />
     <ImageInput label="Imagen" field={['dogs', index, 'image']} form={sForm} />
   </svelte:fragment>
-</Fieldset>
+  <svelte:fragment slot="actions" />
+</FieldGroup>

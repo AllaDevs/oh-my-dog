@@ -1,5 +1,5 @@
 import { Role } from '$lib/enums';
-import { accountAuthUpdateSchema, clientAccountSchema } from '$lib/schemas';
+import { accountAuthUpdateSchema } from '$lib/schemas';
 import { updateAccountAuth, validateAuthUpdateForm } from '$lib/server/auth';
 import { prisma } from '$lib/server/prisma';
 import { handleLoginRedirect } from '$lib/utils/functions';
@@ -23,18 +23,13 @@ export const load = (async (event) => {
         throw error(403, 'No eres un veterinario');
     }
 
-    const accountForm = await superValidate(
-        client,
-        clientAccountSchema,
-        { id: 'accountForm' }
-    );
     const accountAuthForm = await superValidate(
         { currentEmail: client.email },
         accountAuthUpdateSchema,
         { id: 'accountAuthForm', }
     );
 
-    return { accountForm, accountAuthForm };
+    return { accountAuthForm };
 }) satisfies PageServerLoad;
 
 

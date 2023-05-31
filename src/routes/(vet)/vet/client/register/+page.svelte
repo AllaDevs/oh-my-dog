@@ -1,8 +1,8 @@
 <script lang="ts">
   import { dev } from '$app/environment';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import ClientRegisterFieldset from '$lib/components/vet/ClientRegisterFieldset.svelte';
-  import DogRegisterFieldset from '$lib/components/vet/DogRegisterFieldset.svelte';
+  import ClientRegisterCard from '$lib/components/vet/ClientRegisterCard.svelte';
+  import DogRegisterCard from '$lib/components/vet/DogRegisterCard.svelte';
 
   import { createFieldCopier } from '$lib/utils/functions';
   import toast from 'svelte-french-toast';
@@ -18,12 +18,14 @@
 
   const registerSForm = superForm(data.form, {
     dataType: 'json',
+    onError: (error) => {
+      toast.error(String(error.message));
+    },
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Cliente registrado con exito');
-      }
-      else if (form.errors._errors) {
-        toast.error(String(form.errors._errors));
+        toast.success('Cliente registrado con exito', { duration: 5000 });
+      } else if (form.errors._errors) {
+        toast.error(String(form.errors._errors), { duration: 10000 });
       }
     },
   });
@@ -35,9 +37,46 @@
     $registerData.dogs.push(cloneDogDefault());
     $registerData.dogs = $registerData.dogs;
   }
+
+  function removeDog(index: number) {
+    $registerData.dogs.splice(index, 1);
+    $registerData.dogs = $registerData.dogs;
+  }
 </script>
 
-<main class=" flex flex-col gap-4 p-4 max-w-md md:max-w-2xl mx-auto">
+<main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
+  <form
+    method="POST"
+    class=" mt-2 py-4"
+    enctype="multipart/form-data"
+    use:registerSForm.enhance
+  >
+    <div class=" pb-4 flex flex-col gap-4">
+      <ClientRegisterCard sForm={registerSForm} title="Nuevo cliente" />
+      {#each $registerData.dogs as _, i}
+        <DogRegisterCard
+          sForm={registerSForm}
+          index={i}
+          title="Nuevo perro {$registerData.dogs.length > 1 ? i + 1 : ''}"
+          {breeds}
+          allowRemoval={i > 0}
+          on:remove={() => removeDog(i)}
+        />
+      {/each}
+    </div>
+
+    <div class="mt-6 flex items-center justify-around">
+      <button
+        type="button"
+        on:click={addDog}
+        class=" mt-2 rounded-md bg-teal-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300"
+      >
+        Agregar otro perro
+      </button>
+      <SubmitButton action="?/client">Registrar cliente</SubmitButton>
+    </div>
+  </form>
+
   {#if dev}
     <SuperDebug data={$registerData} />
 
@@ -45,45 +84,4 @@
       {$errors._errors}
     {/if}
   {/if}
-
-  <form
-    method="POST"
-    class=" mt-2 py-4"
-    enctype="multipart/form-data"
-    use:registerSForm.enhance
-  >
-    <div class=" pb-12 flex flex-col gap-4">
-      <ClientRegisterFieldset sForm={registerSForm} legend="Nuevo cliente" />
-      {#each $registerData.dogs as _, i}
-        {@const legend =
-          $registerData.dogs.length > 1
-            ? `Nuevo perro ${i + 1}`
-            : 'Nuevo perro'}
-        <DogRegisterFieldset
-          sForm={registerSForm}
-          index={i}
-          {legend}
-          {breeds}
-        />
-      {/each}
-      <button
-        type="button"
-        on:click={addDog}
-        class="rounded-md bg-teal-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300"
-      >
-        Agregar otro perro
-      </button>
-    </div>
-
-    <div class="mt-6 flex items-center justify-around">
-      <button
-        type="button"
-        on:click={() => registerSForm.reset()}
-        class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-      >
-        Cancelar
-      </button>
-      <SubmitButton action="?/client">Registrar cliente</SubmitButton>
-    </div>
-  </form>
 </main>

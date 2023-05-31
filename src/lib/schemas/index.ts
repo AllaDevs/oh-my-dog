@@ -1,3 +1,3 @@
-export * from './clientSchema';
-export * from './commonSchema';
 export * from './accountSchema';
+export * from './clientSchema';
+export { c } from './commonSchema';

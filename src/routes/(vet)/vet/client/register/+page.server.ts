@@ -80,7 +80,7 @@ export const actions = {
                     username: form.data.username,
                     lastname: form.data.lastname,
                     email: form.data.email,
-                    birthdate: form.data.birthdate,
+                    birthdate: new Date(form.data.birthdate),
                     phone: form.data.phone,
                     dni: form.data.dni,
                     dog: {
