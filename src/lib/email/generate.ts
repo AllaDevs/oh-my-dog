@@ -1,6 +1,7 @@
 import type { SvelteComponent, ComponentProps } from 'svelte';
 import EmailNewAccount from './templates/EmailNewAccount.svelte';
 import EmailResetPassword from './templates/EmailResetPassword.svelte';
+import EmailAdoptionContact from './templates/EmailAdoptionContact.svelte';
 
 
 // function addGeneratedStyle(html: string, css: string) {
@@ -29,7 +30,13 @@ export function resetPasswordHTML(href: string) {
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
+export function adoptionContactHTML(username: string, lastname: string, email: string, phone: string, dogname: string){
+    const r = (EmailAdoptionContact as unknown as Renderable<EmailAdoptionContact>).render({ username, lastname, email, phone, dogname });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
 export default {
     newAccountHTML,
-    resetPasswordHTML
+    resetPasswordHTML,
+    adoptionContactHTML
 };

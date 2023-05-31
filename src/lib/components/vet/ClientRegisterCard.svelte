@@ -46,7 +46,7 @@
       field="birthdate"
     />
     <TelInput
-      label="Numero de telefono"
+      label="Telefono"
       form={sForm}
       field="phone"
       hint="Formato: 123-456-7890"
