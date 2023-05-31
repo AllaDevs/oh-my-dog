@@ -1,17 +1,18 @@
 import { z } from 'zod';
+import { c } from './commonSchema';
 
 
 export const accountBaseSchema = z.object({
-    username: z.string().min(3),
-    lastname: z.string().min(3),
+    username: c.usernameSchema,
+    lastname: c.lastnameSchema,
 });
 
 export const accountAuthUpdateSchema = z.object({
-    currentEmail: z.string().email(),
-    newEmail: z.string().email().optional(),
-    currentPassword: z.string().min(8).optional(),
-    newPassword: z.string().min(8).optional(),
-    newPasswordConfirm: z.string().min(8).optional()
+    currentEmail: c.emailSchema,
+    newEmail: z.optional(c.emailSchema),
+    currentPassword: z.optional(c.passwordSchema),
+    newPassword: z.optional(c.passwordSchema),
+    newPasswordConfirm: z.optional(c.passwordSchema)
 });
 
 export const devAccountSchema = accountBaseSchema;
@@ -19,7 +20,7 @@ export const devAccountSchema = accountBaseSchema;
 export const vetAccountSchema = accountBaseSchema;
 
 export const clientAccountSchema = accountBaseSchema.extend({
-    dni: z.string().min(8),
-    birthdate: z.date(),
-    phone: z.string().regex(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/)
+    dni: c.dniSchema,
+    birthdate: c.birthdateSchema,
+    phone: c.phoneSchema
 });
