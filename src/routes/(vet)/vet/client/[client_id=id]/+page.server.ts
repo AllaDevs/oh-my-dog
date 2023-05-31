@@ -1,5 +1,6 @@
 import { clientRegisterSchema } from '$lib/schemas/clientSchema';
 import { prisma } from '$lib/server/prisma';
+import { mutateToShortString } from '$lib/utils/functions';
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
@@ -22,7 +23,7 @@ export const load = (async ({ params, url }) => {
 
     const editable = url.searchParams.get('editable') === 'true';
 
-    const form = superValidate(client, clientRegisterSchema);
+    const form = superValidate(mutateToShortString(client, 'birthdate'), clientRegisterSchema);
 
     return { client, editable, form };
 }) satisfies PageServerLoad;

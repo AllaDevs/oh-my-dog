@@ -1,21 +1,24 @@
 <script lang="ts">
   import DateInput from '$lib/components/form/DateInput.svelte';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
-  import Fieldset from '$lib/components/form/Fieldset.svelte';
+  import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import TelInput from '$lib/components/form/TelInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
 
-  import type { UnwrapEffects } from 'sveltekit-superforms';
+  import type { ClientCompleteRegisterSchema } from '$lib/schemas';
   import type { SuperForm } from 'sveltekit-superforms/client';
 
-  type T = $$Generic<AnyZodObject>;
 
-  export let sForm: SuperForm<UnwrapEffects<T>, unknown>;
-  export let legend: string = 'Nuevo cliente';
+  export let sForm: SuperForm<ClientCompleteRegisterSchema, unknown>;
+  export let title: string | undefined = undefined;
 </script>
 
-<Fieldset>
-  <svelte:fragment slot="legend">{legend}</svelte:fragment>
+<FieldGroup>
+  <svelte:fragment slot="title">
+    <h3 class=" text-xl font-semibold text-gray-900">
+      {title ?? 'Nuevo cliente'}
+    </h3>
+  </svelte:fragment>
   <svelte:fragment slot="fields">
     <TextInput
       label="Nombre"
@@ -50,4 +53,5 @@
     />
     <TextInput label="DNI" autocomplete="off" form={sForm} field="dni" />
   </svelte:fragment>
-</Fieldset>
+  <svelte:fragment slot="actions" />
+</FieldGroup>

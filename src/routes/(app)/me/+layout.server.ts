@@ -15,7 +15,7 @@ export const load = (async ({ locals, request }) => {
         },
     });
     if (!client) {
-        throw error(403, 'No eres un veterinario');
+        throw error(403, 'No eres un cliente');
     }
 
     return {

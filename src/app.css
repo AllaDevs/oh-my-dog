@@ -33,6 +33,11 @@
     --theme-font-family-heading: 'Inter', sans-serif;
 }
 
+html,
 body {
-    @apply scrollbar;
+    @apply h-full;
+}
+
+body {
+    @apply bg-teal-50 scrollbar;
 }

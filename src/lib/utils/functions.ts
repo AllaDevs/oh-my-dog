@@ -106,3 +106,14 @@ export function createFieldCopier<T extends Record<string, unknown>, P extends F
     }
     return () => structuredClone(data as any);
 }
+
+export function dateToShortString(date: Date): string {
+    return date.toISOString().split('T')[0];
+}
+
+type DateToShortString<T extends Record<string, unknown>, K extends keyof T> = T[K] extends Date ? { [k in keyof T]: T[k] } & Record<K, string> : never;
+
+export function mutateToShortString<T extends Record<string, unknown> & Record<K, Date>, K extends keyof T>(obj: T, key: K) {
+    obj[key] = obj[key].toISOString().split('T')[0] as unknown as any;
+    return obj as { [k in keyof T]: T[k] } & Record<K, string>;
+}

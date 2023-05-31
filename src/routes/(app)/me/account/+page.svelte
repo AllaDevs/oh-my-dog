@@ -9,11 +9,6 @@
 
   export let data;
 
-  const accountSForm = superForm(data.accountForm);
-  const { form } = accountSForm;
-  $: {
-    console.log($form);
-  }
   const accountAuthSForm = superForm(data.accountAuthForm, {
     invalidateAll: false,
     onUpdated: ({ form }) => {

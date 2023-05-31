@@ -1,4 +1,4 @@
-import { AppointmentReason, AppointmentState, Daytime, DogSex } from '$lib/enums';
+import { AppointmentReason, AppointmentState, Daytime, DogSex, DogSize } from '$lib/enums';
 
 
 class EnumTranslationError extends Error {
@@ -69,11 +69,27 @@ function tDogSex(sex: DogSex) {
     }
 }
 
-export const te = {
+function tDogSize(size: DogSize) {
+    switch (size) {
+        case DogSize.SMALL:
+            return 'Pequeño';
+        case DogSize.MEDIUM:
+            return 'Mediano';
+        case DogSize.BIG:
+            return 'Grande';
+        default:
+            throw new EnumTranslationError(`Invalid dog size: ${size}`);
+    }
+}
+
+
+const translationEnum = {
     AppointmentReason: tAppointmentReason,
     AppointmentState: tAppointmentState,
     Daytime: tDayTime,
-    DogSex: tDogSex
+    DogSex: tDogSex,
+    DogSize: tDogSize,
 };
 
-export default te;
+export default translationEnum;
+export { translationEnum as te }
