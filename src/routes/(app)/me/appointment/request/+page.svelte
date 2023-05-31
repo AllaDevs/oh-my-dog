@@ -22,7 +22,7 @@
 </script>
 
 <form method="POST" class=" max-w-sm">
-  <div class="space-y-12 space-x-12 flex items-center justify-around">
+  <div class="space-y-12 space-x-12 flex items-center justify-evenly">
     <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
       <DateInput
         label="Fecha"

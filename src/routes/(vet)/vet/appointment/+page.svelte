@@ -18,11 +18,123 @@
     'Perro',
     'Acción',
   ];
+
+  // interface filters {
+  //   state: AppointmentState | undefined;
+  //   reason: AppointmentReason | undefined;
+  //   from: Date | undefined;
+  //   until: Date | undefined;
+  //   client: String | undefined;
+  // }
+
+  // let actualFilters: filters = {
+  //   state: undefined,
+  //   reason: undefined,
+  //   from: undefined,
+  //   until: undefined,
+  //   client: undefined,
+  // };
+
+  // const filterAppointments = (appointments) => {
+  //   if (actualFilters.state !== undefined) {
+  //     appointments = appointments.filter(
+  //       (appointment) => appointment.state === actualFilters.state
+  //     );
+  //   }
+  //   if (actualFilters.reason !== undefined) {
+  //     appointments = appointments.filter(
+  //       (appointment) => appointment.reason === actualFilters.reason
+  //     );
+  //   }
+  //   if (actualFilters.from !== undefined) {
+  //     appointments = appointments.filter(
+  //       (appointment) => appointment.date >= actualFilters.from
+  //     );
+  //   }
+  //   if (actualFilters.until !== undefined) {
+  //     appointments = appointments.filter(
+  //       (appointment) => appointment.date <= actualFilters.until
+  //     );
+  //   }
+  //   if (actualFilters.client !== undefined) {
+  //     appointments = appointments.filter(
+  //       (appointment) => appointment.client.email === actualFilters.client
+  //     );
+  //   }
+  //   return appointments;
+  // };
+
+  // const clients = data.clients.map((client) => client.email);
+
+  // let untilAux: Date;
+  // let fromAux: Date;
 </script>
 
 <svelte:head>
   <title>Turnos</title>
 </svelte:head>
+<!-- 
+<div class="flex flex-row justify-evenly">
+  <DateInput
+      bind:value={actualFilters.from}
+      label="Desde"
+      field="from"
+      unsetLabel="Seleccione una fecha"
+      max={untilAux
+        ? `${untilAux.getFullYear()}-${untilAux.getMonth()}-${untilAux.getDate()}`
+        : undefined}
+      form={filterForm}
+    />
+    <DateInput
+      bind:value={actualFilters.until}
+      label="Hasta"
+      field="until"
+      unsetLabel="Seleccione una fecha"
+      min={fromAux
+        ? `${fromAux.getFullYear()}-${fromAux.getMonth()}-${fromAux.getDate()}`
+        : undefined}
+      form={filterForm}
+    />
+    <SelectInput
+      bind:value={actualFilters.state}
+      label="Horario"
+      field="daytime"
+      unselectedLabel="Seleccione un horario"
+      form={filterForm}
+      options={[
+        { value: Daytime.MORNING, label: 'Mañana' },
+        { value: Daytime.AFTERNOON, label: 'Tarde' },
+      ]}
+    />
+    <SelectInput
+      bind:value={actualFilters.reason}
+      label="Motivo"
+      field="reason"
+      unselectedLabel="Seleccione un motivo"
+      form={filterForm}
+      options={[
+        { value: AppointmentReason.VACCINE, label: 'Vacuna' },
+        { value: AppointmentReason.ANTIRABIC, label: 'Antirrábica' },
+        { value: AppointmentReason.DEWORMING, label: 'Desparasitación' },
+        { value: AppointmentReason.CASTRATION, label: 'Castración' },
+        {
+          value: AppointmentReason.GENERAL_CONSULTATION,
+          label: 'Consulta general',
+        },
+      ]}
+    />
+    <EmailInput
+      bind:value={actualFilters.client}
+      label="Cliente"
+      field="email"
+      unselectedLabel="Seleccione uno de sus perros"
+      form={filterForm}
+      options={clients}
+    />
+    <div class="mt-6 flex items-center justify-around gap-x-6">
+      <button on:click={() => filterAppointments()}>Filtrar</SubmitButton>
+    </div>
+</div> -->
 
 <div
   class="flex flex-row space-between mt-10 mb-10 ml-12 mr-12 justify-between"

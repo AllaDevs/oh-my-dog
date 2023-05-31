@@ -6,14 +6,14 @@ import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
+
 const schema = z.object(
     {
         appointmentId: z.string()
     });
 
-
 export const load: PageServerLoad = async (event) => {
-    const appointments = await prisma.appointment.findMany({
+    let appointments = await prisma.appointment.findMany({
         select: {
             id: true,
             createdAt: true,
@@ -37,7 +37,14 @@ export const load: PageServerLoad = async (event) => {
         }
     });
 
-    return { appointments };
+    const clients = await prisma.client.findMany({
+        select: {
+            id: true,
+            email: true
+        }
+    });
+
+    return { appointments, clients };
 };
 
 export const actions: Actions = {
@@ -52,7 +59,7 @@ export const actions: Actions = {
                 id: form.data.appointmentId
             },
             data: {
-                state: AppointmentState.VET_REJECTED
+                state: AppointmentState.CONFIRMED
             },
             select: {
                 date: true,
@@ -122,7 +129,7 @@ export const actions: Actions = {
                 id: form.data.appointmentId
             },
             data: {
-                state: AppointmentState.VET_REJECTED
+                state: AppointmentState.CANCELLED
             },
             select: {
                 date: true,

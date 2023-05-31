@@ -23,7 +23,7 @@
       a la <b>{daytime}</b> ha sido confirmado!
     </p>
     <p>
-      Te esperamos! Por favor recordá avisarnos si no podés asistira la
+      Te esperamos! Por favor recordá avisarnos si no podés asistir a la
       consulta.
     </p>
   </main>
