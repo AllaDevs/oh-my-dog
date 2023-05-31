@@ -39,13 +39,17 @@ export function getImage(formData: FormData, name: string, maxFileSize: number =
 
 export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, field: keyof z.infer<T> | FieldPath<T>) {
     const imageFile = formData.get(String(field));
-
+    console.log('imageFile', imageFile);
     if (!imageFile) {
         return null;
     }
-
+    
     if (!(imageFile instanceof File)) {
         setError(form, field, 'Imagen no válido');
+        return null;
+    }
+
+    if (imageFile.size === 0) {
         return null;
     }
 
