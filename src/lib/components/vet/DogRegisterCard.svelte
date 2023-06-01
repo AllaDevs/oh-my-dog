@@ -19,7 +19,7 @@
   const dispatch = createEventDispatcher<{ remove: number }>();
 </script>
 
-<FieldGroup>
+<FieldGroup cols={2}>
   <svelte:fragment slot="title">
     <h3 class=" text-xl font-semibold text-gray-900">
       {title}

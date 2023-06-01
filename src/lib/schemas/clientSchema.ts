@@ -1,6 +1,6 @@
-import { DogSex, DogSize } from '$lib/enums';
 import { z } from 'zod';
 import { c } from './commonSchema';
+import { dogRegisterSchema } from './dogSchema';
 
 
 const clientBaseSchema = z.object({
@@ -14,26 +14,12 @@ const clientBaseSchema = z.object({
 
 
 export const clientRegisterSchema = clientBaseSchema;
-
 export type ClientRegisterSchema = typeof clientRegisterSchema;
 
-
-export const dogRegisterSchema = z.object({
-    name: z.string().min(3),
-    size: z.nativeEnum(DogSize),
-    birthdate: z.preprocess((value) => new Date(value as string), z.date()),
-    sex: z.nativeEnum(DogSex),
-    color: z.string().min(3),
-    image: c.imageSchema,
-    observation: z.string().min(3).optional(),
-    breedId: z.string()
-});
-
-export type DogRegisterSchema = typeof dogRegisterSchema;
+export const clientUpdateSchema = clientBaseSchema;
 
 
 export const clientCompleteRegisterSchema = clientRegisterSchema.extend({
     dogs: dogRegisterSchema.array().min(1)
 });
-
 export type ClientCompleteRegisterSchema = typeof clientCompleteRegisterSchema;

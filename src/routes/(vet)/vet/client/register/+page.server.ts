@@ -1,6 +1,6 @@
 import { EmailError, newAccountHTML, systemEmail } from '$lib/email';
 import { Role } from '$lib/enums';
-import { clientCompleteRegisterSchema, dogRegisterSchema } from '$lib/schemas/clientSchema';
+import { clientCompleteRegisterSchema, dogRegisterSchema } from '$lib/schemas';
 import { uploadImage } from '$lib/server/cloudinary';
 import { Lucia, auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';

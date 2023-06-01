@@ -44,6 +44,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Registrar cliente</title>
+</svelte:head>
+
 <main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
   <form
     method="POST"

@@ -2,6 +2,7 @@
   import { PostState } from '$lib/enums.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
+  import { breedsToInputOptions } from '$lib/utils/functions.js';
 
   import TemporalDogForm from '$lib/components/dog/TemporalDogForm.svelte';
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
@@ -10,30 +11,13 @@
 
   export let data;
 
-  let breeds: { value: string; text: string }[] = [];
-  for (const breed of data.breeds) {
-    breeds.push({ value: breed.id, text: breed.name });
-  }
-
-  const deleteSForm = superForm(data.deleteForm, {
-    id: 'delete',
-    onResult: ({ result }) => {
-      switch (result.type) {
-        case 'redirect': {
-          toast.success('Se elimino el post exitosamente', { duration: 3000 });
-          break;
-        }
-        default:
-          break;
-      }
-    },
-  });
+  let breeds = breedsToInputOptions(data.breeds);
 
   const updateSForm = superForm(data.updateForm, {
     id: 'update',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Perro para adopción registrado con exito');
+        toast.success('Se actualizo el post exitosamente', { duration: 3000 });
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
       }
@@ -45,10 +29,24 @@
     id: 'resolve',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se resolvio la adopcion con exito');
+        toast.success('Se resolvio la adopcion con exito', { duration: 3000 });
         postIsResolved = true;
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
+      }
+    },
+  });
+
+  const deleteSForm = superForm(data.deleteForm, {
+    id: 'delete',
+    onResult: ({ result }) => {
+      switch (result.type) {
+        case 'redirect': {
+          toast.success('Se elimino el post exitosamente', { duration: 3000 });
+          break;
+        }
+        default:
+          break;
       }
     },
   });

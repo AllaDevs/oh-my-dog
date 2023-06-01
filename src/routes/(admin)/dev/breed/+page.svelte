@@ -14,9 +14,23 @@
   {$errors._errors}
 {/if}
 
-<div class=" mt-10 grid grid-cols-1 gap-x-6 gap-y-8 pb-4 sm:grid-cols-2">
+<div
+  class=" mt-10 grid grid-cols-1 gap-x-6 gap-y-8 pb-4 sm:grid-cols-2 max-w-screen-md mx-auto"
+>
   <div>
-    <h2 class=" text-lg font-semibold leading-7 text-gray-900">
+    <form method="POST" action="?/registerBreed" use:enhance>
+      <h2 class=" text-xl font-semibold leading-7 text-gray-900">
+        Cargar nueva raza
+      </h2>
+      <div class="mt-6 flex items-end gap-x-6">
+        <TextInput label="Nombre de la raza" field="name" form={sForm} />
+        <SubmitButton>Cargar</SubmitButton>
+      </div>
+      <SuperDebug data={$form} />
+    </form>
+  </div>
+  <div>
+    <h2 class=" text-xl font-semibold leading-7 text-gray-900">
       Razas cargadas
     </h2>
     <ul class=" mt-6">
@@ -30,20 +44,8 @@
         </li>
       {/each}
     </ul>
-    <form method="POST" action="?/registerTestBreeds" class=" mt-6">
+    <form method="POST" action="?/registerDefaultBreeds" class=" mt-6">
       <SubmitButton>Cargar razas de prueba</SubmitButton>
-    </form>
-  </div>
-  <div>
-    <form method="POST" action="?/registerBreed" use:enhance>
-      <h2 class=" text-lg font-semibold leading-7 text-gray-900">
-        Cargar nueva raza
-      </h2>
-      <div class="mt-6 flex items-end gap-x-6">
-        <TextInput label="Nombre de la raza" field="name" form={sForm} />
-        <SubmitButton>Cargar</SubmitButton>
-      </div>
-      <SuperDebug data={$form} />
     </form>
   </div>
 </div>

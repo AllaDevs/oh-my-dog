@@ -36,19 +36,9 @@
             <td>
               <div class=" flex gap-2">
                 <a
-                  href="/vet/client/{client.id}?editable=false"
-                  class="btn variant-filled btn-sm">Detallar</a
+                  href="/vet/client/{client.id}"
+                  class="btn variant-filled btn-sm">Ver</a
                 >
-                <a
-                  href="/vet/client/{client.id}?editable=true"
-                  class="btn variant-filled btn-sm">Editar</a
-                >
-                <form action="/vet/client?/delete" method="post">
-                  <input type="text" value={client.id} class="hidden" />
-                  <button type="submit" class="btn variant-filled btn-sm">
-                    Eliminar
-                  </button>
-                </form>
               </div>
             </td>
           </tr>

@@ -4,6 +4,7 @@ import type { FieldPath, UnwrapEffects, Validation } from 'sveltekit-superforms/
 import { setError } from 'sveltekit-superforms/server';
 import type { z } from 'zod';
 import type { PathType } from './types';
+import type { Breed } from '@prisma/client';
 
 
 export function handleLoginRedirect(
@@ -116,4 +117,12 @@ type DateToShortString<T extends Record<string, unknown>, K extends keyof T> = T
 export function mutateToShortString<T extends Record<string, unknown> & Record<K, Date>, K extends keyof T>(obj: T, key: K) {
     obj[key] = obj[key].toISOString().split('T')[0] as unknown as any;
     return obj as { [k in keyof T]: T[k] } & Record<K, string>;
+}
+
+export function breedsToInputOptions(breeds: Breed[]): { value: string; text: string }[] {
+    const mappedBreeds = [];
+  for (const breed of breeds) {
+    mappedBreeds.push({ value: breed.id, text: breed.name });
+  }
+  return mappedBreeds
 }
