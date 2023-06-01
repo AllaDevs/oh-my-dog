@@ -12,49 +12,64 @@
   const { form, errors } = sForm;
 </script>
 
-<form method="POST">
-  <div class="border-b border-gray-900/10 pb-12">
-    <h2 class="text-base font-semibold leading-7 text-gray-900">
-      Cargar nuevo veterinario
-    </h2>
+<div class="grid md:grid-cols-2 place-items-center">
+  <form method="POST" class="flex flex-col mx-auto gap-4 md:flex-row">
+    <div class="border-b border-gray-900/10 pb-12">
+      <h2 class="text-base font-semibold leading-7 text-gray-900">
+        Cargar nuevo veterinario
+      </h2>
 
-    <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-      <TextInput
-        label="Nombre"
-        field="username"
-        autocomplete="given-name"
-        form={sForm}
-      />
-      <TextInput
-        label="Apellido"
-        field="lastname"
-        autocomplete="family-name"
-        form={sForm}
-      />
-      <EmailInput
-        label="Direccion de email"
-        field="email"
-        autocomplete={false}
-        form={sForm}
-      />
-      <PasswordInput
-        label="Contraseña"
-        field="password"
-        isNew={true}
-        form={sForm}
-      />
+      <div class="mt-4 grid grid-cols-1 gap-y-4">
+        <TextInput
+          label="Nombre"
+          field="username"
+          autocomplete="given-name"
+          form={sForm}
+        />
+        <TextInput
+          label="Apellido"
+          field="lastname"
+          autocomplete="family-name"
+          form={sForm}
+        />
+        <EmailInput
+          label="Direccion de email"
+          field="email"
+          autocomplete={false}
+          form={sForm}
+        />
+        <PasswordInput
+          label="Contraseña"
+          field="password"
+          isNew={true}
+          form={sForm}
+        />
+      </div>
     </div>
-  </div>
 
-  <div class="mt-6 flex items-center justify-between gap-x-6">
-    <div class="flex flex-col">
-      <SuperDebug data={$form} />
-      {#if $errors._errors}
-        {$errors._errors}
-      {/if}
+    <div class="mt-6 grid items-center justify-between gap-4">
+      <div class=" self-start">
+        <SubmitButton>Registrar veterinario</SubmitButton>
+      </div>
+      <div class="flex flex-col">
+        <SuperDebug data={$form} />
+        {#if $errors._errors}
+          {$errors._errors}
+        {/if}
+      </div>
     </div>
-    <div class=" self-start">
-      <SubmitButton>Registrar veterinario</SubmitButton>
-    </div>
+  </form>
+
+  <div class="mt-6 flex flex-col items-center gap-x-6">
+    <h3 class="text-xl font-semibold text-gray-900">Veterinarios</h3>
+    <ul>
+      {#each data.vets as vet}
+        <li class=" border border-gray-900/10 p-4">
+          <p>{vet.username}</p>
+          <p>{vet.lastname}</p>
+          <p>{vet.email}</p>
+        </li>
+      {/each}
+    </ul>
   </div>
-</form>
+</div>

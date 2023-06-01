@@ -17,8 +17,9 @@ const schema = z.object({
 
 export const load = (async (event) => {
     const form = await superValidate(schema);
+    const vets = await prisma.vet.findMany();
 
-    return { form };
+    return { form, vets };
 }) satisfies PageServerLoad;
 
 

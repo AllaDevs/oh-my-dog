@@ -31,16 +31,15 @@ export function getImage(formData: FormData, name: string, maxFileSize: number =
         file.type !== 'image/webp' &&
         file.type !== 'image/avif'
     ) {
-        console.log('file.type', file.type);
         return 'NOT_AN_IMAGE';
     }
+
     return file;
 }
 
 
 export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, field: keyof z.infer<T> | FieldPath<T>) {
     const imageFile = formData.get(String(field));
-    console.log('imageFile', imageFile);
     if (!imageFile) {
         return null;
     }
@@ -85,6 +84,7 @@ export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData
         }
         images.push(image);
     }
+    
     return images;
 }
 
@@ -108,8 +108,9 @@ export function createFieldCopier<T extends Record<string, unknown>, P extends F
     return () => structuredClone(data as any);
 }
 
-export function dateToShortString(date: Date): string {
-    return date.toISOString().split('T')[0];
+
+export function dateToShortString(date: Date) {
+    return date.toISOString().split('T')[0] as `${number}-${number}-${number}`;
 }
 
 type DateToShortString<T extends Record<string, unknown>, K extends keyof T> = T[K] extends Date ? { [k in keyof T]: T[k] } & Record<K, string> : never;
@@ -118,6 +119,7 @@ export function mutateToShortString<T extends Record<string, unknown> & Record<K
     obj[key] = obj[key].toISOString().split('T')[0] as unknown as any;
     return obj as { [k in keyof T]: T[k] } & Record<K, string>;
 }
+
 
 export function breedsToInputOptions(breeds: Breed[]): { value: string; text: string }[] {
     const mappedBreeds = [];

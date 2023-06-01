@@ -50,9 +50,9 @@
           </li>
         {:else}
           <li
-            class=" flex min-h-full transition-transform hover:scale-105 justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
+            class=" opacity-75 flex min-h-full justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
           >
-            <p class="text-center text-lg font-semibold">
+            <p class="text-center text-base font-semibold">
               No tenés perros registrados
             </p>
           </li>
@@ -108,7 +108,7 @@
           <li
             class=" opacity-75 flex min-h-full justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
           >
-            <p class="text-center text-lg font-semibold">
+            <p class="text-center text-base font-semibold">
               No tenés turnos registrados
             </p>
           </li>
