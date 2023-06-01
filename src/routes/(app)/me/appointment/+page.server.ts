@@ -16,7 +16,7 @@ export const load: PageServerLoad = async (event) => {
 
     const client = await prisma.client.findUnique({
         where: {
-            userId: user!.userId
+            id: user!.userId
         },
         select: {
             id: true

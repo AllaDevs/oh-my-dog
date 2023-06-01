@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { superForm } from 'sveltekit-superforms/client';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
+  import { superForm } from 'sveltekit-superforms/client';
+  import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
   export let data;
 

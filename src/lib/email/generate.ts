@@ -1,4 +1,5 @@
 import type { ComponentProps, SvelteComponent } from 'svelte';
+import EmailAdoptionContact from './templates/EmailAdoptionContact.svelte';
 import EmailCancelledAppointment from './templates/EmailCancelledAppointment.svelte';
 import EmailChangedAppointment from './templates/EmailChangedAppointment.svelte';
 import EmailConfirmedAppointment from './templates/EmailConfirmedAppointment.svelte';
@@ -48,7 +49,13 @@ export function changedAppoinmentHTML(username: string, date: string, daytime: s
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
+export function adoptionContactHTML(username: string, lastname: string, email: string, phone: string, dogname: string) {
+    const r = (EmailAdoptionContact as unknown as Renderable<EmailAdoptionContact>).render({ username, lastname, email, phone, dogname });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
 export default {
     newAccountHTML,
-    resetPasswordHTML
+    resetPasswordHTML,
+    adoptionContactHTML
 };

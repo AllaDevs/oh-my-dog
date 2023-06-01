@@ -31,13 +31,18 @@ model AuthUser {
     auth_session AuthSession[]
     auth_key     AuthKey[]
 
-    // custom fields
-    role                 Role                  @default(CLIENT)
+    // start custom fields
+
+    role   Role   @default(CLIENT)
+    admin  Admin  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    vet    Vet    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    client Client @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String @unique @db.ObjectId
+
     email                String                @unique
-    admin                Admin?
-    vet                  Vet?
-    client               Client?
     authPasswordRecovery AuthPasswordRecovery?
+
+    // end custom fields
 
     @@map("auth_user")
 }
@@ -80,11 +85,11 @@ model AuthPasswordRecovery {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user      AuthUser @relation(fields: [userId], references: [id])
-    userId    String   @unique
-    email     String   @unique
-    token     String   @default(uuid())
-    expiresAt DateTime
+    authUser   AuthUser @relation(fields: [authUserId], references: [id])
+    authUserId String   @unique
+    email      String   @unique
+    token      String   @default(uuid())
+    expiresAt  DateTime
 
     @@map("auth_password_recovery")
 }
@@ -98,11 +103,10 @@ model Admin {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user     AuthUser @relation(fields: [userId], references: [id])
-    userId   String   @unique
+    authUser AuthUser?
     username String
     lastname String
-    email    String   @unique
+    email    String    @unique
 }
 
 model Vet {
@@ -110,11 +114,10 @@ model Vet {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user     AuthUser @relation(fields: [userId], references: [id])
-    userId   String   @unique
+    authUser AuthUser?
     username String
     lastname String
-    email    String   @unique
+    email    String    @unique
 }
 
 model Client {
@@ -122,13 +125,12 @@ model Client {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user     AuthUser @relation(fields: [userId], references: [id])
-    userId   String   @unique
+    authUser AuthUser?
     username String
     lastname String
-    email    String   @unique
-    dni      String   @unique
+    email    String    @unique
 
+    dni            String           @unique
     birthdate      DateTime
     phone          String
     discountAmount Float            @default(0)
@@ -139,6 +141,7 @@ model Client {
     tracingPost    TracingPost[]
     donation       Donation[]
     review         Review[]
+    temporalDog    TemporalDog[]
 }
 
 model Appointment {
@@ -196,6 +199,7 @@ model RegisteredDog {
     color       String
     image       Image?
     observation String?
+    archived    Boolean  @default(false)
 
     owner          Client          @relation(fields: [ownerId], references: [id])
     ownerId        String          @db.ObjectId
@@ -221,7 +225,6 @@ model MedicalRecord {
     dogId String        @db.ObjectId
 }
 
-// NOTE: possibly adding a client field if it was loaded from a client
 model TemporalDog {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
@@ -234,7 +237,10 @@ model TemporalDog {
     color       String
     image       Image?
     observation String?
+    archived    Boolean  @default(false)
 
+    owner        Client        @relation(fields: [ownerId], references: [id])
+    ownerId      String        @db.ObjectId
     breed        Breed         @relation(fields: [breedId], references: [id])
     breedId      String        @db.ObjectId
     adoptionPost AdoptionPost?
@@ -359,15 +365,15 @@ model AdoptionPost {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    newOwner    String?
-    state       PostState
-    publisher   Client         @relation(fields: [publisherId], references: [id])
-    publisherId String         @db.ObjectId
-    registered  Boolean
-    dog         RegisteredDog? @relation(fields: [dogId], references: [id])
-    dogId       String?        @unique @db.ObjectId
-    tempDog     TemporalDog?   @relation(fields: [tempDogId], references: [id])
-    tempDogId   String?        @unique @db.ObjectId
+    state            PostState
+    resolvedAt       DateTime?
+    resolutionDetail String?
+    publisher        Client         @relation(fields: [publisherId], references: [id])
+    publisherId      String         @db.ObjectId
+    registered       Boolean
+    registeredDog    RegisteredDog? @relation(fields: [dogId], references: [id])
+    temporalDog      TemporalDog?   @relation(fields: [dogId], references: [id])
+    dogId            String         @unique @db.ObjectId
 }
 
 model TracingPost {

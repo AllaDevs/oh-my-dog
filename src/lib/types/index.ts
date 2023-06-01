@@ -1,3 +1,5 @@
+export type * from './posts';
+
 import type { AppointmentReason, AppointmentState, Daytime } from '../enums';
 
 export type DateString = `${number}-${number}-${number}`;
@@ -18,5 +20,3 @@ export type Appointment = {
     };
     dogId: string;
 }
-
-
