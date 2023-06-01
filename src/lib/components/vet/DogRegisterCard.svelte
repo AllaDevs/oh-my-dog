@@ -17,6 +17,10 @@
   export let allowRemoval: boolean = true;
 
   const dispatch = createEventDispatcher<{ remove: number }>();
+
+  const today = new Date()
+    .toISOString()
+    .split('T')[0] as `${number}-${number}-${number}`;
 </script>
 
 <FieldGroup cols={2}>
@@ -40,7 +44,7 @@
       label="Fecha de nacimiento o aproximada"
       field={['dogs', index, 'birthdate']}
       min="1923-01-01"
-      max="2007-12-31"
+      max={today}
       form={sForm}
       hint=""
     />

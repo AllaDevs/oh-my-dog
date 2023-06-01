@@ -1,12 +1,11 @@
-import type { SvelteComponent, ComponentProps } from 'svelte';
-import EmailNewAccount from './templates/EmailNewAccount.svelte';
-import EmailResetPassword from './templates/EmailResetPassword.svelte';
+import type { ComponentProps, SvelteComponent } from 'svelte';
 import EmailAdoptionContact from './templates/EmailAdoptionContact.svelte';
-
-
-// function addGeneratedStyle(html: string, css: string) {
-//     return html.replace('</head>', `<style>${css}</style></head>`);
-// }
+import EmailCancelledAppointment from './templates/EmailCancelledAppointment.svelte';
+import EmailChangedAppointment from './templates/EmailChangedAppointment.svelte';
+import EmailConfirmedAppointment from './templates/EmailConfirmedAppointment.svelte';
+import EmailNewAccount from './templates/EmailNewAccount.svelte';
+import EmailRejectedAppointment from './templates/EmailRejectedAppointment.svelte';
+import EmailResetPassword from './templates/EmailResetPassword.svelte';
 
 type RenderResult = {
     html: string;
@@ -30,7 +29,27 @@ export function resetPasswordHTML(href: string) {
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
-export function adoptionContactHTML(username: string, lastname: string, email: string, phone: string, dogname: string){
+export function confirmedAppoinmentHTML(username: string, date: string, daytime: string) {
+    const r = (EmailConfirmedAppointment as unknown as Renderable<EmailConfirmedAppointment>).render({ username, date, daytime });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
+export function cancelledAppoinmentHTML(username: string, date: string, daytime: string) {
+    const r = (EmailCancelledAppointment as unknown as Renderable<EmailCancelledAppointment>).render({ username, date, daytime });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
+export function rejectedAppoinmentHTML(username: string, date: string, daytime: string) {
+    const r = (EmailRejectedAppointment as unknown as Renderable<EmailRejectedAppointment>).render({ username, date, daytime });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
+export function changedAppoinmentHTML(username: string, date: string, daytime: string, newDate: string, newDaytime: string, message: string) {
+    const r = (EmailChangedAppointment as unknown as Renderable<EmailChangedAppointment>).render({ username, date, daytime, newDate, newDaytime, message });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
+export function adoptionContactHTML(username: string, lastname: string, email: string, phone: string, dogname: string) {
     const r = (EmailAdoptionContact as unknown as Renderable<EmailAdoptionContact>).render({ username, lastname, email, phone, dogname });
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }

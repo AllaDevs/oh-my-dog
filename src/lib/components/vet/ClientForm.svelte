@@ -1,9 +1,9 @@
 <script lang="ts">
   import DateInput from '$lib/components/form/DateInput.svelte';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
+  import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import TelInput from '$lib/components/form/TelInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
-  import SubForm from '../../../../.dev_local/SubForm.svelte';
 
   import type { UnwrapEffects } from 'sveltekit-superforms';
   import type { SuperForm } from 'sveltekit-superforms/client';
@@ -13,7 +13,7 @@
   export let sForm: SuperForm<UnwrapEffects<T>, unknown>;
 </script>
 
-<SubForm>
+<FieldGroup>
   <svelte:fragment slot="title">Nuevo cliente</svelte:fragment>
   <svelte:fragment slot="fields">
     <TextInput
@@ -49,4 +49,4 @@
     />
     <TextInput label="DNI" autocomplete="off" form={sForm} field="dni" />
   </svelte:fragment>
-</SubForm>
+</FieldGroup>

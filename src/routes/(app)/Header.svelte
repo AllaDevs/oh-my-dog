@@ -5,9 +5,10 @@
 
   const navLinks = [
     { href: '/', text: 'Inicio' },
+    { href: '/me/appointment', text: 'Turnos', requiresLogin: true },
     { href: '/me', text: 'Mi cuenta', requiresLogin: true },
     { href: '/adoption', text: 'Adopcion' },
-    { href: '/publicity', text: 'Paseadores y cuidadores' },
+    { href: '/provider', text: 'Paseadores y cuidadores' },
   ];
 
   $: onHome = $page.url.pathname === '/';
