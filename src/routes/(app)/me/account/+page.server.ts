@@ -1,12 +1,12 @@
-import { fail, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
-import { auth } from '$lib/server/lucia';
+import { newAccountHTML, systemEmail } from '$lib/email';
 import { Role } from '$lib/enums';
-import { z } from 'zod';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
+import { fail, redirect } from '@sveltejs/kit';
 import { LuciaError, generateRandomString } from 'lucia-auth';
-import { systemEmail, newAccountHTML } from '$lib/email';
+import { setError, superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
+import type { Actions, PageServerLoad } from './$types';
 
 const schema = z.object({
     username: z.string().min(3),
