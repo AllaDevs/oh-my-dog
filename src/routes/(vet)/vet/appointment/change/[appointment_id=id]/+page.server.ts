@@ -1,17 +1,19 @@
 import { changedAppoinmentHTML, systemEmail } from '$lib/email';
 import { AppointmentState, Daytime } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
-import { dayTimeMapper } from '$lib/utils/mappers';
+import { te } from '$lib/utils/translateEnums';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
+
 
 const schema = z.object({
     date: z.date(),
     daytime: z.nativeEnum(Daytime),
     message: z.string()
 });
+
 
 export const load = (async ({ locals, params, url }) => {
     const appointment = await prisma.appointment.findUnique({
@@ -96,9 +98,9 @@ export const actions: Actions = {
         await systemEmail(
             { name: newAppointment.client.username, address: newAppointment.client.email },
             'Propuesta de cambio',
-            `Hola ${newAppointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${newAppointment.date.toLocaleDateString()} a la ${dayTimeMapper(newAppointment.daytime)}.
-            Se ha generado una propuesta de cambio para el día ${form.data.date.toLocaleDateString()} a la ${dayTimeMapper(form.data.daytime)}, por favor, ingresa a tu cuenta para aceptarla o rechazarla.`,
-            changedAppoinmentHTML(newAppointment.client.username, newAppointment.date.toLocaleDateString(), dayTimeMapper(newAppointment.daytime), form.data.date.toLocaleDateString(), dayTimeMapper(form.data.daytime), form.data.message)
+            `Hola ${newAppointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${newAppointment.date.toLocaleDateString()} a la ${te.Daytime(newAppointment.daytime)}.
+            Se ha generado una propuesta de cambio para el día ${form.data.date.toLocaleDateString()} a la ${te.Daytime(form.data.daytime)}, por favor, ingresa a tu cuenta para aceptarla o rechazarla.`,
+            changedAppoinmentHTML(newAppointment.client.username, newAppointment.date.toLocaleDateString(), te.Daytime(newAppointment.daytime), form.data.date.toLocaleDateString(), te.Daytime(form.data.daytime), form.data.message)
         );
 
         throw redirect(303, '/vet/appointment');

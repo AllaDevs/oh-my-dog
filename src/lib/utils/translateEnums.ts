@@ -40,19 +40,19 @@ function tAppointmentReason(reason: AppointmentReason) {
 function tAppointmentState(state: AppointmentState) {
     switch (state) {
         case AppointmentState.CLIENT_REQUEST:
-            return 'Solicitud enviada';
+            return 'Solicitud del cliente';
         case AppointmentState.CLIENT_REJECTED:
-            return 'Solicitud rechazada';
+            return 'Rechazado por el cliente';
         case AppointmentState.VET_REQUEST:
-            return 'Solicitud recibida';
+            return 'Solicitud del veterinario';
         case AppointmentState.VET_REJECTED:
-            return 'Solicitud rechazada';
+            return 'Rechazado por el veterinario';
         case AppointmentState.CONFIRMED:
-            return 'Confirmada';
+            return 'Confirmado';
         case AppointmentState.CANCELLED:
-            return 'Cancelada';
+            return 'Cancelado';
         case AppointmentState.DONE:
-            return 'Realizada';
+            return 'Realizado';
         default:
             throw new EnumTranslationError(`Invalid appointment state: ${state}`);
     }

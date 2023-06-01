@@ -1,6 +1,7 @@
-export type * from './posts';
+import type { AppointmentReason, AppointmentState, Daytime } from '$lib/enums';
 
-import type { AppointmentReason, AppointmentState, Daytime } from '../enums';
+
+export type * from './posts';
 
 export type DateString = `${number}-${number}-${number}`;
 

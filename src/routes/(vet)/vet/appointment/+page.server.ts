@@ -1,16 +1,17 @@
 import { cancelledAppoinmentHTML, confirmedAppoinmentHTML, rejectedAppoinmentHTML, systemEmail } from '$lib/email';
 import { prisma } from '$lib/server/prisma';
-import { dayTimeMapper } from '$lib/utils/mappers';
+import { te } from '$lib/utils/translateEnums';
 import { AppointmentReason, AppointmentState } from '@prisma/client';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-const schema = z.object(
-    {
-        appointmentId: z.string()
-    });
+
+const schema = z.object({
+    appointmentId: z.string()
+});
+
 
 export const load: PageServerLoad = async (event) => {
     let appointments = await prisma.appointment.findMany({
@@ -47,6 +48,7 @@ export const load: PageServerLoad = async (event) => {
     return { appointments, clients };
 };
 
+
 export const actions: Actions = {
     confirm: async ({ request, locals, url }) => {
         const form = await superValidate(request, schema);
@@ -77,8 +79,8 @@ export const actions: Actions = {
             { name: appointment.client.username, address: appointment.client.email },
             'Turno aceptado!',
             `Hola ${appointment.client.username}. Queríamos informarte que tu pedido de turno para el día ${appointment.date.toLocaleDateString()} ha sido confirmado!
-            Te esperamos a la ${dayTimeMapper(appointment.daytime)}.`,
-            confirmedAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), dayTimeMapper(appointment.daytime))
+            Te esperamos a la ${te.Daytime(appointment.daytime)}.`,
+            confirmedAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), te.Daytime(appointment.daytime))
         );
     },
     reject: async ({ request, locals, url }) => {
@@ -112,9 +114,9 @@ export const actions: Actions = {
         await systemEmail(
             { name: appointment.client.username, address: appointment.client.email },
             'Turno rechazado',
-            `Hola ${appointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${appointment.date.toLocaleDateString()} a la ${dayTimeMapper(appointment.daytime)}, el mismo ha sido rechazado.
+            `Hola ${appointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${appointment.date.toLocaleDateString()} a la ${te.Daytime(appointment.daytime)}, el mismo ha sido rechazado.
             Por favor pedí un turno para una nueva fecha y nos pondremos en contacto!`,
-            rejectedAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), dayTimeMapper(appointment.daytime))
+            rejectedAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), te.Daytime(appointment.daytime))
         );
 
     },
@@ -146,9 +148,9 @@ export const actions: Actions = {
         await systemEmail(
             { name: appointment.client.username, address: appointment.client.email },
             'Turno cancelado',
-            `Hola ${appointment.client.username}. Queríamos informarte que lamentablemente hemos tenido que cancelar tu turno para el ${appointment.date.toLocaleDateString()} a la ${dayTimeMapper(appointment.daytime)}.
+            `Hola ${appointment.client.username}. Queríamos informarte que lamentablemente hemos tenido que cancelar tu turno para el ${appointment.date.toLocaleDateString()} a la ${te.Daytime(appointment.daytime)}.
             Por favor pedí un nuevo turno y nos pondremos en contacto!`,
-            cancelledAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), dayTimeMapper(appointment.daytime))
+            cancelledAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), te.Daytime(appointment.daytime))
         );
     },
     complete: async ({ request, locals, url }) => {

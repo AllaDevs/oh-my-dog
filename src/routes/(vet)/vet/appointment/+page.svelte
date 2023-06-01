@@ -1,10 +1,7 @@
 <script lang="ts">
   import { AppointmentState } from '$lib/enums';
-  import {
-    appointmentReasonMapper,
-    appointmentStateMapper,
-    dayTimeMapper,
-  } from '$lib/utils/mappers';
+  import { te } from '$lib/utils/translateEnums.js';
+
   export let data;
 
   const tableHeaders = [
@@ -163,9 +160,9 @@
             <td>{appointment.createdAt.toLocaleDateString()}</td>
             <td>{appointment.client.email}</td>
             <td>{appointment.date.toLocaleDateString()}</td>
-            <td>{dayTimeMapper(appointment.daytime)}</td>
-            <td>{appointmentReasonMapper(appointment.reason)}</td>
-            <td>{appointmentStateMapper(appointment.state)}</td>
+            <td>{te.Daytime(appointment.daytime)}</td>
+            <td>{te.AppointmentReason(appointment.reason)}</td>
+            <td>{te.AppointmentState(appointment.state)}</td>
             <td
               >{`${
                 appointment.dog.name

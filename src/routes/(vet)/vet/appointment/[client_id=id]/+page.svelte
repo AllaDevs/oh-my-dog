@@ -1,9 +1,6 @@
 <script lang="ts">
-  import {
-    dayTimeMapper,
-    appointmentStateMapper,
-    appointmentReasonMapper,
-  } from '$lib/utils/mappers';
+  import { te } from '$lib/utils/translateEnums.js';
+
   export let data;
   $: client = data.client!;
   $: appointments = data.clientAppointments!;
@@ -61,11 +58,11 @@
           <dl>
             <dt class="text-sm font-medium text-gray-500 truncate">Horario</dt>
             <dd class="mt-1 text-xl font-semibold text-gray-900">
-              {dayTimeMapper(appointment.daytime)}
+              {te.Daytime(appointment.daytime)}
             </dd>
             <dt class="text-sm font-medium text-gray-500 truncate">Motivo</dt>
             <dd class="mt-1 text-xl font-semibold text-gray-900">
-              {appointmentReasonMapper(appointment.reason)}
+              {te.AppointmentReason(appointment.reason)}
             </dd>
             <dt class="text-sm font-medium text-gray-500 truncate">Perro</dt>
             <dd class="mt-1 text-xl font-semibold text-gray-900">
@@ -73,7 +70,7 @@
             </dd>
             <dt class="text-sm font-medium text-gray-500 truncate">Estado</dt>
             <dd class="mt-1 text-xl font-semibold text-gray-900">
-              {appointmentStateMapper(appointment.state)}
+              {te.AppointmentState(appointment.state)}
             </dd>
           </dl>
         </div>

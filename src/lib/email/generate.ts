@@ -7,6 +7,7 @@ import EmailNewAccount from './templates/EmailNewAccount.svelte';
 import EmailRejectedAppointment from './templates/EmailRejectedAppointment.svelte';
 import EmailResetPassword from './templates/EmailResetPassword.svelte';
 
+
 type RenderResult = {
     html: string;
     css: {
@@ -57,5 +58,9 @@ export function adoptionContactHTML(username: string, lastname: string, email: s
 export default {
     newAccountHTML,
     resetPasswordHTML,
-    adoptionContactHTML
+    adoptionContactHTML,
+    confirmedAppoinmentHTML,
+    cancelledAppoinmentHTML,
+    rejectedAppoinmentHTML,
+    changedAppoinmentHTML,
 };

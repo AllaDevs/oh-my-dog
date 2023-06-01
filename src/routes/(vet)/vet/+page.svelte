@@ -7,7 +7,7 @@
     { href: '/vet/client', text: 'Clientes' },
     { href: '/vet/appointment', text: 'Turnos' },
     { href: '/vet/donation', text: 'Donaciones' },
-    { href: '/vet/publicity', text: 'Paseadores y cuidadores' },
+    { href: '/vet/provider', text: 'Paseadores y cuidadores' },
     { href: '/vet/subsidiary', text: 'Sucursales' },
     { href: '/vet/me', text: 'Cuenta administrativa' },
   ];

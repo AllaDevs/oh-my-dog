@@ -4,7 +4,7 @@
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import { Daytime } from '$lib/enums';
-  import { appointmentReasonMapper, dayTimeMapper } from '$lib/utils/mappers';
+  import { te } from '$lib/utils/translateEnums.js';
   import { dateProxy, superForm } from 'sveltekit-superforms/client';
 
   export let data;
@@ -36,10 +36,10 @@
     Día: {appointment.date.toLocaleDateString()}
   </p>
   <p class="btn variant-filled btn-sm">
-    Horario: {dayTimeMapper(appointment.daytime)}
+    Horario: {te.Daytime(appointment.daytime)}
   </p>
   <p class="btn variant-filled btn-sm">
-    Motivo: {appointmentReasonMapper(appointment.reason)}
+    Motivo: {te.AppointmentReason(appointment.reason)}
   </p>
 </div>
 
@@ -60,8 +60,8 @@
         unselectedLabel="Seleccione un horario"
         form={sForm}
         options={[
-          { value: Daytime.MORNING, text: dayTimeMapper(Daytime.MORNING) },
-          { value: Daytime.AFTERNOON, text: dayTimeMapper(Daytime.AFTERNOON) },
+          { value: Daytime.MORNING, text: te.Daytime(Daytime.MORNING) },
+          { value: Daytime.AFTERNOON, text: te.Daytime(Daytime.AFTERNOON) },
         ]}
       />
       <TextInput
