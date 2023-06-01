@@ -8,25 +8,13 @@
   import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
-  const sForm = superForm(data.form);
+  const sForm = superForm(data.form, { dataType: 'json' });
   const { form, errors, constraints, message } = sForm;
 </script>
 
 <svelte:head>
   <title>Nuevo proveedor</title>
 </svelte:head>
-
-<!-- type: z.nativeEnum(DogServiceType),
-    email: z.string().email(),
-    areas: z.string(),
-    username: z.string(),
-    lastname: z.string(),
-    description: z.string().max(280).optional(),
-    workingHour: z.array(z.object({
-        day: z.nativeEnum(Day),
-        from: z.string(),
-        to: z.string()
-    })) -->
 
 <form method="POST" class=" max-w-sm">
   <div class="border-b border-gray-900/10 pb-12">
@@ -74,16 +62,21 @@
     </div>
     <div>
       <p>Hora de trabajo:</p>
-      <DayInput label="Dia" field="day" unselectedLabel="Día" form={sForm} />
+      <DayInput
+        label="Dia"
+        field={['workingHour', 0, 'day']}
+        unselectedLabel="Día"
+        form={sForm}
+      />
       <HourInput
         label="Inicio"
-        field="start"
+        field={['workingHour', 0, 'start']}
         unselectedLabel="Hora de Inicio"
         form={sForm}
       />
       <HourInput
         label="end"
-        field="end"
+        field={['workingHour', 0, 'end']}
         unselectedLabel="Hora de fin"
         form={sForm}
       />

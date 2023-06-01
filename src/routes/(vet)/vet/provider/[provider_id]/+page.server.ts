@@ -18,6 +18,7 @@ export const load = (async ({ locals, params, url }) => {
             id: params.provider_id
         },
         select: {
+            id: true,
             type: true,
             email: true,
             review: true,
