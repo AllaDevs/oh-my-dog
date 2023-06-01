@@ -237,6 +237,7 @@ model TemporalDog {
     color       String
     image       Image?
     observation String?
+    archived    Boolean  @default(false)
 
     owner        Client        @relation(fields: [ownerId], references: [id])
     ownerId      String        @db.ObjectId
@@ -364,14 +365,15 @@ model AdoptionPost {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    newOwner      String?
-    state         PostState
-    publisher     Client         @relation(fields: [publisherId], references: [id])
-    publisherId   String         @db.ObjectId
-    registered    Boolean
-    registeredDog RegisteredDog? @relation(fields: [dogId], references: [id])
-    temporalDog   TemporalDog?   @relation(fields: [dogId], references: [id])
-    dogId         String         @unique @db.ObjectId
+    state            PostState
+    resolvedAt       DateTime?
+    resolutionDetail String?
+    publisher        Client         @relation(fields: [publisherId], references: [id])
+    publisherId      String         @db.ObjectId
+    registered       Boolean
+    registeredDog    RegisteredDog? @relation(fields: [dogId], references: [id])
+    temporalDog      TemporalDog?   @relation(fields: [dogId], references: [id])
+    dogId            String         @unique @db.ObjectId
 }
 
 model TracingPost {

@@ -31,6 +31,15 @@ export const dogSizeSchema = z.nativeEnum(DogSize);
 export const dogSexSchema = z.nativeEnum(DogSex);
 
 
+export const contactBaseSchema = z.object({
+    username: usernameSchema,
+    lastname: lastnameSchema,
+    email: emailSchema,
+    phone: phoneSchema,
+});
+export type ContactBaseSchema = typeof contactBaseSchema;
+
+
 const commonSchema = {
     imageSchema,
     birthdateSchema,
@@ -43,7 +52,8 @@ const commonSchema = {
     dogNameSchema,
     dogSizeSchema,
     dogSexSchema,
-    moongoIdSchema
+    moongoIdSchema,
+    contactBaseSchema
 };
 
 export { commonSchema as c };

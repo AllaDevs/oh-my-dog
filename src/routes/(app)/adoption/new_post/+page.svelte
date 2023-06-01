@@ -89,7 +89,7 @@
       <ul class="flex flex-col justify-center">
         {#each data.clientDogs as dog (dog.id)}
           <li>
-            <form method="POST" action="?/myDog" use:enhance={enhanceMyDogForm}>
+            <form method="POST" action="?/existingDog" use:enhance={enhanceMyDogForm}>
               <input type="text" name="dogId" value={dog.id} hidden />
               <input type="text" value={dog.name} />
               <SubmitButton>Dar en adopcion</SubmitButton>
@@ -107,7 +107,7 @@
 
     <section class="">
       <h3 class="mt-4 text-xl font-bold">Poner en adopcion nuevo perro</h3>
-      <form method="POST" class="mt-4" use:sForm.enhance>
+      <form method="POST" action="?/newDog" class="mt-4" use:sForm.enhance>
         <TextInput label="Nombre" form={sForm} field="name" />
         <DateInput label="Nacimiento estimado" form={sForm} field="birthdate" />
         <SelectInput

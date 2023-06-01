@@ -1,65 +1,126 @@
 <script lang="ts">
-  import Button from '$lib/components/element/Button.svelte';
-    import toast from 'svelte-french-toast';
-    import { superForm } from 'sveltekit-superforms/client';
+  import { PostState } from '$lib/enums.js';
+  import toast from 'svelte-french-toast';
+  import { superForm } from 'sveltekit-superforms/client';
+
+  import TemporalDogForm from '$lib/components/dog/TemporalDogForm.svelte';
+  import FieldGroup from '$lib/components/form/FieldGroup.svelte';
+  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
+  import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
 
   export let data;
-  let dogs: typeof data.dogs = [];
-  for (const dog of data.dogs) {
-    if (!dog.archived) {
-      dogs.push(dog);
-    }
+
+  let breeds: { value: string; text: string }[] = [];
+  for (const breed of data.breeds) {
+    breeds.push({ value: breed.id, text: breed.name });
   }
 
+  const deleteSForm = superForm(data.deleteForm, {
+    id: 'delete',
+    onResult: ({ result }) => {
+      switch (result.type) {
+        case 'redirect': {
+          toast.success('Se elimino el post exitosamente', { duration: 3000 });
+          break;
+        }
+        default:
+          break;
+      }
+    },
+  });
+
+  const updateSForm = superForm(data.updateForm, {
+    id: 'update',
+    onUpdated: ({ form }) => {
+      if (form.valid) {
+        toast.success('Perro para adopción registrado con exito');
+      } else if (form.errors._errors) {
+        toast.error(String(form.errors._errors));
+      }
+    },
+  });
+
+  let postIsResolved = data.post.state === PostState.RESOLVED;
+  const resolveForm = superForm(data.resolveForm, {
+    id: 'resolve',
+    onUpdated: ({ form }) => {
+      if (form.valid) {
+        toast.success('Se resolvio la adopcion con exito');
+        postIsResolved = true;
+      } else if (form.errors._errors) {
+        toast.error(String(form.errors._errors));
+      }
+    },
+  });
 </script>
 
-<main id="main">
-  <div>
-    <Button
-      ><a href="/adoption/register_dog">Dar en adopcion otro perro</a></Button
-    >
-  </div>
-  <section>
-    <ul
-      class=" mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-10 lg:grid-cols-3"
-    >
-      {#each dogs as dog}
-        <li
-          class="min-h-full transition-transform hover:scale-105 justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
+<svelte:head>
+  <title>Post de adopcion</title>
+</svelte:head>
+
+<main
+  id="main"
+  class="container mx-auto flex max-w-screen-lg flex-col px-6 py-4"
+>
+  <header class="flex w-full items-end justify-between py-2">
+    <h2 class=" mt-4 text-2xl">Edicion post de adopcion</h2>
+  </header>
+
+  <article class="flex flex-col gap-8 px-4 justify-around lg:flex-row">
+    <section class="flex flex-col gap-4">
+      <form method="POST" action="?/update" use:updateSForm.enhance>
+        <TemporalDogForm
+          sForm={updateSForm}
+          {breeds}
+          readonly={data.post.registered}
         >
-          <div class=" flex flex-col">
-            {#if dog.image}
-              <img
-                src={dog.image.url}
-                alt="Foto de {dog.name}"
-                class="rounded-full w-24 h-24 mx-auto"
-              />
+          <svelte:fragment slot="title">
+            <h3 class=" text-xl font-semibold text-gray-900">
+              Informacion del perro
+            </h3>
+          </svelte:fragment>
+          <svelte:fragment slot="actions">
+            {#if !data.post.registered}
+              <SubmitButton disabled={postIsResolved}>Actualizar</SubmitButton>
             {/if}
-            <p class="text-center text-lg font-semibold">{dog.name}</p>
-          </div>
-          <div class=" flex flex-col justify-around">
-            <form
-              method="POST"
-              action="?/myDog"
-            >
-              <input type="hidden" name="dogId" value={dog.id} />
-              <button
-                class=" underline-offset-2 hover:underline rounded-md text-center bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-              >
-                Dar en adopción
-              </button>
-            </form>
-          </div>
-        </li>
-      {:else}
-        <li
-          class=" opacity-75 flex min-h-full justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
+          </svelte:fragment>
+        </TemporalDogForm>
+      </form>
+      <form method="POST" action="?/resolve" use:deleteSForm.enhance>
+        <FieldGroup cols={1}>
+          <svelte:fragment slot="title">
+            <h3 class=" text-xl font-semibold text-gray-900">
+              Resolver adopcion
+            </h3>
+          </svelte:fragment>
+          <svelte:fragment slot="fields">
+            <TextAreaInput
+              label="Valoracion"
+              form={resolveForm}
+              field="detail"
+              readonly={postIsResolved}
+            />
+          </svelte:fragment>
+          <svelte:fragment slot="actions">
+            <SubmitButton disabled={postIsResolved}>Resolver</SubmitButton>
+          </svelte:fragment>
+        </FieldGroup>
+      </form>
+      {#if !postIsResolved}
+        <form
+          method="POST"
+          action="?/delete"
+          use:deleteSForm.enhance
+          class="flex justify-end p-4"
         >
-          <p class="text-center text-lg font-semibold">
-            No tenés perros para dar en adopción
-          </p>
-        </li>
-      {/each}
-    </ul>
-  </section>
+          <button
+            type="submit"
+            class="rounded-md bg-red-700/95 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+          >
+            Eliminar post
+          </button>
+        </form>
+      {/if}
+    </section>
+  </article>
 </main>

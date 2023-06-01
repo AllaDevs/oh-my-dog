@@ -6,7 +6,7 @@ import { setError } from 'sveltekit-superforms/server';
 import { prisma } from './prisma';
 
 
-export function reridectToLogin(
+export function redirectToLogin(
     eventUrl: URL,
     message: string = 'Debes iniciar sesión para acceder a esta página'
 ) {

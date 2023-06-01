@@ -11,3 +11,6 @@ export const temporalDogRegisterSchema = z.object({
     observation: z.string().min(3).optional(), 
     breedId: c.moongoIdSchema
 });
+export type TemporalDogRegisterSchema = typeof temporalDogRegisterSchema;
+
+export const adoptionPostUpdateSchema = temporalDogRegisterSchema

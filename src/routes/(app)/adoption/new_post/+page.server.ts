@@ -1,11 +1,11 @@
 import { PostState } from '$lib/enums';
 import { c, temporalDogRegisterSchema } from '$lib/schemas';
-import { reridectToLogin } from '$lib/server/auth';
+import { redirectToLogin } from '$lib/server/auth';
 import { prisma } from '$lib/server/prisma';
 import { logError } from '$lib/server/utils';
 import { Prisma } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -14,11 +14,12 @@ const clientDogSelectedSchema = z.object({
     dogId: c.moongoIdSchema
 });
 
+const temporalDogFormInitialData = defaultData(temporalDogRegisterSchema);
 
 export const load = (async ({ locals, url }) => {
     const { user } = await locals.auth.validateUser();
     if (!user) {
-        throw redirect(303, reridectToLogin(url, 'Debes iniciar sesión para poner en adopción un perro'));
+        throw redirect(303, redirectToLogin(url, 'Debes iniciar sesión para poner en adopción un perro'));
     }
 
     const [breeds, clientDogs] = await prisma.$transaction([
@@ -42,10 +43,10 @@ export const load = (async ({ locals, url }) => {
 
 
 export const actions = {
-    myDog: async ({ locals, request, url }) => {
+    existingDog: async ({ locals, request, url }) => {
         const { user } = await locals.auth.validateUser();
         if (!user) {
-            throw redirect(303, reridectToLogin(url, 'Debes iniciar sesión para poner en adopción un perro'));
+            throw redirect(303, redirectToLogin(url, 'Debes iniciar sesión para poner en adopción un perro'));
         }
 
         const form = await superValidate(request, clientDogSelectedSchema);
@@ -85,10 +86,10 @@ export const actions = {
     newDog: async ({ locals, request, url }) => {
         const { user } = await locals.auth.validateUser();
         if (!user) {
-            throw redirect(303, reridectToLogin(url, 'Debes iniciar sesión para poner en adopción un perro'));
+            throw redirect(303, redirectToLogin(url, 'Debes iniciar sesión para poner en adopción un perro'));
         }
 
-        const form = await superValidate(request, temporalDogRegisterSchema);
+        const form = await superValidate(request, temporalDogRegisterSchema, { id: 'newDog' });
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
@@ -137,6 +138,7 @@ export const actions = {
             return setError(form, null, 'Error al registrar el perro');
         }
 
+        form.data = temporalDogFormInitialData;
         return { form };
     }
 } satisfies Actions;

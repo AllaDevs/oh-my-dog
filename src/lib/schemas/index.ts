@@ -1,4 +1,5 @@
 export * from './accountSchema';
 export * from './clientSchema';
-export * from './dogSchema';
+export type * from './commonSchema';
 export { c } from './commonSchema';
+export * from './dogSchema';

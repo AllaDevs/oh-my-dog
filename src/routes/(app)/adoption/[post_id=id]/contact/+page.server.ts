@@ -1,7 +1,7 @@
 import { EmailError, adoptionContactHTML, systemEmail } from '$lib/email';
 import { PostState } from '$lib/enums';
 import { c } from '$lib/schemas';
-import { reridectToLogin } from '$lib/server/auth';
+import { redirectToLogin } from '$lib/server/auth';
 import { prisma } from '$lib/server/prisma';
 import { logError } from '$lib/server/utils';
 import type { AdoptionPost, Client, RegisteredDog, TemporalDog } from '@prisma/client';
@@ -11,22 +11,25 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
 
-const anonymousContactSchema = z.object({
-    email: c.emailSchema,
-    username: c.usernameSchema,
-    lastname: c.lastnameSchema,
-    phone: c.phoneSchema,
-});
+const anonymousContactSchema = c.contactBaseSchema;
 
 
 type DiscriminatedAdoptionPost = (AdoptionPost & {
     publisher: Client,
 } & ({
     registered: true,
-    registeredDog: RegisteredDog,
+    registeredDog: RegisteredDog & {
+        breed: {
+            name: string,
+        };
+    },
 } | {
     registered: false,
-    temporalDog: TemporalDog,
+    temporalDog: TemporalDog & {
+        breed: {
+            name: string,
+        };
+    },
 }));
 
 export const load = (async (event) => {
@@ -38,8 +41,16 @@ export const load = (async (event) => {
         },
         include: {
             publisher: true,
-            registeredDog: true,
-            temporalDog: true,
+            registeredDog: {
+                include: {
+                    breed: true,
+                }
+            },
+            temporalDog: {
+                include: {
+                    breed: true,
+                }
+            },
         }
     });
     if (!post) {
@@ -62,7 +73,7 @@ export const actions = {
     clientContact: async ({ locals, request, url, params }) => {
         const { user } = await locals.auth.validateUser();
         if (!user) {
-            throw redirect(303, reridectToLogin(url, 'Debes iniciar sesión para contactarte con el dueño del perro como cliente'));
+            throw redirect(303, redirectToLogin(url, 'Debes iniciar sesión para contactarte con el dueño del perro como cliente'));
         }
         const form = await superValidate(request, z.object({}));
 

@@ -3,6 +3,7 @@
   
   export let postId : string;
   export let dog: TemporalDog | RegisteredDog;
+  export let owned: boolean;
 </script>
 
 <div class=" min-h-full transition-transform hover:scale-105 justify-around border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50 flex-grow bg-teal-100 rounded-lg w-96">
@@ -14,11 +15,18 @@
   <h1 class="font-bold">
     {dog.name}
   </h1>
-  <p>
-    {dog.observation}
-
-  </p>
-  <a href="/adoption/{postId}/contact" class="px-4 py-2 rounded-md bg-teal-300">
-    Me interesa
-  </a>
+  {#if dog.observation}
+    <p>
+      {dog.observation}
+    </p> 
+  {/if}
+  {#if owned}
+    <a href={`/adoption/${postId}`} class="btn variant-filled btn-sm">
+      Editar
+    </a>
+  {:else}
+    <a href={`/adoption/${postId}/contact`} class="btn variant-filled btn-sm">
+      Ver
+    </a>
+  {/if}
 </div>
