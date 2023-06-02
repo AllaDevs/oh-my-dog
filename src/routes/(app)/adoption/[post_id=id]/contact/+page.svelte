@@ -30,7 +30,7 @@
   class="container mx-auto flex max-w-fit flex-col px-6 py-4"
 >
   <header class="flex w-full items-end justify-between py-2">
-    <h2 class=" mt-4 text-3xl">Adoptar perro 😊</h2>
+    <h2 class=" mt-4 text-3xl">Adoptar perro</h2>
   </header>
 
   <article class="flex flex-col gap-8 px-4 justify-around">

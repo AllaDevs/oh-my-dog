@@ -80,7 +80,7 @@
   class="container mx-auto flex max-w-screen-lg flex-col px-6 py-4"
 >
   <header class="flex w-full items-end justify-between py-2">
-    <h2 class=" mt-4 text-2xl">Dar en adopcion 😪</h2>
+    <h2 class=" mt-4 text-2xl">Dar en adopcion</h2>
   </header>
 
   <article class="flex flex-col gap-8 px-4 justify-around lg:flex-row">
@@ -138,7 +138,7 @@
           options={breeds}
         />
         <div class=" flex justify-around mt-4">
-          <SubmitButton>Registrar perro</SubmitButton>
+          <SubmitButton>Dar en adopcion</SubmitButton>
         </div>
       </form>
     </section>

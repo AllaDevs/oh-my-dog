@@ -35,6 +35,7 @@
       autocomplete={false}
       form={sForm}
       field="email"
+      readonly
     />
     <DateInput
       label="Nacimiento"

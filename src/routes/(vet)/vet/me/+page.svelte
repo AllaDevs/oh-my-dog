@@ -1,25 +1,22 @@
 <script lang="ts">
+  import toast from 'svelte-french-toast';
+  import { superForm } from 'sveltekit-superforms/client';
+  
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import Fieldset from '$lib/components/form/Fieldset.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
 
-  import toast from 'svelte-french-toast';
-  import { superForm } from 'sveltekit-superforms/client';
-
   export let data;
 
   const accountSForm = superForm(data.accountForm);
-  const { form } = accountSForm;
-  $: {
-    console.log($form);
-  }
+
   const accountAuthSForm = superForm(data.accountAuthForm, {
     invalidateAll: false,
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Cuenta actualizada con exito');
+        toast.success('Cuenta actualizada con exito', { duration: 3000 });
       } else {
         if (form.errors._errors) {
           toast.error(String(form.errors._errors), {
@@ -97,7 +94,7 @@
                 Cancelar
               </button>
               <SubmitButton action="?/authUpdate">
-                Actualizar autenticacion
+                Editar cuenta
               </SubmitButton>
             </div>
           </svelte:fragment>
