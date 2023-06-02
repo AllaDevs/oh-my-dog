@@ -2,6 +2,7 @@
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
+  import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import WorkingHourRegisterCard from '$lib/components/vet/WorkingHourRegisterCard.svelte';
   import { DogServiceType } from '$lib/enums';
@@ -42,6 +43,11 @@
 <svelte:head>
   <title>Nuevo proveedor</title>
 </svelte:head>
+
+<div class="mt-10 mb-3 ml-12">
+  <h3 class="text-3xl font-semibold text-gray-900">Registro de Proveedor</h3>
+</div>
+
 <main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
   <form
     method="POST"
@@ -55,6 +61,8 @@
           <h3 class=" text-xl font-semibold text-gray-900">
             {'Nuevo proveedor'}
           </h3>
+        </svelte:fragment>
+        <svelte:fragment slot="fields">
           <TextInput
             label="Nombre"
             field="username"
@@ -72,6 +80,7 @@
             field="email"
             unselectedLabel="Ingrese su email"
             form={registerSForm}
+            autocomplete="pruebas@gmail.com"
           />
           <SelectInput
             label="Tipo"
@@ -83,13 +92,13 @@
               { value: DogServiceType.WALKING, text: 'Paseador' },
             ]}
           />
-          <TextInput
+          <TextAreaInput
             label="Areas"
             field="areas"
             unselectedLabel="Describa las areas en las que trabaja"
             form={registerSForm}
           />
-          <TextInput
+          <TextAreaInput
             label="Descripcion"
             field="description"
             unselectedLabel="Ingrese una descripcion"

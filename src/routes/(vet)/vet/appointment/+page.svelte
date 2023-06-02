@@ -34,7 +34,8 @@
   //   client: undefined,
   // };
 
-  // const filterAppointments = (appointments) => {
+  // const filterAppointments = () => {
+  //   let appointments = data.appointments;
   //   if (actualFilters.state !== undefined) {
   //     appointments = appointments.filter(
   //       (appointment) => appointment.state === actualFilters.state
@@ -73,66 +74,61 @@
   <title>Turnos</title>
 </svelte:head>
 <!-- 
-<div class="flex flex-row justify-evenly">
+<div class=" grid mt-2 gap-2 grid-cols-1 md:grid-cols-2 md:gap-x-8">
   <DateInput
-      bind:value={actualFilters.from}
-      label="Desde"
-      field="from"
-      unsetLabel="Seleccione una fecha"
-      max={untilAux
-        ? `${untilAux.getFullYear()}-${untilAux.getMonth()}-${untilAux.getDate()}`
-        : undefined}
-      form={filterForm}
-    />
-    <DateInput
-      bind:value={actualFilters.until}
-      label="Hasta"
-      field="until"
-      unsetLabel="Seleccione una fecha"
-      min={fromAux
-        ? `${fromAux.getFullYear()}-${fromAux.getMonth()}-${fromAux.getDate()}`
-        : undefined}
-      form={filterForm}
-    />
-    <SelectInput
-      bind:value={actualFilters.state}
-      label="Horario"
-      field="daytime"
-      unselectedLabel="Seleccione un horario"
-      form={filterForm}
-      options={[
-        { value: Daytime.MORNING, label: 'Mañana' },
-        { value: Daytime.AFTERNOON, label: 'Tarde' },
-      ]}
-    />
-    <SelectInput
-      bind:value={actualFilters.reason}
-      label="Motivo"
-      field="reason"
-      unselectedLabel="Seleccione un motivo"
-      form={filterForm}
-      options={[
-        { value: AppointmentReason.VACCINE, label: 'Vacuna' },
-        { value: AppointmentReason.ANTIRABIC, label: 'Antirrábica' },
-        { value: AppointmentReason.DEWORMING, label: 'Desparasitación' },
-        { value: AppointmentReason.CASTRATION, label: 'Castración' },
-        {
-          value: AppointmentReason.GENERAL_CONSULTATION,
-          label: 'Consulta general',
-        },
-      ]}
-    />
-    <EmailInput
-      bind:value={actualFilters.client}
-      label="Cliente"
-      field="email"
-      unselectedLabel="Seleccione uno de sus perros"
-      form={filterForm}
-      options={clients}
-    />
-    <div class="mt-6 flex items-center justify-around gap-x-6">
-      <button on:click={() => filterAppointments()}>Filtrar</SubmitButton>
-    </div>
+    bind:value={actualFilters.from}
+    label="Desde"
+    field="from"
+    unsetLabel="Seleccione una fecha"
+    max={untilAux
+      ? `${untilAux.getFullYear()}-${untilAux.getMonth()}-${untilAux.getDate()}`
+      : undefined}
+  />
+  <DateInput
+    bind:value={actualFilters.until}
+    label="Hasta"
+    field="until"
+    unsetLabel="Seleccione una fecha"
+    min={fromAux
+      ? `${fromAux.getFullYear()}-${fromAux.getMonth()}-${fromAux.getDate()}`
+      : undefined}
+  />
+  <SelectInput
+    bind:value={actualFilters.state}
+    label="Horario"
+    field="daytime"
+    unselectedLabel="Seleccione un horario"
+    options={[
+      { value: Daytime.MORNING, label: 'Mañana' },
+      { value: Daytime.AFTERNOON, label: 'Tarde' },
+    ]}
+  />
+  <SelectInput
+    bind:value={actualFilters.reason}
+    label="Motivo"
+    field="reason"
+    unselectedLabel="Seleccione un motivo"
+    options={[
+      { value: AppointmentReason.VACCINE, label: 'Vacuna' },
+      { value: AppointmentReason.ANTIRABIC, label: 'Antirrábica' },
+      { value: AppointmentReason.DEWORMING, label: 'Desparasitación' },
+      { value: AppointmentReason.CASTRATION, label: 'Castración' },
+      {
+        value: AppointmentReason.GENERAL_CONSULTATION,
+        label: 'Consulta general',
+      },
+    ]}
+  />
+  <EmailInput
+    bind:value={actualFilters.client}
+    label="Cliente"
+    field="email"
+    unselectedLabel="Seleccione uno de sus perros"
+    options={clients}
+  />
+  <div class="mt-6 flex items-center justify-around gap-x-6">
+    <button on:click={() => filterAppointments()}>Filtrar</button>
+  </div>
 </div> -->
 
 <div
@@ -148,7 +144,7 @@
 {:else}
   <div class="m-12">
     <table class="w-full text-l text-black-500 text-center">
-      <thead class="text-l text-black uppercase bg-orange-200">
+      <thead class="text-l text-black uppercase bg-teal-400">
         <tr>
           {#each tableHeaders as header}
             <th>{header}</th>
@@ -187,29 +183,6 @@
                   href="/vet/appointment/complete/{appointment.id}"
                   class="btn variant-filled btn-sm">Efectivizar</a
                 >
-                <!-- <Modal
-                  bind:open={formModal}
-                  size="xs"
-                  autoclose={false}
-                  class="w-full"
-                >
-                  <form
-                    action="?/complete"
-                    method="post"
-                    class="flex flex-col space-y-6"
-                  >
-                    <input
-                      type="text"
-                      name="appointmentId"
-                      value={appointment.id}
-                      class="hidden"
-                    />
-                    <input type="text" name="observation" />
-                    <button type="submit" class="btn variant-filled btn-sm"
-                      >Efectivizar</button
-                    >
-                  </form>
-                </Modal> -->
               {:else if appointment.state == AppointmentState.VET_REQUEST}
                 <form action="?/cancel" method="post">
                   <input

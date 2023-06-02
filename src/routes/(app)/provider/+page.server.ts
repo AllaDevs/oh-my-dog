@@ -9,6 +9,7 @@ export const load: PageServerLoad = async (event) => {
     const providers = await prisma.dogServiceProvider.findMany({
         select: {
             id: true,
+            email: true,
             username: true,
             lastname: true,
             workingHour: true,
@@ -22,5 +23,3 @@ export const load: PageServerLoad = async (event) => {
 
     return { walkers, sitters };
 };
-
-

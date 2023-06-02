@@ -13,7 +13,8 @@ export const load: PageServerLoad = async (event) => {
             lastname: true,
             workingHour: true,
             type: true,
-            areas: true
+            areas: true,
+            email: true
         }
     });
 
@@ -22,4 +23,3 @@ export const load: PageServerLoad = async (event) => {
 
     return { walkers, sitters };
 };
-

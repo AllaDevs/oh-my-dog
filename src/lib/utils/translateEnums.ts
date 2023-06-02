@@ -1,4 +1,4 @@
-import { AppointmentReason, AppointmentState, Daytime, DogSex, DogSize } from '$lib/enums';
+import { AppointmentReason, AppointmentState, Day, Daytime, DogSex, DogSize } from '$lib/enums';
 
 
 class EnumTranslationError extends Error {
@@ -82,6 +82,27 @@ function tDogSize(size: DogSize) {
     }
 }
 
+function tDay(day: Day) {
+    switch (day) {
+        case Day.MONDAY:
+            return 'Lunes';
+        case Day.TUESDAY:
+            return 'Martes';
+        case Day.WEDNESDAY:
+            return 'Miércoles';
+        case Day.THURSDAY:
+            return 'Jueves';
+        case Day.FRIDAY:
+            return 'Viernes';
+        case Day.SATURDAY:
+            return 'Sábado';
+        case Day.SUNDAY:
+            return 'Domingo';
+        default:
+            throw new EnumTranslationError(`Invalid day: ${day}`);
+    }
+}
+
 
 const translationEnum = {
     AppointmentReason: tAppointmentReason,
@@ -89,7 +110,8 @@ const translationEnum = {
     Daytime: tDayTime,
     DogSex: tDogSex,
     DogSize: tDogSize,
+    Day: tDay
 };
 
 export default translationEnum;
-export { translationEnum as te }
+export { translationEnum as te };

@@ -1,21 +1,10 @@
 <script lang="ts">
-  import { te } from '$lib/utils/translateEnums';
-  import type { WorkingHour } from '@prisma/client';
-
   export let id: string;
   export let username: string;
   export let lastname: string;
   // export let workingHour: WorkingHour[];
   export let email: string;
-  export let areas: string;
-  export let workingHours: WorkingHour[];
   // turn areas to string and map them with days
-  function workingHourString(workingHour: WorkingHour) {
-    let string = '';
-    string += te.Day(workingHour.day) + ': ';
-    string += workingHour.start.getHours() + ' - ' + workingHour.end.getHours();
-    return string;
-  }
 </script>
 
 <a href="provider/{id}" class="grid h-full">
@@ -27,11 +16,6 @@
       {lastname}
     </h5>
     <p><b>Mail:</b> {email}</p>
-    <p class="max-w-xl break-words"><b>Areas:</b> {areas}</p>
-    <p><b>Horarios:</b></p>
-    {#each workingHours as hour}
-      <p>{workingHourString(hour)}</p>
-    {/each}
     <!-- {#each weekdayHours as day}
     <p><b>{day.name}:</b> {each day.hours as hour}{hour}{/each}</p>
   {/each} -->
