@@ -1,6 +1,7 @@
 import { changedAppoinmentHTML, systemEmail } from '$lib/email';
 import { AppointmentState, Daytime } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
+import { prettyDate } from '$lib/utils/functions';
 import { te } from '$lib/utils/translateEnums';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
@@ -68,7 +69,7 @@ export const actions: Actions = {
         });
         if (!oldAppointment) return message(form, "Turno no encontrado", { status: 404 });
 
-        if (oldAppointment.date == form.data.date && oldAppointment.daytime == form.data.daytime) {
+        if ((oldAppointment.date === form.data.date) && (oldAppointment.daytime === form.data.daytime)) {
             return message(form, "No puede solicitarse un cambio para el mismo día en el mismo horario!", { status: 400 });
         };
 
@@ -98,9 +99,9 @@ export const actions: Actions = {
         await systemEmail(
             { name: newAppointment.client.username, address: newAppointment.client.email },
             'Propuesta de cambio',
-            `Hola ${newAppointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${newAppointment.date.toLocaleDateString()} a la ${te.Daytime(newAppointment.daytime)}.
-            Se ha generado una propuesta de cambio para el día ${form.data.date.toLocaleDateString()} a la ${te.Daytime(form.data.daytime)}, por favor, ingresa a tu cuenta para aceptarla o rechazarla.`,
-            changedAppoinmentHTML(newAppointment.client.username, newAppointment.date.toLocaleDateString(), te.Daytime(newAppointment.daytime), form.data.date.toLocaleDateString(), te.Daytime(form.data.daytime), form.data.message)
+            `Hola ${newAppointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${prettyDate(newAppointment.date)} a la ${te.Daytime(newAppointment.daytime)}.
+            Se ha generado una propuesta de cambio para el día ${prettyDate(form.data.date)} a la ${te.Daytime(form.data.daytime)}, por favor, ingresa a tu cuenta para aceptarla o rechazarla.`,
+            changedAppoinmentHTML(newAppointment.client.username, prettyDate(newAppointment.date), te.Daytime(newAppointment.daytime), prettyDate(form.data.date), te.Daytime(form.data.daytime), form.data.message)
         );
 
         throw redirect(303, '/vet/appointment');

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { AppointmentState } from '$lib/enums';
+  import { prettyDate } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
 
   export let data;
@@ -41,16 +42,16 @@
       {#each data.clientAppointments as appointment}
         <tr class="border-b bg-teal-100/75 hover:bg-teal-200">
           <td>{appointment.id}</td>
-          <td>{appointment.createdAt.toLocaleDateString()}</td>
-          <td>{appointment.updatedAt.toLocaleDateString()}</td>
-          <td>{appointment.date.toLocaleDateString()}</td>
+          <td>{prettyDate(appointment.createdAt)}</td>
+          <td>{prettyDate(appointment.updatedAt)}</td>
+          <td>{prettyDate(appointment.date)}</td>
           <td>{te.Daytime(appointment.daytime)}</td>
           <td>{te.AppointmentReason(appointment.reason)}</td>
           <td>{te.AppointmentState(appointment.state)}</td>
           <td
-            >{`${
-              appointment.dog.name
-            } - ${appointment.dog.birthdate.toLocaleDateString()}`}</td
+            >{`${appointment.dog.name} - ${prettyDate(
+              appointment.dog.birthdate
+            )}`}</td
           >
           <td class="flex flex-row justify-around mr-3 ml-1">
             {#if appointment.state == AppointmentState.VET_REQUEST}

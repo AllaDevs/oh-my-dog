@@ -1,7 +1,9 @@
 <script lang="ts">
   import { AppointmentState } from '$lib/enums';
+  import { prettyDate } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
 
+  let formModal = false;
   export let data;
 
   const tableHeaders = [
@@ -145,7 +147,7 @@
   </p>
 {:else}
   <div class="m-12">
-    <table class="w-full text-l text-left text-black-500">
+    <table class="w-full text-l text-black-500 text-center">
       <thead class="text-l text-black uppercase bg-orange-200">
         <tr>
           {#each tableHeaders as header}
@@ -157,18 +159,18 @@
         {#each data.appointments as appointment}
           <tr class="border-b bg-teal-100/75 hover:bg-teal-200">
             <td>{appointment.id}</td>
-            <td>{appointment.createdAt.toLocaleDateString()}</td>
+            <td>{prettyDate(appointment.createdAt)}</td>
             <td>{appointment.client.email}</td>
-            <td>{appointment.date.toLocaleDateString()}</td>
+            <td>{prettyDate(appointment.date)}</td>
             <td>{te.Daytime(appointment.daytime)}</td>
             <td>{te.AppointmentReason(appointment.reason)}</td>
             <td>{te.AppointmentState(appointment.state)}</td>
             <td
-              >{`${
-                appointment.dog.name
-              } - ${appointment.dog.birthdate.toLocaleDateString()}`}</td
+              >{`${appointment.dog.name} - ${prettyDate(
+                appointment.dog.birthdate
+              )}`}</td
             >
-            <td class="flex flex-row justify-around mr-3 ml-1">
+            <td class="flex flex-row justify-around items-center">
               {#if appointment.state == AppointmentState.CONFIRMED}
                 <form action="?/cancel" method="post">
                   <input
@@ -181,17 +183,33 @@
                     >Cancelar</button
                   >
                 </form>
-                <form action="?/complete" method="post">
-                  <input
-                    type="text"
-                    name="appointmentId"
-                    value={appointment.id}
-                    class="hidden"
-                  />
-                  <button type="submit" class="btn variant-filled btn-sm"
-                    >Efectivizar</button
+                <a
+                  href="/vet/appointment/complete/{appointment.id}"
+                  class="btn variant-filled btn-sm">Efectivizar</a
+                >
+                <!-- <Modal
+                  bind:open={formModal}
+                  size="xs"
+                  autoclose={false}
+                  class="w-full"
+                >
+                  <form
+                    action="?/complete"
+                    method="post"
+                    class="flex flex-col space-y-6"
                   >
-                </form>
+                    <input
+                      type="text"
+                      name="appointmentId"
+                      value={appointment.id}
+                      class="hidden"
+                    />
+                    <input type="text" name="observation" />
+                    <button type="submit" class="btn variant-filled btn-sm"
+                      >Efectivizar</button
+                    >
+                  </form>
+                </Modal> -->
               {:else if appointment.state == AppointmentState.VET_REQUEST}
                 <form action="?/cancel" method="post">
                   <input

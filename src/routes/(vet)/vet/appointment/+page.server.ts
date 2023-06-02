@@ -1,7 +1,8 @@
 import { cancelledAppoinmentHTML, confirmedAppoinmentHTML, rejectedAppoinmentHTML, systemEmail } from '$lib/email';
 import { prisma } from '$lib/server/prisma';
+import { prettyDate } from '$lib/utils/functions';
 import { te } from '$lib/utils/translateEnums';
-import { AppointmentReason, AppointmentState } from '@prisma/client';
+import { AppointmentState } from '@prisma/client';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
@@ -10,6 +11,11 @@ import type { Actions, PageServerLoad } from './$types';
 
 const schema = z.object({
     appointmentId: z.string()
+});
+
+const recordSchema = z.object({
+    appointmentId: z.string(),
+    observation: z.string()
 });
 
 
@@ -78,9 +84,9 @@ export const actions: Actions = {
         await systemEmail(
             { name: appointment.client.username, address: appointment.client.email },
             'Turno aceptado!',
-            `Hola ${appointment.client.username}. Queríamos informarte que tu pedido de turno para el día ${appointment.date.toLocaleDateString()} ha sido confirmado!
+            `Hola ${appointment.client.username}. Queríamos informarte que tu pedido de turno para el día ${prettyDate(appointment.date)} ha sido confirmado!
             Te esperamos a la ${te.Daytime(appointment.daytime)}.`,
-            confirmedAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), te.Daytime(appointment.daytime))
+            confirmedAppoinmentHTML(appointment.client.username, prettyDate(appointment.date), te.Daytime(appointment.daytime))
         );
     },
     reject: async ({ request, locals, url }) => {
@@ -114,9 +120,9 @@ export const actions: Actions = {
         await systemEmail(
             { name: appointment.client.username, address: appointment.client.email },
             'Turno rechazado',
-            `Hola ${appointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${appointment.date.toLocaleDateString()} a la ${te.Daytime(appointment.daytime)}, el mismo ha sido rechazado.
+            `Hola ${appointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${prettyDate(appointment.date)} a la ${te.Daytime(appointment.daytime)}, el mismo ha sido rechazado.
             Por favor pedí un turno para una nueva fecha y nos pondremos en contacto!`,
-            rejectedAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), te.Daytime(appointment.daytime))
+            rejectedAppoinmentHTML(appointment.client.username, prettyDate(appointment.date), te.Daytime(appointment.daytime))
         );
 
     },
@@ -148,60 +154,9 @@ export const actions: Actions = {
         await systemEmail(
             { name: appointment.client.username, address: appointment.client.email },
             'Turno cancelado',
-            `Hola ${appointment.client.username}. Queríamos informarte que lamentablemente hemos tenido que cancelar tu turno para el ${appointment.date.toLocaleDateString()} a la ${te.Daytime(appointment.daytime)}.
+            `Hola ${appointment.client.username}. Queríamos informarte que lamentablemente hemos tenido que cancelar tu turno para el ${prettyDate(appointment.date)} a la ${te.Daytime(appointment.daytime)}.
             Por favor pedí un nuevo turno y nos pondremos en contacto!`,
-            cancelledAppoinmentHTML(appointment.client.username, appointment.date.toLocaleDateString(), te.Daytime(appointment.daytime))
+            cancelledAppoinmentHTML(appointment.client.username, prettyDate(appointment.date), te.Daytime(appointment.daytime))
         );
-    },
-    complete: async ({ request, locals, url }) => {
-        const form = await superValidate(request, schema);
-        if (!form.valid) {
-            console.error(form);
-            return fail(400, { form });
-        }
-        // Si el turno es para vacuna y tiene menos de cuatro meses, se da un turno dentro de 21 días exacto, creandolo y mandando mail al cliente
-        // Si el turno es para vacuna y el perro tiene mas de cuatro meses, se da un turno dentro de un año exacto, creandolo y mandando mail al cliente
-        const appointment = await prisma.appointment.update({
-            where: {
-                id: form.data.appointmentId
-            },
-            data: {
-                state: AppointmentState.DONE
-            },
-            select: {
-                date: true,
-                daytime: true,
-                reason: true,
-                dogId: true,
-                clientId: true,
-                dog: {
-                    select: {
-                        birthdate: true
-                    }
-                }
-            }
-        });
-        if (appointment.reason == AppointmentReason.VACCINE) {
-            // Si el turno es para vacuna y el perro tiene mas de cuatro meses, se da un turno dentro de un año exacto, creandolo y mandando mail al cliente
-            const today = new Date();
-            today.setMonth(today.getMonth() - 4);
-            let newAppointmentDate: Date;
-            if (appointment.dog.birthdate.getTime() > today.getTime()) {
-                newAppointmentDate = new Date(appointment.date.getFullYear() + 1, appointment.date.getMonth(), appointment.date.getDate());
-            } else {
-                newAppointmentDate = new Date(appointment.date.getFullYear(), appointment.date.getMonth(), appointment.date.getDate());
-                newAppointmentDate.setDate(newAppointmentDate.getDate() + 21);
-            }
-            const newAppointment = await prisma.appointment.create({
-                data: {
-                    date: newAppointmentDate,
-                    daytime: appointment.daytime,
-                    reason: AppointmentReason.GENERAL_CONSULTATION,
-                    state: AppointmentState.CONFIRMED,
-                    dogId: appointment.dogId,
-                    clientId: appointment.clientId
-                }
-            });
-        }
     }
 };

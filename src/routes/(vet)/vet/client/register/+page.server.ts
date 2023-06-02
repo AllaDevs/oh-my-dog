@@ -66,7 +66,7 @@ export const actions = {
                 dogsData.push({
                     name: dog.name,
                     size: dog.size,
-                    birthdate: dog.birthdate,
+                    birthdate: new Date(dog.birthdate),
                     sex: dog.sex,
                     color: dog.color,
                     observation: dog.observation,

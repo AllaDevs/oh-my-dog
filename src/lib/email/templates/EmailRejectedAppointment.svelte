@@ -4,9 +4,6 @@
   export let username: string;
   export let date: string;
   export let daytime: string;
-  //'Turno rechazado',
-  //`Hola ${client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${appointment.date.toLocaleDateString()} a la ${dayTimeMapper(appointment.daytime)}, el mismo ha sido rechazado.
-  // Por favor pedí un turno para una nueva fecha y nos pondremos en contacto!`
 </script>
 
 <EmailFrame title="Veterinaria OhMyDog">

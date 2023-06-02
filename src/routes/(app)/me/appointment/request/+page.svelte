@@ -3,6 +3,7 @@
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import { AppointmentReason, Daytime } from '$lib/enums';
+  import { prettyDate } from '$lib/utils/functions.js';
   import { dateProxy, superForm } from 'sveltekit-superforms/client';
 
   export let data;
@@ -12,7 +13,7 @@
 
   const clientDogs = data.clientDogs.map((dog) => ({
     value: dog.id,
-    text: `${dog.name} - ${dog.birthdate.toLocaleDateString()}`,
+    text: `${dog.name} - ${prettyDate(dog.birthdate)}`,
   }));
   const formDate = dateProxy(form, 'date', { format: 'date' });
   const today = new Date()

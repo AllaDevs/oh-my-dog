@@ -1,10 +1,10 @@
 import { MAX_IMAGE_SIZE } from '$lib/config';
+import type { Breed } from '@prisma/client';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { FieldPath, UnwrapEffects, Validation } from 'sveltekit-superforms/index';
 import { setError } from 'sveltekit-superforms/server';
 import type { z } from 'zod';
 import type { PathType } from './types';
-import type { Breed } from '@prisma/client';
 
 
 export function handleLoginRedirect(
@@ -44,7 +44,7 @@ export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData:
     if (!imageFile) {
         return null;
     }
-    
+
     if (!(imageFile instanceof File)) {
         setError(form, field, 'Imagen no válido');
         return null;
@@ -119,10 +119,23 @@ export function mutateToShortString<T extends Record<string, unknown> & Record<K
     return obj as { [k in keyof T]: T[k] } & Record<K, string>;
 }
 
-export function breedsToInputOptions(breeds: Breed[]): { value: string; text: string }[] {
+export function breedsToInputOptions(breeds: Breed[]): { value: string; text: string; }[] {
     const mappedBreeds = [];
-  for (const breed of breeds) {
-    mappedBreeds.push({ value: breed.id, text: breed.name });
-  }
-  return mappedBreeds
+    for (const breed of breeds) {
+        mappedBreeds.push({ value: breed.id, text: breed.name });
+    }
+    return mappedBreeds;
+}
+
+export function toUTC(date: Date): Date {
+    const offset = date.getTimezoneOffset();
+    date.setMinutes(date.getMinutes() - offset);
+    return date;
+}
+
+export function prettyDate(date: Date): string {
+    return date.toISOString()
+        .split('T')[0]
+        .split('-')
+        .join('/');
 }

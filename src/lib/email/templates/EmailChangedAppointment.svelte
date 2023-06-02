@@ -24,6 +24,8 @@
       >
       a la <b>{daytime}</b>.
     </p>
+    <p>Mensaje del veterinario:</p>
+    <p><i>"{message}"</i></p>
     <p>
       Se ha generado una propuesta de cambio para el día {newDate} a la {newDaytime},
       por favor, ingresa a tu cuenta para aceptarla o rechazarla.
@@ -33,7 +35,5 @@
   <footer class="bg-gray-200 py-4 text-white">
     <p class="text-center">Atentamente,</p>
     <p class="text-center">El equipo de OhMyDog</p>
-    <p>Mensaje del veterinario:</p>
-    <p><i>"{message}"</i></p>
   </footer>
 </EmailFrame>
