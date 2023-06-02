@@ -1,6 +1,6 @@
 <script lang="ts">
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import TextInput from '$lib/components/form/TextInput.svelte';
+  import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
   import { prettyDate } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
   import { superForm } from 'sveltekit-superforms/client';
@@ -31,7 +31,7 @@
 <form method="POST" class=" max-w-sm">
   <div class="space-y-12 space-x-12 flex items-center justify-around">
     <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
-      <TextInput
+      <TextAreaInput
         label="Observaciones"
         field="observation"
         unselectedLabel="Observaciones del turno"

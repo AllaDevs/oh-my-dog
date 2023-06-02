@@ -35,7 +35,7 @@
   </div>
   <div class=" flex flex-col gap-2">
     <input
-      type="day"
+      type="select"
       id={String(field)}
       name={String(field)}
       autocomplete="off"
