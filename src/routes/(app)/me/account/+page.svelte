@@ -80,7 +80,7 @@
                 Regresar a Mi cuenta
               </a>
               <SubmitButton action="?/authUpdate">
-                Actualizar autenticacion
+                Editar cuenta
               </SubmitButton>
             </div>
           </svelte:fragment>

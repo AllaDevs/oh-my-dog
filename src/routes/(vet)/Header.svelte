@@ -31,9 +31,10 @@
     <a
       href={onVetHome ? '#main' : '/vet'}
       aria-current={onVetHome ? 'page' : false}
-      class="  rounded px-2 py-1 underline-offset-2 hover:bg-teal-200 hover:underline"
+      class=" px-4 flex justify-center items-center py-1 underline-offset-2 rounded-md hover:underline"
     >
-      <strong class="text-xl">¡Oh my dog!</strong>
+      <img src="/bone.png" alt="¡Oh my dog! logo" class="h-10 w-10" />
+      <strong class="text-xl mx-1">¡Oh my dog!</strong>
     </a>
   </div>
 

@@ -3,6 +3,7 @@
   import { superForm } from 'sveltekit-superforms/client';
 
   import ClientUpdateForm from '$lib/components/client/ClientUpdateForm.svelte';
+  import A from '$lib/components/element/A.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
 
   export let data;
@@ -33,12 +34,23 @@
 
   <article class="flex flex-col gap-8 px-4 justify-around lg:flex-row">
     <section class="grid">
-      <form method="POST" action="?/update" use:updateSForm.enhance class=" my-auto">
-        <ClientUpdateForm sForm={updateSForm} >
+      <form
+        method="POST"
+        action="?/update"
+        use:updateSForm.enhance
+        class=" my-auto"
+      >
+        <ClientUpdateForm sForm={updateSForm}>
           <svelte:fragment slot="title">
             <h3 class=" text-lg font-semibold text-gray-900">
               Informacion del cliente
             </h3>
+            <a
+              href="/vet/appointment/{data.client.id}"
+              class=" hover:underline underline-offset-2 rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+            >
+              Ver turnos
+            </a>
           </svelte:fragment>
           <svelte:fragment slot="actions">
             <button
@@ -46,7 +58,7 @@
               on:click={() => updateSForm.reset()}
               class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
             >
-              Cancelar
+              Restaurar
             </button>
             <SubmitButton>Actualizar</SubmitButton>
           </svelte:fragment>
@@ -55,10 +67,11 @@
     </section>
     <section class="flex flex-col gap-4">
       <div class="flex justify-between">
-        <h3 class=" text-lg font-semibold text-gray-900">
-          Perros del cliente
-        </h3>
-        <a href="/vet/client/{data.client.id}/new_dog" class=" hover:underline underline-offset-2 rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 ">
+        <h3 class=" text-lg font-semibold text-gray-900">Perros del cliente</h3>
+        <a
+          href="/vet/client/{data.client.id}/new_dog"
+          class=" hover:underline underline-offset-2 rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+        >
           Nuevo perro
         </a>
       </div>
@@ -82,12 +95,14 @@
                     {dog.observation}
                   </p>
                 {/if}
-                <a
+                <A
                   href="/vet/client/{data.client.id}/dog/{dog.id}"
-                  class="btn variant-filled btn-sm"
+                  color="teal"
+                  intensity={600}
+                  opacity={80}
                 >
-                  Ver
-                </a>
+                  Ver perfil
+                </A>
               </div>
             </div>
           </li>

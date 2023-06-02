@@ -49,7 +49,7 @@
         href="/me/account"
         class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
       >
-        Actualizar autenticacion
+        Editar cuenta
       </a>
     </svelte:fragment>
   </Fieldset>
