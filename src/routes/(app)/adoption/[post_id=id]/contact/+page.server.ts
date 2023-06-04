@@ -61,10 +61,10 @@ export const load = (async (event) => {
         throw error(403, 'No puedes contactarte con tu propio post de adopción');
     }
 
-    const form = await superValidate(event.request, anonymousContactSchema, { id: 'anonymousContact' });
+    const form = await superValidate(event.request, anonymousContactSchema, { id: 'anonymous' });
     return {
+        form: form,
         post: post as DiscriminatedAdoptionPost,
-        anonymousForm: form
     };
 }) satisfies PageServerLoad;
 
@@ -142,7 +142,7 @@ export const actions = {
         return { form };
     },
     anonymousContact: async ({ request, url, params }) => {
-        const form = await superValidate(request, anonymousContactSchema, { id: 'anonymousContact' });
+        const form = await superValidate(request, anonymousContactSchema, { id: 'anonymous' });
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });

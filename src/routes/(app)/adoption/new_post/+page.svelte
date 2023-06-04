@@ -1,14 +1,13 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { DogSex, DogSize } from '$lib/enums.js';
-  import type { SubmitFunction } from '@sveltejs/kit';
-  import toast from 'svelte-french-toast';
-  import { superForm } from 'sveltekit-superforms/client';
-
   import DateInput from '$lib/components/form/DateInput.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
+  import { DogSex, DogSize } from '$lib/enums.js';
+  import type { SubmitFunction } from '@sveltejs/kit';
+  import toast from 'svelte-french-toast';
+  import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
 
@@ -33,7 +32,7 @@
       if (form.valid) {
         toast.success('Perro para adoción registrado con exito');
       } else if (form.errors._errors) {
-        toast.error(String(form.errors._errors));
+        toast.error(String(form.errors._errors), { duration: 10000 });
       }
     },
   });
@@ -49,7 +48,7 @@
             1
           );
           data.clientDogs = data.clientDogs;
-          toast.success('Perro para adoción registrado con exito');
+          toast.success('Perro para adopción registrado con exito');
           break;
         }
         case 'failure': {
@@ -89,7 +88,11 @@
       <ul class="flex flex-col justify-center">
         {#each data.clientDogs as dog (dog.id)}
           <li>
-            <form method="POST" action="?/existingDog" use:enhance={enhanceMyDogForm}>
+            <form
+              method="POST"
+              action="?/existingDog"
+              use:enhance={enhanceMyDogForm}
+            >
               <input type="text" name="dogId" value={dog.id} hidden />
               <input type="text" value={dog.name} />
               <SubmitButton>Dar en adopcion</SubmitButton>

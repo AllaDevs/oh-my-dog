@@ -1,20 +1,16 @@
 <script lang="ts">
-  import type { AdoptionPostDiscriminated } from '$lib/types/posts.js';
-
   import AdoptionPostCard from '$lib/components/dog/AdoptionPostCard.svelte';
+  import { PostState } from '$lib/enums.js';
 
   export let data;
 
-  let otherPosts: AdoptionPostDiscriminated[] = [];
-  let myPosts: AdoptionPostDiscriminated[] = [];
+  let posts: typeof data.posts = [];
   for (const post of data.posts) {
-    if (post.publisherId === data.client?.id) {
-      myPosts.push(post);
-    } else {
-      otherPosts.push(post);
+    if (post.state === PostState.RESOLVED) {
+      continue;
     }
+    posts.push(post);
   }
-  let posts = [...data.posts];
 </script>
 
 <svelte:head>
@@ -42,13 +38,12 @@
           </a>
         {/if}
       </div>
-      <ul class="flex gap-5 flex-col">
+      <ul class=" grid gap-4 md:grid-cols-2">
         {#each posts as post (post.id)}
-          {@const dog = post.registered ? post.registeredDog : post.temporalDog}
           <li>
             <AdoptionPostCard
               postId={post.id}
-              {dog}
+              dog={post.dog}
               owned={post.publisherId === data.client?.id}
             />
           </li>

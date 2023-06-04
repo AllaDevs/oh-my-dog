@@ -5,7 +5,6 @@
 
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import DateInput from '$lib/components/styledInput/DateInput.svelte';
-  import TelInput from '$lib/components/styledInput/TelInput.svelte';
   import TextInput from '$lib/components/styledInput/TextInput.svelte';
 
   export let post: AdoptionPostDiscriminatedComplete;
@@ -83,12 +82,6 @@
         label="Apellido"
         field="lastname"
         value={author.lastname}
-        readonly={true}
-      />
-      <TelInput
-        label="Telefono"
-        field="phone"
-        value={author.phone}
         readonly={true}
       />
     </svelte:fragment>

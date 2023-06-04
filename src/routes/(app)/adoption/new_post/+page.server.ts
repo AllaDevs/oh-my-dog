@@ -27,7 +27,8 @@ export const load = (async ({ locals, url }) => {
         prisma.registeredDog.findMany({
             where: {
                 ownerId: user.userId,
-                adoptionPost: null
+                adoptionPost: null,
+                archived: false
             }
         })
     ]);
