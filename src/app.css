@@ -10,13 +10,13 @@
     }
     /* Scrollbar For Chrome, EDGE, Opera, Others */
     .scrollbar::-webkit-scrollbar {
-        @apply w-2 rounded
+        @apply w-2 h-2 rounded;
     }
     .scrollbar::-webkit-scrollbar-track { 
-        @apply bg-teal-50
+        @apply bg-teal-50;
     }
     .scrollbar::-webkit-scrollbar-thumb { 
-        @apply bg-teal-600 rounded
+        @apply bg-teal-600 rounded;
     }
 }
 
@@ -31,6 +31,8 @@
 :root {
     font-family: 'Inter', sans-serif;
     --theme-font-family-heading: 'Inter', sans-serif;
+
+    --header-height: 4rem;
 }
 
 html,

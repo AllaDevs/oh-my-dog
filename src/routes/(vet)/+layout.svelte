@@ -1,13 +1,38 @@
 <script lang="ts">
-  import Header from './Header.svelte';
+  import { page } from '$app/stores';
+  import { Header } from '$lib/components/layout';
 
-  export let data;
+  const BASEPATH = '/vet';
+
+  const navLinks = [
+    { href: '/vet/client', text: 'Clientes' },
+    { href: '/vet/appointment', text: 'Turnos' },
+    { href: '/vet/donation', text: 'Donaciones' },
+    { href: '/vet/provider', text: 'Paseadores y Cuidadores' },
+    { href: '/vet/subsidiary', text: 'Sucursales' },
+    { href: '/vet/me', text: 'Cuenta administrativa' },
+  ];
 </script>
 
-<Header user={data.user} />
+<Header homePath={BASEPATH} {navLinks}>
+  <svelte:fragment slot="right">
+    {#if $page.data.user}
+      <form method="POST" action="/vet/logout" class="header-item">
+        <button
+          type="submit"
+          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
+        >
+          Cerrar Sesión
+        </button>
+      </form>
+    {/if}
+  </svelte:fragment>
+</Header>
 
-<slot />
+<div class=" pt-[--header-height]">
+  <slot />
+</div>
 
-<footer>
-  <!-- temporal placeholder -->
-</footer>
+<!-- <footer>
+  footer placeholder
+</footer> -->

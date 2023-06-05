@@ -76,7 +76,7 @@ Example:
 -->
 
 <style>
-  div:has(+ div input[required]) label::after {
+  div:has(div input[required]) label::after {
     content: ' *';
     color: red;
   }

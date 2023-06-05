@@ -1,7 +1,7 @@
 <script lang="ts">
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
-  
+
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import Fieldset from '$lib/components/form/Fieldset.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
@@ -10,18 +10,17 @@
 
   export let data;
 
-  const accountSForm = superForm(data.accountForm);
+  const accountSForm = superForm(data.accountForm, { id: 'accountForm' });
 
   const accountAuthSForm = superForm(data.accountAuthForm, {
+    id: 'accountAuthForm',
     invalidateAll: false,
     onUpdated: ({ form }) => {
       if (form.valid) {
         toast.success('Cuenta actualizada con exito', { duration: 3000 });
       } else {
         if (form.errors._errors) {
-          toast.error(String(form.errors._errors), {
-            duration: 5000,
-          });
+          toast.error(String(form.errors._errors), { duration: 5000 });
         }
       }
     },
@@ -29,7 +28,7 @@
 </script>
 
 <svelte:head>
-  <title>Cuenta personal</title>
+  <title>Cuenta administrativa</title>
 </svelte:head>
 
 <main
@@ -93,9 +92,7 @@
               >
                 Cancelar
               </button>
-              <SubmitButton action="?/authUpdate">
-                Editar cuenta
-              </SubmitButton>
+              <SubmitButton action="?/authUpdate">Editar cuenta</SubmitButton>
             </div>
           </svelte:fragment>
         </Fieldset>

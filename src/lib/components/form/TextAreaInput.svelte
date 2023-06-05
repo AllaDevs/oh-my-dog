@@ -58,7 +58,7 @@
 </div>
 
 <style>
-  div:has(+ div textarea[required]) label::after {
+  div:has(div textarea[required]) label::after {
     content: ' *';
     color: red;
   }

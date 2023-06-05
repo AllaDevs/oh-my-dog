@@ -19,7 +19,7 @@
 
   export let form: SuperForm<UnwrapEffects<T>, unknown>;
   export let field: keyof z.infer<T> | FieldPath<z.infer<T>>;
-  export let label = 'Tamaño';
+  export let label = 'Sexo';
   export let readonly = false;
 </script>
 

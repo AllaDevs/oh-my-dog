@@ -1,11 +1,23 @@
 <script lang="ts">
-  import { page } from '$app/stores';
   import { Header, Main } from '$lib/components/layout';
+
+  const BASEPATH = '/dev';
+
+  const navLinks = [
+    { href: `/`, text: 'Site home' },
+    { href: `${BASEPATH}/breed`, text: 'Breeds' },
+    { href: `${BASEPATH}/vet`, text: 'Vets' },
+    // { href: `${BASEPATH}/client`, text: 'Clients' },
+    // { href: `${BASEPATH}/dog`, text: 'Dogs' },
+    // { href: `${BASEPATH}/services`, text: 'Services' },
+  ];
+
+  export let data;
 </script>
 
-<Header homePath="/">
+<Header homePath={BASEPATH} {navLinks}>
   <svelte:fragment slot="right">
-    {#if $page.data.user}
+    {#if data.user}
       <form method="POST" action="/logout" class="header-item">
         <button
           type="submit"
@@ -14,21 +26,11 @@
           Cerrar Sesión
         </button>
       </form>
-    {:else}
-      {@const onLogin = $page.url.pathname === '/login'}
-      <div class="header-item">
-        <a
-          href={onLogin ? '/' : '/login'}
-          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
-        >
-          {onLogin ? 'Inicio' : 'Iniciar Sesión'}
-        </a>
-      </div>
     {/if}
   </svelte:fragment>
 </Header>
 
-<Main centered maxWidth="max-w-sm">
+<Main centered>
   <slot />
 </Main>
 

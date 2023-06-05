@@ -79,7 +79,7 @@
 </div>
 
 <style>
-  div:has(+ div select[required]) label::after {
+  div:has(div select[required]) label::after {
     content: ' *';
     color: red;
   }

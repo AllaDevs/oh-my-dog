@@ -44,5 +44,5 @@ export type AdoptionPostDisc = (
                 breed: Breed;
             },
         }
-    );
-)
+    )
+);

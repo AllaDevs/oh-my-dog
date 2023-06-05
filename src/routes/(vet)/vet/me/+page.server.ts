@@ -31,7 +31,7 @@ export const load = (async (event) => {
     const accountAuthForm = await superValidate(
         { currentEmail: vet.email },
         accountAuthUpdateSchema,
-        { id: 'accountAuthForm' }
+        { id: 'accountAuthForm', errors: false }
     );
 
     return { accountForm, accountAuthForm };
@@ -144,7 +144,7 @@ export const actions = {
                     locals.auth.setSession(session);
                     accountAuthForm.data.currentEmail = newEmail;
                     accountAuthForm.data.newEmail = undefined;
-                    accountAuthForm.data.currentPassword = undefined;
+                    accountAuthForm.data.currentPassword = '';
                     accountAuthForm.data.newPassword = undefined;
                     accountAuthForm.data.newPasswordConfirm = undefined;
                 }
@@ -159,7 +159,7 @@ export const actions = {
                     const key = await auth.useKey('email', currentEmail, newPassword);
                     const session = await auth.createSession(key.userId);
                     locals.auth.setSession(session);
-                    accountAuthForm.data.currentPassword = undefined;
+                    accountAuthForm.data.currentPassword = '';
                     accountAuthForm.data.newPassword = undefined;
                     accountAuthForm.data.newPasswordConfirm = undefined;
                 }

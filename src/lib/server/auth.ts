@@ -151,7 +151,7 @@ export async function updateAccountAuth<T extends Validation<typeof accountAuthU
             locals.auth.setSession(session);
             sForm.data.currentEmail = newEmail;
             sForm.data.newEmail = undefined;
-            sForm.data.currentPassword = undefined;
+            sForm.data.currentPassword = '';
             sForm.data.newPassword = undefined;
             sForm.data.newPasswordConfirm = undefined;
         }
@@ -168,7 +168,7 @@ export async function updateAccountAuth<T extends Validation<typeof accountAuthU
             const key = await auth.useKey('email', currentEmail, newPassword);
             const session = await auth.createSession(key.userId);
             locals.auth.setSession(session);
-            sForm.data.currentPassword = undefined;
+            sForm.data.currentPassword = '';
             sForm.data.newPassword = undefined;
             sForm.data.newPasswordConfirm = undefined;
         }

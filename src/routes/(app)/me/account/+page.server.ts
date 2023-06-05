@@ -26,7 +26,7 @@ export const load = (async (event) => {
     const accountAuthForm = await superValidate(
         { currentEmail: client.email },
         accountAuthUpdateSchema,
-        { id: 'accountAuthForm', }
+        { id: 'accountAuthForm', errors: false }
     );
 
     return { accountAuthForm };
