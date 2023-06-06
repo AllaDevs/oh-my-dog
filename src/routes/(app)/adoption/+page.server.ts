@@ -4,21 +4,24 @@ import type { PageServerLoad } from './$types';
 
 
 export const load = (async () => {
-    const adoptionPosts = await prisma.adoptionPost.findMany({
-        include: {
-            temporalDog: {
-                include: {
-                    breed: true,
-                }
-            },
-            publisher: true,
-            registeredDog: {
-                include: {
-                    breed: true,
+    const [adoptionPosts, breeds] = await prisma.$transaction([
+        prisma.adoptionPost.findMany({
+            include: {
+                temporalDog: {
+                    include: {
+                        breed: true,
+                    }
+                },
+                publisher: true,
+                registeredDog: {
+                    include: {
+                        breed: true,
+                    }
                 }
             }
-        }
-    });
+        }),
+        prisma.breed.findMany()
+    ]);
 
     const posts: AdoptionPostDisc[] = [];
     for (const post of adoptionPosts) {
@@ -30,5 +33,6 @@ export const load = (async () => {
 
     return {
         posts: posts,
+        breeds: breeds
     };
 }) satisfies PageServerLoad;
