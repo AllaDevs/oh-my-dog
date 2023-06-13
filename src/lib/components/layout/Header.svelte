@@ -16,8 +16,8 @@
   $: user = $page.data.user;
 </script>
 
-<header
-  class=" fixed top-0 flex z-10 w-full justify-between bg-teal-100 px-4 h-[--header-height] max-h-[--header-height] overflow-y-auto"
+<div
+  class=" header flex w-full justify-between bg-teal-100 px-4 overflow-y-auto"
 >
   <div>
     <slot name="left">
@@ -48,7 +48,7 @@
             {#each navLinks as { href, text, requiresLogin }}
               {@const current = $page.url.pathname === href}
               {#if !requiresLogin || user}
-                <li class=" p-1 sm:p-2 md:px-4">
+                <li class=" w-max p-1 sm:p-2 md:px-4">
                   <a
                     aria-current={current ? 'page' : false}
                     href={current ? '#main' : href}
@@ -68,14 +68,14 @@
   <div>
     <slot name="right" />
   </div>
-</header>
+</div>
 
 <style lang="postcss">
-  header > div {
+  .header > div {
     @apply flex items-center p-1 sm:p-2;
   }
 
-  header:global(.header-item) {
+  .header:global(.header-item) {
     @apply p-1 sm:p-2;
   }
 

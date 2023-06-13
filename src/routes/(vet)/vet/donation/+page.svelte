@@ -1,17 +1,32 @@
 <script lang="ts">
+  import DonationsTable from '$cmp/donation/DonationsTable.svelte';
+  import Page from '$cmp/layout/Page.svelte';
+  import PageCard from '$cmp/vet/PageCard.svelte';
+
   export let data;
-  data.user
 </script>
 
 <svelte:head>
-  <title>Gestion de donaciones</title>
+  <title>Donaciones</title>
 </svelte:head>
 
-<main id="main" class="mx-auto px-6 py-4 text-red-500">
-  <header>
+<Page classContainer="container mx-auto px-6 py-4" classContentSlot="px-4 py-2">
+  <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Donaciones</h2>
-  </header>
-  <article class="py-2">
-    <p>Sin implementar</p>
-  </article>
-</main>
+  </svelte:fragment>
+
+  <section class="grid gap-4">
+    <h3 class=" text-xl mt-4 lg:mt-10">Campañas de donacion</h3>
+    <div class=" max-w-xs">
+      <PageCard href="/vet/donation/campaign">
+        <h3 slot="header" class="h3">Ver listado</h3>
+        <p slot="content" />
+      </PageCard>
+    </div>
+  </section>
+
+  <section class="grid gap-4">
+    <h3 class=" text-xl mt-4 lg:mt-10">Donaciones generales</h3>
+    <DonationsTable donations={data.generalDonations} />
+  </section>
+</Page>

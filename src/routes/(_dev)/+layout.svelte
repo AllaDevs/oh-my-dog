@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { Header, Main } from '$lib/components/layout';
+  import Header from '$cmp/layout/Header.svelte';
+  import Layout from '$cmp/layout/Layout.svelte';
+  import Page from '$cmp/layout/Page.svelte';
 
   const BASEPATH = '/dev';
 
@@ -15,25 +17,37 @@
   export let data;
 </script>
 
-<Header homePath={BASEPATH} {navLinks}>
-  <svelte:fragment slot="right">
-    {#if data.user}
-      <form method="POST" action="/logout" class="header-item">
-        <button
-          type="submit"
-          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
-        >
-          Cerrar Sesión
-        </button>
-      </form>
-    {/if}
+<Layout>
+  <svelte:fragment slot="header">
+    <Header homePath={BASEPATH} {navLinks}>
+      <svelte:fragment slot="right">
+        {#if data.user}
+          <form method="POST" action="/logout" class="header-item">
+            <button
+              type="submit"
+              class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
+            >
+              Cerrar Sesión
+            </button>
+          </form>
+        {/if}
+      </svelte:fragment>
+    </Header>
   </svelte:fragment>
-</Header>
 
-<Main centered>
-  <slot />
-</Main>
+  <Page classContainer="overflow-y-auto scrollbar">
+    <slot />
+  </Page>
 
-<!-- <footer>
-  footer placeholder
-</footer> -->
+  <svelte:fragment slot="main">
+    <Page classContainer="overflow-y-auto scrollbar">
+      <slot />
+    </Page>
+  </svelte:fragment>
+
+  <!-- <svelte:fragment slot="footer">
+    <div>
+      footer placeholder
+    </div>
+  </svelte:fragment> -->
+</Layout>

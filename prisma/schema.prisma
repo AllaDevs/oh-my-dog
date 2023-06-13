@@ -414,7 +414,7 @@ model DonationCampaign {
 
     name        String
     description String
-    banner      Image
+    banner      Image?
     endDate     DateTime?
     state       DonationCampaignState
     donation    Donation[]
@@ -440,7 +440,7 @@ model Donation {
 }
 
 enum DonationReason {
-    FREE
+    GENERAL
     CAMPAIGN
 }
 

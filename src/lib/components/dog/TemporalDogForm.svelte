@@ -14,7 +14,7 @@
   export let readonly = false;
 </script>
 
-<FieldGroup>
+<FieldGroup cols={3}>
   <svelte:fragment slot="title">
     <slot name="title">
       <h3 class=" text-xl font-semibold text-gray-900">

@@ -1,37 +1,44 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { Header, Main } from '$lib/components/layout';
+  import Header from '$cmp/layout/Header.svelte';
+  import Layout from '$cmp/layout/Layout.svelte';
 </script>
 
-<Header homePath="/">
-  <svelte:fragment slot="right">
-    {#if $page.data.user}
-      <form method="POST" action="/logout" class="header-item">
-        <button
-          type="submit"
-          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
-        >
-          Cerrar Sesión
-        </button>
-      </form>
-    {:else}
-      {@const onLogin = $page.url.pathname === '/login'}
-      <div class="header-item">
-        <a
-          href={onLogin ? '/' : '/login'}
-          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
-        >
-          {onLogin ? 'Inicio' : 'Iniciar Sesión'}
-        </a>
-      </div>
-    {/if}
+<Layout class="[&_*]:scrollbar">
+  <svelte:fragment slot="header">
+    <Header homePath="/">
+      <svelte:fragment slot="right">
+        {#if $page.data.user}
+          <form method="POST" action="/logout" class="header-item">
+            <button
+              type="submit"
+              class=" p-2 font-bold underline-offset-2 hover:underline whitespace-nowrap"
+            >
+              Cerrar Sesión
+            </button>
+          </form>
+        {:else}
+          {@const onLogin = $page.url.pathname === '/login'}
+          <div class="header-item">
+            <a
+              href={onLogin ? '/' : '/login'}
+              class=" p-2 font-bold underline-offset-2 hover:underline whitespace-nowrap"
+            >
+              {onLogin ? 'Inicio' : 'Iniciar Sesión'}
+            </a>
+          </div>
+        {/if}
+      </svelte:fragment>
+    </Header>
   </svelte:fragment>
-</Header>
 
-<Main centered maxWidth="max-w-sm">
-  <slot />
-</Main>
+  <svelte:fragment slot="main">
+    <slot />
+  </svelte:fragment>
 
-<!-- <footer>
-  footer placeholder
-</footer> -->
+  <!-- <svelte:fragment slot="footer">
+    <div>
+      footer placeholder
+    </div>
+  </svelte:fragment> -->
+</Layout>

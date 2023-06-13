@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import Page from '$cmp/layout/Page.svelte';
   import DateInput from '$lib/components/form/DateInput.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
@@ -74,7 +75,76 @@
   <title>Dar en adopcion</title>
 </svelte:head>
 
-<main
+<Page
+  classContainer="container mx-auto max-w-screen-lg p-4"
+  classHeaderSlot="mt-2"
+  classContentSlot="flex flex-col gap-8 px-4 justify-around lg:flex-row"
+>
+  <svelte:fragment slot="pageHeader">
+    <h2 class=" mt-4 text-2xl">Nueva publicaicon de adopcion</h2>
+  </svelte:fragment>
+
+  <section class="">
+    <h3 class="mt-4 text-xl font-semibold">
+      Dar en adopcion un perro registrado
+    </h3>
+    <ul class="flex flex-col justify-center">
+      {#each data.clientDogs as dog (dog.id)}
+        <li>
+          <form
+            method="POST"
+            action="?/existingDog"
+            use:enhance={enhanceMyDogForm}
+          >
+            <input type="text" name="dogId" value={dog.id} hidden />
+            <input type="text" value={dog.name} />
+            <SubmitButton>Dar en adopcion</SubmitButton>
+          </form>
+        </li>
+      {:else}
+        <li>
+          <p class=" text-gray-700">
+            No tienes perros para dar en adopcion en este momento
+          </p>
+        </li>
+      {/each}
+    </ul>
+  </section>
+
+  <section class="">
+    <h3 class="mt-4 text-xl font-semibold">Dar en adopcion un nuevo perro</h3>
+    <form method="POST" action="?/newDog" class="mt-4" use:sForm.enhance>
+      <TextInput label="Nombre" form={sForm} field="name" />
+      <DateInput label="Nacimiento estimado" form={sForm} field="birthdate" />
+      <SelectInput
+        label="Tamaño"
+        form={sForm}
+        field="size"
+        options={[
+          { value: DogSize.SMALL, text: 'Pequeño' },
+          { value: DogSize.MEDIUM, text: 'Mediano' },
+          { value: DogSize.BIG, text: 'Grande' },
+        ]}
+      />
+      <SelectInput
+        label="Sexo"
+        form={sForm}
+        field="sex"
+        options={[
+          { value: DogSex.FEMALE, text: 'Hembra' },
+          { value: DogSex.MALE, text: 'Macho' },
+        ]}
+      />
+      <TextInput label="Color" form={sForm} field="color" />
+      <TextInput label="Observación" form={sForm} field="observation" />
+      <SelectInput label="Raza" form={sForm} field="breedId" options={breeds} />
+      <div class=" flex justify-around mt-4">
+        <SubmitButton>Dar en adopcion</SubmitButton>
+      </div>
+    </form>
+  </section>
+</Page>
+<!-- <main
   id="main"
   class="container mx-auto flex max-w-screen-lg flex-col px-6 py-4"
 >
@@ -146,4 +216,4 @@
       </form>
     </section>
   </article>
-</main>
+</main> -->

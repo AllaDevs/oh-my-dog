@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { Header } from '$lib/components/layout';
+  import Header from '$cmp/layout/Header.svelte';
+  import Layout from '$cmp/layout/Layout.svelte';
 
   const BASEPATH = '/vet';
 
@@ -14,25 +15,31 @@
   ];
 </script>
 
-<Header homePath={BASEPATH} {navLinks}>
-  <svelte:fragment slot="right">
-    {#if $page.data.user}
-      <form method="POST" action="/vet/logout" class="header-item">
-        <button
-          type="submit"
-          class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
-        >
-          Cerrar Sesión
-        </button>
-      </form>
-    {/if}
+<Layout>
+  <svelte:fragment slot="header">
+    <Header homePath={BASEPATH} {navLinks}>
+      <svelte:fragment slot="right">
+        {#if $page.data.user}
+          <form method="POST" action="/vet/logout" class="header-item w-max">
+            <button
+              type="submit"
+              class=" p-2 font-bold underline-offset-2 hover:underline"
+            >
+              Cerrar Sesión
+            </button>
+          </form>
+        {/if}
+      </svelte:fragment>
+    </Header>
   </svelte:fragment>
-</Header>
 
-<div class=" pt-[--header-height]">
-  <slot />
-</div>
+  <svelte:fragment slot="main">
+    <slot />
+  </svelte:fragment>
 
-<!-- <footer>
-  footer placeholder
-</footer> -->
+  <!-- <svelte:fragment slot="footer">
+    <footer>
+      footer placeholder
+    </footer>
+  </svelte:fragment> -->
+</Layout>

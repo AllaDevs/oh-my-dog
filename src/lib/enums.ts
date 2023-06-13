@@ -81,7 +81,7 @@ export type DonationCampaignState =
     (typeof DonationCampaignState)[keyof typeof DonationCampaignState];
 
 export const DonationReason = {
-    FREE: 'FREE',
+    GENERAL: 'GENERAL',
     CAMPAIGN: 'CAMPAIGN'
 } satisfies typeof prismaClient.DonationReason;
 
