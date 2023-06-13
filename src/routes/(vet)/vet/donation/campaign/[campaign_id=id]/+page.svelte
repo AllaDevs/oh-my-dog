@@ -76,7 +76,7 @@
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">
-      Edicion campaña de donacion {formIsDisabled && '(Terminada)'}
+      Edicion campaña de donacion {formIsDisabled ? '(Terminada)' : ''}
     </h2>
     <div class="w-max md:self-end my-2">
       <a

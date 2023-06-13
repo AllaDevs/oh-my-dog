@@ -6,7 +6,7 @@
   import TextInput from '$lib/components/form/TextInput.svelte';
   import WorkingHourRegisterCard from '$lib/components/vet/WorkingHourRegisterCard.svelte';
   import { DogServiceType } from '$lib/enums';
-  import { createFieldCopier } from '$lib/utils/functions.js';
+  import { fieldValueCloner } from '$lib/utils/functions.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -27,7 +27,7 @@
   });
   const { form: registerData, errors } = registerSForm;
 
-  const cloneHourDefault = createFieldCopier($registerData, ['workingHour', 0]);
+  const cloneHourDefault = fieldValueCloner($registerData, ['workingHour', 0]);
 
   function addWorkingHour() {
     $registerData.workingHour.push(cloneHourDefault());

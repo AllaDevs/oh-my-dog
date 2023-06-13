@@ -6,7 +6,7 @@ import { Lucia, auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
 import { validateImages } from '$lib/utils/functions';
 import { Prisma, type Client, type RegisteredDog } from '@prisma/client';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -214,6 +214,7 @@ export const actions = {
             return setError(form, null, 'Ocurrio un error inesperado al enviar la contraseña, el usuario puede iniciar sesion mediante la opcion de recuperar contraseña');
         }
 
-        return { form };
+        throw redirect(303, `/vet/client/${client.id}`);
+        // return { form };
     }
 } satisfies Actions;

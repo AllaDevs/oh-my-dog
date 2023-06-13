@@ -48,7 +48,7 @@
     Iniciar sesión
   </h1>
 
-  <form method="POST" use:sForm.enhance class=" mt-2 py-4">
+  <form method="POST" use:sForm.enhance class=" py-4">
     <div class="mt-2 flex flex-col gap-2">
       <EmailInput label="Direccion de email" form={sForm} field="email" />
       <PasswordInput

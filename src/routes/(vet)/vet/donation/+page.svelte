@@ -10,7 +10,10 @@
   <title>Donaciones</title>
 </svelte:head>
 
-<Page classContainer="container mx-auto px-6 py-4" classContentSlot="px-4 py-2">
+<Page
+  classContainer="container mx-auto px-6 py-4"
+  classContentSlot="px-4 py-2 flex flex-col gap-4"
+>
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Donaciones</h2>
   </svelte:fragment>

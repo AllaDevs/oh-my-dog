@@ -3,7 +3,7 @@ import { uploadImage } from '$lib/server/cloudinary';
 import { prisma } from '$lib/server/prisma';
 import { validateImage } from '$lib/utils/functions';
 import { Prisma, type RegisteredDog } from '@prisma/client';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -96,9 +96,10 @@ export const actions = {
             throw error;
         }
 
-        form.data = initialFormData;
-        form.data.image = undefined;
+        throw redirect(303, `/vet/client/${params.client_id}/dog/${dog.id}`)
+        // form.data = initialFormData;
+        // form.data.image = undefined;
 
-        return { form };
+        // return { form };
     }
 } satisfies Actions;

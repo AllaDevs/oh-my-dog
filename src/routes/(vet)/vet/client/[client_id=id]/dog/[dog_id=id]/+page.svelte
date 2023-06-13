@@ -1,11 +1,11 @@
 <script lang="ts">
+  import Page from '$cmp/layout/Page.svelte';
+  import DogForm from '$lib/components/dog/DogForm.svelte';
+  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import { breedsToInputOptions } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
-
-  import DogForm from '$lib/components/dog/DogForm.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
 
   export let data;
 
@@ -68,93 +68,90 @@
   <title>Administrar perro</title>
 </svelte:head>
 
-<main
-  id="main"
-  class="container mx-auto flex max-w-screen-lg flex-col px-6 py-4 pb-8"
+<Page
+  classContainer="container mx-auto max-w-screen-lg px-6 py-4 pb-8"
+  classHeaderSlot="py-2"
+  classContentSlot="flex flex-col gap-8 px-4 justify-around"
 >
-  <header class="flex w-full items-end justify-between py-2">
+  <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">
-      Administrar perro {dogIsArchived
-        ? '(Este perro se encuentra archivado)'
-        : ''}
+      Administrar perro {dogIsArchived ? '(Archivado)' : ''}
     </h2>
-  </header>
+  </svelte:fragment>
 
-  <article class="flex flex-col gap-8 px-4 justify-around">
-    <section class="flex flex-col gap-4">
-      <form method="POST" action="?/update" use:updateSForm.enhance>
-        <DogForm sForm={updateSForm} {breeds} readonlyFields={readonly}>
-          <svelte:fragment slot="title">
-            <h3 class=" text-lg font-semibold text-gray-900">
-              Informacion del perro
-            </h3>
-          </svelte:fragment>
-          <svelte:fragment slot="actions">
-            {#if !dogIsArchived}
-              <button
-                type="button"
-                on:click={() => updateSForm.reset()}
-                class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-              >
-                Restaurar
-              </button>
-              <SubmitButton>Actualizar</SubmitButton>
-            {/if}
-          </svelte:fragment>
-        </DogForm>
+  <section class="flex flex-col gap-4">
+    <form method="POST" action="?/update" use:updateSForm.enhance>
+      <DogForm sForm={updateSForm} {breeds} readonlyFields={readonly}>
+        <svelte:fragment slot="title">
+          <h3 class=" text-lg font-semibold text-gray-900">
+            Informacion del perro
+          </h3>
+        </svelte:fragment>
+        <svelte:fragment slot="actions">
+          {#if !dogIsArchived}
+            <button
+              type="button"
+              on:click={() => updateSForm.reset()}
+              class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+            >
+              Restaurar
+            </button>
+            <SubmitButton>Actualizar</SubmitButton>
+          {/if}
+        </svelte:fragment>
+      </DogForm>
+    </form>
+  </section>
+  <section>
+    <header>
+      <h3 class=" text-xl mt-4 lg:mt-10">
+        Historial medico de {data.dog.name}
+      </h3>
+    </header>
+    <ul
+      class=" mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-10 lg:grid-cols-3"
+    >
+      {#each data.dog.medicalRecord as medicalRecord}
+        <li
+          class=" flex min-h-full transition-transform hover:scale-105 justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
+        >
+          <div class=" flex flex-col">
+            <p class="text-center text-lg font-semibold">
+              Motivo: {te.AppointmentReason(medicalRecord.reason)}
+            </p>
+            <p class="text-center text-lg font-semibold">
+              Fecha: {medicalRecord.date}
+            </p>
+            <p class="text-center text-lg font-semibold">
+              Observacion: {medicalRecord.observation ??
+                'Sin observacion de la consulta'}
+            </p>
+          </div>
+        </li>
+      {:else}
+        <li
+          class=" opacity-75 flex min-h-full justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
+        >
+          <p class="text-center text-lg font-semibold">Sin historial medico</p>
+        </li>
+      {/each}
+    </ul>
+  </section>
+  {#if !dogIsArchived}
+    <section>
+      <form
+        method="POST"
+        action="?/archive"
+        use:archiveSForm.enhance
+        class="flex justify-end p-4"
+      >
+        <button
+          type="submit"
+          class="rounded-md bg-red-700/95 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+        >
+          Archivar perro
+        </button>
       </form>
     </section>
-    <section>
-      <header>
-        <h3 class=" text-xl mt-4 lg:mt-10">Historial medico del perro</h3>
-      </header>
-      <ul
-        class=" mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-10 lg:grid-cols-3"
-      >
-        {#each data.dog.medicalRecord as medicalRecord}
-          <li
-            class=" flex min-h-full transition-transform hover:scale-105 justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
-          >
-            <div class=" flex flex-col">
-              <p class="text-center text-lg font-semibold">
-                Motivo: {te.AppointmentReason(medicalRecord.reason)}
-              </p>
-              <p class="text-center text-lg font-semibold">
-                Fecha: {medicalRecord.date}
-              </p>
-              <p class="text-center text-lg font-semibold">
-                Observacion: {medicalRecord.observation ??
-                  'Sin observacion de la consulta'}
-              </p>
-            </div>
-          </li>
-        {:else}
-          <li
-            class=" opacity-75 flex min-h-full justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
-          >
-            <p class="text-center text-lg font-semibold">
-              Sin historial medico
-            </p>
-          </li>
-        {/each}
-      </ul>
-    </section>
-    {#if !dogIsArchived}
-      <section>
-        <form
-          method="POST"
-          action="?/archive"
-          use:archiveSForm.enhance
-          class="flex justify-end p-4"
-        >
-          <button
-            type="submit"
-            class="rounded-md bg-red-700/95 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-          >
-            Inhabilitar perro
-          </button>
-        </form>
-      </section>
-    {/if}
-  </article>
-</main>
+  {/if}
+</Page>

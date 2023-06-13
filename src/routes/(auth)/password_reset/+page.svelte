@@ -40,12 +40,13 @@
   <h1 class="mt-6 text-center text-2xl font-semibold text-gray-800">
     Recuperar cuenta
   </h1>
+
   <p class="mt-2 text-center text-sm text-gray-500">
     Ingresa la direccion de email de tu cuenta y te enviaremos un enlace para
     restablecer tu contraseña.
   </p>
 
-  <form method="POST" use:enhance class=" mt-2 py-4">
+  <form method="POST" use:enhance class=" py-4">
     <div class="mt-2">
       <EmailInput
         label="Direccion de email"

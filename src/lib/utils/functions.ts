@@ -100,7 +100,7 @@ export function objectInfo(obj: Record<string, unknown>, reference?: string): vo
 }
 
 
-export function createFieldCopier<T extends Record<string, unknown>, P extends FieldPath<T>>(formData: T, path: P): () => PathType<T, P> {
+export function fieldValueCloner<T extends Record<string, unknown>, P extends FieldPath<T>>(formData: T, path: P): () => PathType<T, P> {
     let data = structuredClone(formData);
     for (const key of path) {
         data = (data as any)[key];

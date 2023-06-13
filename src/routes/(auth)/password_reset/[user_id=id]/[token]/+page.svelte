@@ -47,7 +47,7 @@
 </svelte:head>
 
 <Page
-  classContentSlot="flex flex-col justify-center max-w-sm mx-auto mb-[5%] px-6"
+  classContentSlot="flex flex-col justify-center max-w-sm mx-auto mb-[15%] px-6"
 >
   {#if noEnhanceError}
     <p class="py-4 text-center text-sm font-semibold leading-5 text-red-500">
@@ -59,7 +59,7 @@
     Restablecer contraseña
   </h1>
 
-  <form method="POST" use:enhance class=" mt-2 py-4">
+  <form method="POST" use:enhance class=" py-4">
     <div class="mt-2 flex flex-col gap-2">
       <PasswordInput
         label="Nueva contraseña"

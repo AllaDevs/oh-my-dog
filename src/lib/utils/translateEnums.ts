@@ -1,4 +1,4 @@
-import { AppointmentReason, AppointmentState, Day, Daytime, DogSex, DogSize } from '$lib/enums';
+import { AppointmentReason, AppointmentState, Day, Daytime, DogSex, DogSize, DonationReason } from '$lib/enums';
 
 
 class EnumTranslationError extends Error {
@@ -103,6 +103,17 @@ function tDay(day: Day) {
     }
 }
 
+function tDonationReason(reason: DonationReason) {
+    switch (reason) {
+        case DonationReason.GENERAL:
+            return 'General';
+        case DonationReason.CAMPAIGN:
+            return 'Campaña';
+        default:
+            throw new EnumTranslationError(`Invalid donation reason: ${reason}`);
+    }
+}
+
 
 const translationEnum = {
     AppointmentReason: tAppointmentReason,
@@ -110,7 +121,8 @@ const translationEnum = {
     Daytime: tDayTime,
     DogSex: tDogSex,
     DogSize: tDogSize,
-    Day: tDay
+    Day: tDay,
+    DonationReason: tDonationReason,
 };
 
 export default translationEnum;

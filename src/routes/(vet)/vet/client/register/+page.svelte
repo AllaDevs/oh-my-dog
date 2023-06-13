@@ -1,23 +1,25 @@
 <script lang="ts">
   import { dev } from '$app/environment';
+  import Page from '$cmp/layout/Page.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import ClientRegisterCard from '$lib/components/vet/ClientRegisterCard.svelte';
   import DogRegisterCard from '$lib/components/vet/DogRegisterCard.svelte';
-
-  import { createFieldCopier } from '$lib/utils/functions';
+  import { breedsToInputOptions, fieldValueCloner } from '$lib/utils/functions';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
   export let data;
 
-  let breeds: { value: string; text: string }[] = [];
-  for (const breed of data.breeds) {
-    breeds.push({ value: breed.id, text: breed.name });
-  }
+  let breeds = breedsToInputOptions(data.breeds);
 
   const registerSForm = superForm(data.form, {
     dataType: 'json',
+    onResult: ({ result }) => {
+      if (result.type === 'redirect') {
+        toast.success('Cliente registrado con exito', { duration: 3000 });
+      }
+    },
     onError: (error) => {
       toast.error(String(error.message));
     },
@@ -31,7 +33,7 @@
   });
   const { form: registerData, errors } = registerSForm;
 
-  const cloneDogDefault = createFieldCopier($registerData, ['dogs', 0]);
+  const cloneDogDefault = fieldValueCloner($registerData, ['dogs', 0]);
 
   function addDog() {
     $registerData.dogs.push(cloneDogDefault());
@@ -48,7 +50,11 @@
   <title>Registrar cliente</title>
 </svelte:head>
 
-<main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
+<Page classContainer="container gap-4 p-4 lg:max-w-screen-lg mx-auto scrollbar">
+  <svelte:fragment slot="pageHeader">
+    <h2 class=" mt-4 text-2xl">Registrar nuevo cliente</h2>
+  </svelte:fragment>
+
   <form
     method="POST"
     class=" mt-2 py-4"
@@ -88,4 +94,4 @@
       {$errors._errors}
     {/if}
   {/if}
-</main>
+</Page>
