@@ -107,7 +107,7 @@ export const actions = {
                 throw error(404, 'No se encontro el post de adopción con el que te quieres contactar');
             }
             if (adoptionPost.state === PostState.RESOLVED) {
-                return setError(form, null, 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
+                return setError(form, '', 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
             }
             if (!client) {
                 throw error(403, 'No eres un cliente registrado');
@@ -171,7 +171,7 @@ export const actions = {
                 throw error(404, 'No se encontro el post de adopción con el que te quieres contactar');
             }
             if (adoptionPost.state === PostState.RESOLVED) {
-                return setError(form, null, 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
+                return setError(form, '', 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
             }
 
             const dogName = (adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name) ?? 'Uno de tus perros';
@@ -188,11 +188,11 @@ export const actions = {
         }
         catch (error) {
             if (error instanceof EmailError) {
-                return setError(form, null, 'Ocurrio un error con el servicio de emails al enviar el mensaje, intente mas tarde');
+                return setError(form, '', 'Ocurrio un error con el servicio de emails al enviar el mensaje, intente mas tarde');
             }
 
             logError('adoption', 'Unexpected error sending client adoption contact email', error);
-            return setError(form, null, 'Ocurrio un error inesperado al enviar el email de contacto, intente mas tarde');
+            return setError(form, '', 'Ocurrio un error inesperado al enviar el email de contacto, intente mas tarde');
         }
 
         return { form };

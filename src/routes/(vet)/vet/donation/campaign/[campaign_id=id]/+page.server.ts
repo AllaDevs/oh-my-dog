@@ -75,7 +75,7 @@ export const actions = {
         }
 
         if (!user) {
-            setError(form, null, 'Debes iniciar sesión para empezar la campaña de donacion');
+            setError(form, '', 'Debes iniciar sesión para empezar la campaña de donacion');
             return fail(401, { form });
         }
 
@@ -115,7 +115,7 @@ export const actions = {
         }
 
         if (!user) {
-            setError(form, null, 'Debes iniciar sesión para pausar la campaña de donacion');
+            setError(form, '', 'Debes iniciar sesión para pausar la campaña de donacion');
             return fail(401, { form });
         }
 
@@ -150,7 +150,7 @@ export const actions = {
         }
 
         if (!user) {
-            setError(form, null, 'Debes iniciar sesión para terminar la campaña de donacion');
+            setError(form, '', 'Debes iniciar sesión para terminar la campaña de donacion');
             return fail(401, { form });
         }
 
@@ -187,7 +187,7 @@ export const actions = {
         }
 
         if (!user) {
-            setError(form, null, 'Debes iniciar sesión para terminar la campaña de donacion');
+            setError(form, '', 'Debes iniciar sesión para terminar la campaña de donacion');
             return fail(401, { form });
         }
 
@@ -209,7 +209,7 @@ export const actions = {
             throw error(404, 'No se encontro el post de adopción que quieres actualizar');
         }
         if (campaign.state === DonationCampaignState.ENDED) {
-            return setError(form, null, 'La campaña ya fue terminada');
+            return setError(form, '', 'La campaña ya fue terminada');
         }
 
         let image: Image | undefined;

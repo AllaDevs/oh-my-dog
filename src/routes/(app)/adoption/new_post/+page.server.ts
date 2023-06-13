@@ -5,7 +5,7 @@ import { prisma } from '$lib/server/prisma';
 import { logError } from '$lib/server/utils';
 import { Prisma } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
-import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
+import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -14,7 +14,7 @@ const clientDogSelectedSchema = z.object({
     dogId: c.moongoIdSchema
 });
 
-const temporalDogFormInitialData = defaultData(temporalDogRegisterSchema);
+const temporalDogFormInitialData = defaultValues(temporalDogRegisterSchema);
 
 export const load = (async ({ locals, url }) => {
     const { user } = await locals.auth.validateUser();
@@ -136,7 +136,7 @@ export const actions = {
         catch (error) {
             console.log(error);
             // TODO: handle errors
-            return setError(form, null, 'Error al registrar el perro');
+            return setError(form, '', 'Error al registrar el perro');
         }
 
         form.data = temporalDogFormInitialData;

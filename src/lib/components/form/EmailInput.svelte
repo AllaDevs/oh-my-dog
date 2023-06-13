@@ -1,35 +1,34 @@
 <script lang="ts">
-  import type { FieldPath, UnwrapEffects } from 'sveltekit-superforms';
+  import type { FormPathLeaves, ZodValidation } from 'sveltekit-superforms';
   import type { SuperForm } from 'sveltekit-superforms/client';
-  import type { z, AnyZodObject } from 'zod';
-
   import { formFieldProxy } from 'sveltekit-superforms/client';
+  import type { AnyZodObject, z } from 'zod';
 
-  type T = $$Generic<AnyZodObject>;
-
-  interface $$slots {
+  interface $$Slots {
     belowInput: {};
     oppositeToLabel: {};
   }
 
-  export let form: SuperForm<UnwrapEffects<T>, unknown>;
-  export let field: keyof z.infer<T> | FieldPath<z.infer<T>>;
+  type T = $$Generic<AnyZodObject>;
+
+  export let form: SuperForm<ZodValidation<T>, unknown>;
+  export let field: FormPathLeaves<z.infer<T>>;
 
   export let label: string;
   export let hint: string | undefined = undefined;
   export let readonly: boolean = false;
   export let autocomplete: boolean = true;
 
-  const { path, value, errors, constraints } = formFieldProxy(form, field);
+  const { value, errors, constraints } = formFieldProxy(form, field);
 </script>
 
 <div class=" mt-2">
   <div class=" flex justify-between text-sm font-medium">
-    <label for={String(field)} class=" max-w-fit text-gray-900">
+    <label for={field} class=" max-w-fit text-gray-900">
       {label}
     </label>
-    {#if $$slots.opossiteToLabel}
-      <slot name="opossiteToLabel" />
+    {#if $$slots.oppositeToLabel}
+      <slot name="oppositeToLabel" />
     {:else if hint}
       <span class=" text-gray-500">{hint}</span>
     {/if}
@@ -37,12 +36,12 @@
   <div class=" flex flex-col gap-2">
     <input
       type="email"
-      id={String(field)}
-      name={String(field)}
+      id={field}
+      name={field}
       autocomplete={autocomplete ? 'email' : 'off'}
       {readonly}
       bind:value={$value}
-      data-invalid={$errors}
+      aria-invalid={!!$errors || undefined}
       {...$constraints}
       {...$$restProps}
       class=" mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 read-only:focus:ring-1 read-only:focus:ring-gray-300 sm:text-sm sm:leading-6"

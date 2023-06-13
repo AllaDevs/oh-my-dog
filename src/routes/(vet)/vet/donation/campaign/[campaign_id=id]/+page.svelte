@@ -7,7 +7,7 @@
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
-  import { DonationCampaignState } from '$lib/enums.js';
+  import { DonationCampaignState } from '$lib/enums';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 

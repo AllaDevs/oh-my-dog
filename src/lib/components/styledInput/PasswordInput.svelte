@@ -1,5 +1,5 @@
 <script lang="ts">
-  interface $$slots {
+  interface $$Slots {
     belowInput: {};
     oppositeToLabel: {};
   }
@@ -17,11 +17,11 @@
 
 <div class=" mt-2">
   <div class=" flex justify-between text-sm font-medium">
-    <label for={String(field)} class=" max-w-fit text-gray-900">
+    <label for={field} class=" max-w-fit text-gray-900">
       {label}
     </label>
-    {#if $$slots.opossiteToLabel}
-      <slot name="opossiteToLabel" />
+    {#if $$slots.oppositeToLabel}
+      <slot name="oppositeToLabel" />
     {:else if hint}
       <span class=" text-gray-500">{hint}</span>
     {/if}
@@ -29,8 +29,8 @@
   <div class=" flex flex-col gap-2">
     <input
       type="password"
-      id={String(field)}
-      name={String(field)}
+      id={field}
+      name={field}
       autocomplete={isNew ? 'off' : autocomplete ? 'current-password' : 'off'}
       {readonly}
       {required}

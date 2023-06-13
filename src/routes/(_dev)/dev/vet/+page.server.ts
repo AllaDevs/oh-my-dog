@@ -64,9 +64,9 @@ export const actions = {
                 error instanceof Prisma.PrismaClientKnownRequestError ||
                 error instanceof Lucia.LuciaError
             ) {
-                return setError(form, null, 'Authentication/db error occured while creating the vet');
+                return setError(form, '', 'Authentication/db error occured while creating the vet');
             }
-            return setError(form, null, 'Unknown error occured while creating the vet');
+            return setError(form, '', 'Unknown error occured while creating the vet');
         }
 
         return { form };

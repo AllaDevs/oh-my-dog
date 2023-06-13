@@ -28,7 +28,7 @@ export async function validateAuthUpdateForm<T extends Validation<typeof account
     }
 
     if (!newEmail && !newPassword && !newPasswordConfirm) {
-        setError(sForm, null, 'Debes ingresar un nuevo correo o una nueva contraseña para actualizar tu cuenta');
+        setError(sForm, '', 'Debes ingresar un nuevo correo o una nueva contraseña para actualizar tu cuenta');
         return false;
     }
 
@@ -49,7 +49,7 @@ export async function validateAuthUpdateForm<T extends Validation<typeof account
         }
         catch (error) {
             console.error("Error during email verification", error);
-            setError(sForm, null, 'Ocurrio un error inesperado durante la validacion del correo');
+            setError(sForm, '', 'Ocurrio un error inesperado durante la validacion del correo');
             return false;
         }
     }
@@ -89,11 +89,11 @@ export async function validateAuthUpdateForm<T extends Validation<typeof account
                 return false;
             }
             console.log("lucia error", error);
-            setError(sForm, null, 'Ocurrio un error durante la validacion de las credenciales');
+            setError(sForm, '', 'Ocurrio un error durante la validacion de las credenciales');
             return false;
         }
         console.log("error", error);
-        setError(sForm, null, 'Ocurrio un error inesperado durante la validacion de las credenciales');
+        setError(sForm, '', 'Ocurrio un error inesperado durante la validacion de las credenciales');
         return false;
     }
 
@@ -157,7 +157,7 @@ export async function updateAccountAuth<T extends Validation<typeof accountAuthU
         }
         catch (error) {
             console.log("error during auth EMAIL update", error);
-            setError(sForm, null, 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
+            setError(sForm, '', 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
             return false;
         }
     }
@@ -174,7 +174,7 @@ export async function updateAccountAuth<T extends Validation<typeof accountAuthU
         }
         catch (error) {
             console.log("error during auth PASSWORD update only", error);
-            setError(sForm, null, 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
+            setError(sForm, '', 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
             return false;
         }
     }

@@ -65,7 +65,7 @@ export const actions = {
         });
         console.log(res);
         if (!res.success) {
-            return setError(form, null, 'Error al subir el archivo');
+            return setError(form, '', 'Error al subir el archivo');
         }
 
         // return some info of success
@@ -78,7 +78,7 @@ export const actions = {
         const filesInput = formData.get('files');
         const files = validateFiles(filesInput);
         if (typeof files === 'string') {
-            return setError(form, null, files);
+            return setError(form, '', files);
         }
 
         // some file transformation

@@ -3,7 +3,7 @@ import { AppointmentState, Daytime } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
 import { prettyDate } from '$lib/utils/functions';
 import { te } from '$lib/utils/translateEnums';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
@@ -37,10 +37,10 @@ export const load = (async ({ locals, params, url }) => {
     });
 
     if (!appointment) {
-        return fail(404, { error: 'Appointment not found' });
+        throw error(404, 'Appointment not found');
     }
     if (appointment.state != AppointmentState.CLIENT_REQUEST) {
-        return fail(404, { error: 'Appointment not valid' });
+        throw error(404, 'Appointment not valid');
     }
 
     const form = await superValidate(schema);

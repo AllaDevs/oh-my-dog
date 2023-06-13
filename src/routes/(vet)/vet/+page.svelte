@@ -1,5 +1,6 @@
 <script lang="ts">
   import Page from '$cmp/layout/Page.svelte';
+    import TextInput from '$cmp/styledInput/TextInput.svelte';
   import PageCard from '$lib/components/vet/PageCard.svelte';
 
   export let data;

@@ -38,7 +38,7 @@
     <SelectInput
       label="Día de la semana"
       unselectedLabel="Sin seleccionar"
-      field={['workingHour', index, 'day']}
+      field="workingHour[{index}].day"
       form={sForm}
       options={[
         { value: Day.MONDAY, text: 'Lunes' },
@@ -54,14 +54,14 @@
     <HourInput
       label="Hora de inicio"
       unselectedLabel="Sin seleccionar"
-      field={['workingHour', index, 'start']}
+      field="workingHour[{index}].start"
       form={sForm}
       required
     />
     <HourInput
       label="Hora de fin"
       unselectedLabel="Sin seleccionar"
-      field={['workingHour', index, 'end']}
+      field="workingHour[{index}].end"
       form={sForm}
       required
     />

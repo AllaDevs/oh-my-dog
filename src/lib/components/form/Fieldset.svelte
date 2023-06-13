@@ -1,7 +1,8 @@
 <script lang="ts">
-  interface $$slots {
+  interface $$Slots {
     legend: {};
     fields: {};
+    actions: {};
   }
 
   export let disabled: boolean = false;

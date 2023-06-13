@@ -1,7 +1,7 @@
 import { MAX_IMAGE_SIZE } from '$lib/config';
 import type { Breed } from '@prisma/client';
 import type { RequestEvent } from '@sveltejs/kit';
-import type { FieldPath, UnwrapEffects, Validation } from 'sveltekit-superforms/index';
+import type { FieldPath, FormPathLeaves, SuperValidated, UnwrapEffects } from 'sveltekit-superforms/index';
 import { setError } from 'sveltekit-superforms/server';
 import type { z } from 'zod';
 import type { PathType } from './types';
@@ -38,8 +38,8 @@ export function getImage(formData: FormData, name: string, maxFileSize: number =
 }
 
 
-export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, field: keyof z.infer<T> | FieldPath<T>) {
-    const imageFile = formData.get(String(field));
+export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: SuperValidated<T, unknown>, field: FormPathLeaves<z.infer<T>>) {
+    const imageFile = formData.get(field);
     if (!imageFile) {
         return null;
     }
@@ -70,15 +70,34 @@ export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData:
     return imageFile;
 }
 
-export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: Validation<T, unknown>, pathToImageArray: (number | string)[], pathToImageField: (number | string)[]) {
-    let arrayField = form.data;
-    for (const key of pathToImageArray) {
-        arrayField = arrayField[key];
-    }
+// export function validateImagesOld<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: SuperValidated<T, unknown>, pathToArray: string, pathToImage: string) {
+//     // let arrayField = form.data;
+//     // for (const key of pathToImageArray) {
+//     //     arrayField = arrayField[key];
+//     // }
 
+//     for (const [k, v] of formData.entries()) {
+//         console.log(k, v);
+//     }
+//     // console.log(`p: ${pathToImageArray} f: ${pathToImageField}\n${JSON.stringify(formData, null,2)}\n${JSON.stringify(form, null,2)}`);
+//     console.log(`p: ${pathToArray} f: ${pathToImage}`);
+
+//     const images: File[] = [];
+//     for (let i = 0; i < ([1] as any[]).length; i++) {
+//         const image = validateImage(formData, form, `${pathToArray}[${i}].${pathToImage}` as FormPathLeaves<z.infer<T>>);
+//         if (!image) {
+//             return [];
+//         }
+//         images.push(image);
+//     }
+
+//     return images;
+// }
+
+export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: SuperValidated<T, unknown>, fieldAccesor: (i: number) => FormPathLeaves<z.infer<T>>, imageCount: number) {
     const images: File[] = [];
-    for (let i = 0; i < (arrayField as any[]).length; i++) {
-        const image = validateImage(formData, form, [...pathToImageArray, i, ...pathToImageField] as keyof z.infer<T> | FieldPath<T>);
+    for (let i = 0; i < imageCount; i++) {
+        const image = validateImage(formData, form, fieldAccesor(i));
         if (!image) {
             return [];
         }

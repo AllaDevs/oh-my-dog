@@ -69,9 +69,9 @@
 </svelte:head>
 
 <Page
-  classContainer="container mx-auto max-w-screen-lg px-6 py-4 pb-8"
+  classContainer="container mx-auto max-w-screen-lg px-6 py-4 pb-8 scrollbar"
   classHeaderSlot="py-2"
-  classContentSlot="flex flex-col gap-8 px-4 justify-around"
+  classContentSlot="flex flex-col gap-8 mt-4 px-4 justify-around"
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">
@@ -102,6 +102,7 @@
       </DogForm>
     </form>
   </section>
+
   <section>
     <header>
       <h3 class=" text-xl mt-4 lg:mt-10">
@@ -137,6 +138,7 @@
       {/each}
     </ul>
   </section>
+
   {#if !dogIsArchived}
     <section>
       <form

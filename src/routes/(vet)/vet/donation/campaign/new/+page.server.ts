@@ -5,11 +5,11 @@ import { prisma } from '$lib/server/prisma';
 import { validateImage } from '$lib/utils/functions';
 import { Prisma, type DonationCampaign } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
-import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
+import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 
-const initialFormData = defaultData(donationCampaignRegisterSchema);
+const initialFormData = defaultValues(donationCampaignRegisterSchema);
 
 export const load = (async (event) => {
     const form = await superValidate(donationCampaignRegisterSchema);
@@ -45,7 +45,7 @@ export const actions = {
                 if (error.code === "P2002") {
                     // TODO: check if the error is because of unique constraint?
                 }
-                return setError(form, null, 'Error con la base de datos al registrar el perro, intente mas tarde');
+                return setError(form, '', 'Error con la base de datos al registrar el perro, intente mas tarde');
             }
             throw error;
         }
@@ -78,7 +78,7 @@ export const actions = {
         }
         catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                return setError(form, null, 'Ocurrio un error con la base de datos al subir las imagenes, carguelas mas tarde');
+                return setError(form, '', 'Ocurrio un error con la base de datos al subir las imagenes, carguelas mas tarde');
             }
 
             throw error;

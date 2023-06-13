@@ -70,7 +70,7 @@ export const actions = {
         }
 
         if (!user) {
-            setError(form, null, 'Debes iniciar sesión para registrar un perro');
+            setError(form, '', 'Debes iniciar sesión para registrar un perro');
             return fail(401, { form });
         }
 

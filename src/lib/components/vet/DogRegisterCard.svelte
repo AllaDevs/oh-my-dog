@@ -39,10 +39,10 @@
     {/if}
   </svelte:fragment>
   <svelte:fragment slot="fields">
-    <TextInput label="Nombre" field={['dogs', index, 'name']} form={sForm} />
+    <TextInput label="Nombre" field="dogs[{index}].name" form={sForm} />
     <DateInput
       label="Fecha de nacimiento o aproximada"
-      field={['dogs', index, 'birthdate']}
+      field="dogs[{index}].birthdate"
       min="1923-01-01"
       max={today}
       form={sForm}
@@ -50,18 +50,18 @@
     />
     <TextInput
       label="Color o descripción pequeña"
-      field={['dogs', index, 'color']}
+      field="dogs[{index}].color"
       form={sForm}
     />
     <TextInput
       label="Observacion"
-      field={['dogs', index, 'observation']}
+      field="dogs[{index}].observation"
       form={sForm}
     />
     <SelectInput
       label="Tamaño"
       unselectedLabel="Sin seleccionar"
-      field={['dogs', index, 'size']}
+      field="dogs[{index}].size"
       form={sForm}
       options={[
         { value: DogSize.SMALL, text: 'Pequeño' },
@@ -72,7 +72,7 @@
     <SelectInput
       label="Sexo"
       unselectedLabel="Sin seleccionar"
-      field={['dogs', index, 'sex']}
+      field="dogs[{index}].sex"
       form={sForm}
       options={[
         { value: DogSex.FEMALE, text: 'Hembra' },
@@ -82,11 +82,11 @@
     <SelectInput
       label="Raza"
       unselectedLabel="Sin seleccionar"
-      field={['dogs', index, 'breedId']}
+      field="dogs[{index}].breedId"
       form={sForm}
       options={breeds}
     />
-    <ImageInput label="Imagen" field={['dogs', index, 'image']} form={sForm} />
+    <ImageInput label="Imagen" field="dogs[{index}].image" form={sForm} />
   </svelte:fragment>
   <svelte:fragment slot="actions" />
 </FieldGroup>

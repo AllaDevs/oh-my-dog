@@ -37,7 +37,7 @@ export const actions = {
         catch (error) {
             console.error(error);
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                return setError(form, null, 'Autenfication error');
+                return setError(form, '', 'Autenfication error');
             }
             return fail(400, { form, message: 'Failed to create user' });
         }

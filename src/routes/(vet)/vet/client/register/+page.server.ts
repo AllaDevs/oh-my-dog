@@ -7,12 +7,12 @@ import { prisma } from '$lib/server/prisma';
 import { validateImages } from '$lib/utils/functions';
 import { Prisma, type Client, type RegisteredDog } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
-import { defaultData, setError, superValidate } from 'sveltekit-superforms/server';
+import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 
 const initialFormData = {
-    dogs: [defaultData(dogRegisterSchema)]
+    dogs: [defaultValues(dogRegisterSchema)]
 };
 
 
@@ -37,14 +37,15 @@ export const actions = {
     client: async ({ request }) => {
         const formData = await request.formData();
         const form = await superValidate(formData, clientCompleteRegisterSchema);
+        const formImages = validateImages(formData, form, (i) => (`dogs[${i}].image` as const), form.data.dogs.length);
 
-        const formImages = validateImages(formData, form, ['dogs'], ['image']);
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
+
         if (formImages.length !== form.data.dogs.length) {
-            return setError(form, null, 'No todos los perros tienen una imagen válida, por favor revisa los campos de imagen');
+            return setError(form, '', 'No todos los perros tienen una imagen válida, por favor revisa los campos de imagen');
         }
 
         const emailExists = await prisma.authUser.findUnique({
@@ -104,7 +105,7 @@ export const actions = {
                         return setError(form, 'dni', 'Ya existe un usuario con este dni');
                     }
                 }
-                return setError(form, null, 'Error con la base de datos al crear el cliente');
+                return setError(form, '', 'Error con la base de datos al crear el cliente');
             }
             throw error;
         }
@@ -145,7 +146,7 @@ export const actions = {
                 if (error.message === "AUTH_DUPLICATE_KEY_ID") {
                     return setError(form, 'email', 'Ya existe una cuenta con este correo');
                 }
-                return setError(form, null, 'Error de autenticacion al crear el usuario, intente mas tarde');
+                return setError(form, '', 'Error de autenticacion al crear el usuario, intente mas tarde');
             }
             throw error;
         }
@@ -164,7 +165,7 @@ export const actions = {
             for (let index = 0; index < imagesResult.length; index++) {
                 if (!imagesResult[index].success) {
 
-                    setError(form, ['dogs', index, 'image'], 'Error al subir la imagen, carguela mas tarde');
+                    setError(form, `dogs[${index}].image`, 'Error al subir la imagen, carguela mas tarde');
                 }
             }
 
@@ -191,7 +192,7 @@ export const actions = {
         }
         catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                setError(form, null, 'Ocurrio un error con la base de datos al subir las imagenes, carguelas mas tarde');
+                setError(form, '', 'Ocurrio un error con la base de datos al subir las imagenes, carguelas mas tarde');
             }
             else {
                 throw error;
@@ -209,9 +210,9 @@ export const actions = {
         catch (error) {
             console.error(error);
             if (error instanceof EmailError) {
-                return setError(form, null, 'Ocurrio un error con el servicio de emails al enviar la contraseña, el usuario puede iniciar sesion mediante la opcion de recuperar contraseña');
+                return setError(form, '', 'Ocurrio un error con el servicio de emails al enviar la contraseña, el usuario puede iniciar sesion mediante la opcion de recuperar contraseña');
             }
-            return setError(form, null, 'Ocurrio un error inesperado al enviar la contraseña, el usuario puede iniciar sesion mediante la opcion de recuperar contraseña');
+            return setError(form, '', 'Ocurrio un error inesperado al enviar la contraseña, el usuario puede iniciar sesion mediante la opcion de recuperar contraseña');
         }
 
         throw redirect(303, `/vet/client/${client.id}`);

@@ -4,13 +4,10 @@
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import TelInput from '$lib/components/form/TelInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
-
-  import type { UnwrapEffects } from 'sveltekit-superforms';
+  import type { ClientCompleteRegisterSchema } from '$lib/schemas';
   import type { SuperForm } from 'sveltekit-superforms/client';
 
-  type T = $$Generic<AnyZodObject>;
-
-  export let sForm: SuperForm<UnwrapEffects<T>, unknown>;
+  export let sForm: SuperForm<ClientCompleteRegisterSchema, unknown>;
 </script>
 
 <FieldGroup>

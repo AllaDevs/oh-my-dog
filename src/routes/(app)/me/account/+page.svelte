@@ -4,7 +4,6 @@
   import Fieldset from '$lib/components/form/Fieldset.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -74,7 +73,6 @@
           <div class="mt-6 flex items-center justify-around">
             <a
               href="/me"
-              on:click={() => accountAuthSForm.reset()}
               class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
             >
               Regresar a Mi cuenta

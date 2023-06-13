@@ -37,7 +37,7 @@
 <Page
   classContainer="container mx-auto max-w-screen-lg px-6 py-4 pb-8"
   classHeaderSlot="py-2"
-  classContentSlot="flex flex-col gap-8 px-4 justify-around lg:flex-row"
+  classContentSlot=" mt-4 px-4"
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Registrar perro</h2>
