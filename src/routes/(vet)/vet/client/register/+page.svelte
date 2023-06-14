@@ -1,7 +1,7 @@
 <script lang="ts">
   import { dev } from '$app/environment';
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import ClientRegisterCard from '$lib/components/vet/ClientRegisterCard.svelte';
   import DogRegisterCard from '$lib/components/vet/DogRegisterCard.svelte';
   import { breedsToInputOptions, fieldValueCloner } from '$lib/utils/functions';
@@ -76,14 +76,12 @@
     </div>
 
     <div class="mt-6 flex items-center justify-around">
-      <button
-        type="button"
-        on:click={addDog}
-        class=" mt-2 rounded-md bg-teal-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300"
-      >
+      <Button formaction="?/client" on:click={addDog} color="success">
         Agregar otro perro
-      </button>
-      <SubmitButton action="?/client">Registrar cliente</SubmitButton>
+      </Button>
+      <Button type="submit" formaction="?/client" color="primary">
+        Registrar cliente
+      </Button>
     </div>
   </form>
 

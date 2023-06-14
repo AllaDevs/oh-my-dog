@@ -23,7 +23,7 @@
     .split('T')[0] as `${number}-${number}-${number}`;
 </script>
 
-<FieldGroup cols={2}>
+<FieldGroup cols="2">
   <svelte:fragment slot="title">
     <h3 class=" text-xl font-semibold text-gray-900">
       {title}

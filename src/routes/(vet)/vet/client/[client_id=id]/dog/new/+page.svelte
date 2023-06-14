@@ -1,8 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import DogRegisterForm from '$cmp/dog/DogRegisterForm.svelte';
+  import A from '$cmp/element/A.svelte';
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import DogRegisterForm from '$lib/components/dog/DogRegisterForm.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import { breedsToInputOptions } from '$lib/utils/functions.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -46,13 +47,10 @@
   <section class="flex flex-col">
     <DogRegisterForm action="?/register" sForm={registerSForm} {breeds}>
       <svelte:fragment slot="actions">
-        <a
-          href="/vet/client/{$page.params.client_id}"
-          class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold underline-offset-2 hover:underline text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-        >
+        <A href="/vet/client/{$page.params.client_id}" color="default" button>
           Volver al cliente
-        </a>
-        <SubmitButton>Registrar</SubmitButton>
+        </A>
+        <Button type="submit" color="primary">Registrar</Button>
       </svelte:fragment>
     </DogRegisterForm>
   </section>

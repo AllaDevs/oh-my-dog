@@ -1,7 +1,8 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
+  import ActionButton from '$cmp/form/ActionButton.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import DogForm from '$lib/components/dog/DogForm.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import { breedsToInputOptions } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
   import toast from 'svelte-french-toast';
@@ -87,16 +88,13 @@
             Informacion del perro
           </h3>
         </svelte:fragment>
+
         <svelte:fragment slot="actions">
           {#if !dogIsArchived}
-            <button
-              type="button"
-              on:click={() => updateSForm.reset()}
-              class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-            >
+            <Button on:click={() => updateSForm.reset()} color="default">
               Restaurar
-            </button>
-            <SubmitButton>Actualizar</SubmitButton>
+            </Button>
+            <Button type="submit" color="primary">Actualizar</Button>
           {/if}
         </svelte:fragment>
       </DogForm>
@@ -141,19 +139,13 @@
 
   {#if !dogIsArchived}
     <section>
-      <form
-        method="POST"
+      <ActionButton
         action="?/archive"
-        use:archiveSForm.enhance
-        class="flex justify-end p-4"
+        color="error"
+        enhance={archiveSForm.enhance}
       >
-        <button
-          type="submit"
-          class="rounded-md bg-red-700/95 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-        >
-          Archivar perro
-        </button>
-      </form>
+        Archivar perro
+      </ActionButton>
     </section>
   {/if}
 </Page>

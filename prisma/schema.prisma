@@ -85,7 +85,7 @@ model AuthPasswordRecovery {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    authUser   AuthUser @relation(fields: [authUserId], references: [id])
+    authUser   AuthUser @relation(fields: [authUserId], references: [id], onDelete: Cascade)
     authUserId String   @unique
     email      String   @unique
     token      String   @default(uuid())

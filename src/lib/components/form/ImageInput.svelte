@@ -16,7 +16,7 @@
 
   export let label: string;
   export let hint: string | undefined = undefined;
-  export let readonly: boolean = false;
+  export let readonly = false;
 
   const { value, errors, constraints } = formFieldProxy(form, field);
 </script>
@@ -38,13 +38,13 @@
       id={field}
       name={field}
       autocomplete="off"
-      {readonly}
+      disabled={readonly}
       accept="image/jpeg, image/png, image/webp, image/jpg, image/avif"
       bind:value={$value}
       aria-invalid={!!$errors || undefined}
       {...$constraints}
       {...$$restProps}
-      class=" mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 read-only:focus:ring-1 read-only:focus:ring-gray-300 sm:text-sm sm:leading-6"
+      class=" mt-2 block w-full rounded-md border-none text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
     />
     {#if $errors}
       <p class="text-sm text-red-500">
@@ -74,9 +74,22 @@ Example:
 ```
 -->
 
-<style>
+<style lang="postcss">
   div:has(div input[required]) label::after {
     content: ' *';
     color: red;
+  }
+
+  input {
+    @apply cursor-pointer outline-none text-gray-900 bg-white focus:ring-2 focus:ring-inset focus:ring-teal-600;
+  }
+
+  input:focus::file-selector-button {
+    @apply ring-2;
+  }
+
+  input::file-selector-button {
+    @apply bg-teal-300/75 outline-none text-gray-900 border-none ring-1 border-gray-300 ring-inset hover:bg-teal-200 mr-2 focus:ring-2 focus:ring-inset focus:ring-teal-600;
+    @apply cursor-pointer font-medium py-1.5 px-4 rounded-l-md;
   }
 </style>

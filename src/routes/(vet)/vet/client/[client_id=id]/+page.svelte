@@ -1,8 +1,8 @@
 <script lang="ts">
+  import ClientUpdateForm from '$cmp/client/ClientUpdateForm.svelte';
+  import A from '$cmp/element/A.svelte';
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import ClientUpdateForm from '$lib/components/client/ClientUpdateForm.svelte';
-  import A from '$lib/components/element/A.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import { DonationReason } from '$lib/enums';
   import { te } from '$lib/utils/translateEnums.js';
   import toast from 'svelte-french-toast';
@@ -14,7 +14,7 @@
     id: 'update',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Perro para adopción registrado con exito');
+        toast.success('Cliente actualizado con exito');
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
       }
@@ -28,7 +28,7 @@
 
 <Page
   classContainer="container mx-auto max-w-screen-lg px-6 pt-4 pb-8 scrollbar"
-  classContentSlot="grid gap-8 mt-4 px-4 justify-around lg:grid-cols-2"
+  classContentSlot="grid gap-8 p-4 justify-around lg:grid-cols-2"
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Administrar cliente</h2>
@@ -46,22 +46,14 @@
           <h3 class=" text-lg font-semibold text-gray-900">
             Informacion del cliente
           </h3>
-          <a
-            href="/vet/appointment/{data.client.id}"
-            class=" hover:underline underline-offset-2 whitespace-nowrap rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-          >
+          <A href="/vet/appointment/{data.client.id}" color="primary" button>
             Ver turnos
-          </a>
+          </A>
         </svelte:fragment>
+
         <svelte:fragment slot="actions">
-          <button
-            type="button"
-            on:click={() => updateSForm.reset()}
-            class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-          >
-            Restaurar
-          </button>
-          <SubmitButton>Actualizar</SubmitButton>
+          <Button on:click={() => updateSForm.reset()}>Restaurar</Button>
+          <Button type="submit" color="primary">Actualizar</Button>
         </svelte:fragment>
       </ClientUpdateForm>
     </form>
@@ -70,12 +62,9 @@
   <section class="flex flex-col gap-4">
     <div class="flex justify-between">
       <h3 class=" text-lg font-semibold text-gray-900">Perros del cliente</h3>
-      <a
-        href="/vet/client/{data.client.id}/dog/new"
-        class=" hover:underline underline-offset-2 rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-      >
+      <A href="/vet/client/{data.client.id}/dog/new" color="primary" button>
         Nuevo perro
-      </a>
+      </A>
     </div>
     <ul class="grid gap-4 justify-center">
       {#each data.client.dog as dog (dog.id)}
@@ -99,9 +88,8 @@
               {/if}
               <A
                 href="/vet/client/{data.client.id}/dog/{dog.id}"
-                color="teal"
-                intensity={600}
-                opacity={80}
+                color="primary"
+                button
               >
                 Ver perfil
               </A>
@@ -141,9 +129,8 @@
               {#if donation.reason === DonationReason.CAMPAIGN}
                 <A
                   href="/vet/campaign/{donation.campaingId}"
-                  color="teal"
-                  intensity={600}
-                  opacity={80}
+                  color="primary"
+                  button
                 >
                   Ver campaña
                 </A>

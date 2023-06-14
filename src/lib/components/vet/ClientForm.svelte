@@ -12,6 +12,7 @@
 
 <FieldGroup>
   <svelte:fragment slot="title">Nuevo cliente</svelte:fragment>
+
   <svelte:fragment slot="fields">
     <TextInput
       label="Nombre"
@@ -42,7 +43,7 @@
       label="Numero de telefono"
       form={sForm}
       field="phone"
-      info="Formato: 123-456-7890"
+      hint="Formato: 123-456-7890"
     />
     <TextInput label="DNI" autocomplete="off" form={sForm} field="dni" />
   </svelte:fragment>

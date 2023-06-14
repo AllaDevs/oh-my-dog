@@ -1,7 +1,7 @@
 <script lang="ts">
+  import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import CampaignCard from '$lib/components/donation/CampaignCard.svelte';
-  import A from '$lib/components/element/A.svelte';
 
   export let data;
 </script>
@@ -17,7 +17,7 @@
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Campañas de donacion</h2>
-    <A href="/vet/donation/campaign/new" color="teal" intensity={600}>
+    <A href="/vet/donation/campaign/new" color="primary" button>
       Nueva campaña
     </A>
   </svelte:fragment>

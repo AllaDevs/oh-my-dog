@@ -52,7 +52,7 @@
                   <a
                     aria-current={current ? 'page' : false}
                     href={current ? '#main' : href}
-                    class=" rounded p-2 underline-offset-2 hover:bg-teal-200 hover:underline"
+                    class=" font-medium rounded p-2 underline-offset-2 hover:text-gray-800 hover:underline"
                   >
                     {text}
                   </a>

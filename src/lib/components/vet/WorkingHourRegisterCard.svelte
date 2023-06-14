@@ -1,16 +1,17 @@
 <script lang="ts">
-  import SelectInput from '$lib/components/form/SelectInput.svelte';
+  import Button from '$cmp/element/Button.svelte';
+  import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import HourInput from '$cmp/form/HourInput.svelte';
+  import SelectInput from '$cmp/form/SelectInput.svelte';
   import type { ProviderCompleteRegisterSchema } from '$lib/schemas/providerSchema';
   import { Day } from '@prisma/client';
   import { createEventDispatcher } from 'svelte';
   import type { SuperForm } from 'sveltekit-superforms/client';
-  import FieldGroup from '../form/FieldGroup.svelte';
-  import HourInput from '../form/HourInput.svelte';
 
   export let sForm: SuperForm<ProviderCompleteRegisterSchema, unknown>;
   export let index: number;
   export let title: string | undefined = undefined;
-  export let allowRemoval: boolean = true;
+  export let allowRemoval = true;
 
   const dispatch = createEventDispatcher<{ remove: number }>();
 
@@ -19,21 +20,25 @@
     .split('T')[0] as `${number}-${number}-${number}`;
 </script>
 
-<FieldGroup cols={2}>
+<FieldGroup cols="2">
   <svelte:fragment slot="title">
     <h3 class=" text-xl font-semibold text-gray-900">
       {title}
     </h3>
     {#if allowRemoval}
-      <button
+      <Button color="error" on:click={() => dispatch('remove', index)}>
+        Remover
+      </Button>
+      <!-- <button
         type="button"
         class="rounded-md bg-red-700/95 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
         on:click={() => dispatch('remove', index)}
       >
         Remover
-      </button>
+      </button> -->
     {/if}
   </svelte:fragment>
+
   <svelte:fragment slot="fields">
     <SelectInput
       label="Día de la semana"
@@ -66,5 +71,4 @@
       required
     />
   </svelte:fragment>
-  <svelte:fragment slot="actions" />
 </FieldGroup>

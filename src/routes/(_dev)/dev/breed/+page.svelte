@@ -1,6 +1,7 @@
 <script lang="ts">
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import TextInput from '$lib/components/form/TextInput.svelte';
+  import Button from '$cmp/element/Button.svelte';
+  import ActionButton from '$cmp/form/ActionButton.svelte';
+  import TextInput from '$cmp/form/TextInput.svelte';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
@@ -24,7 +25,7 @@
       </h2>
       <div class="mt-6 flex items-end gap-x-6">
         <TextInput label="Nombre de la raza" field="name" form={sForm} />
-        <SubmitButton>Cargar</SubmitButton>
+        <Button type="submit" color="primary">Cargar</Button>
       </div>
       <SuperDebug data={$form} />
     </form>
@@ -44,8 +45,8 @@
         </li>
       {/each}
     </ul>
-    <form method="POST" action="?/registerDefaultBreeds" class=" mt-6">
-      <SubmitButton>Cargar razas de prueba</SubmitButton>
-    </form>
+    <ActionButton action="?/registerDefaultBreeds" color="primary">
+      Cargar razas defaults
+    </ActionButton>
   </div>
 </div>

@@ -51,9 +51,8 @@
               <div class=" min-w-max">
                 <A
                   href="/vet/client/{donation.client.id}"
-                  color="teal"
-                  opacity={80}
-                  intensity={600}
+                  color="primary"
+                  button
                 >
                   Ver cuenta
                 </A>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import DonationsTable from '$cmp/donation/DonationsTable.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import PageCard from '$cmp/vet/PageCard.svelte';
+  import PageCard from '$cmp/shared/PageCard.svelte';
 
   export let data;
 </script>

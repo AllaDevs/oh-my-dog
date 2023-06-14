@@ -1,7 +1,6 @@
 <script lang="ts">
+  import DogInfo from '$cmp/client/DogInfo.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import DogInfo from '$lib/components/client/DogInfo.svelte';
-
   import { te } from '$lib/utils/translateEnums.js';
 
   export let data;
@@ -13,12 +12,13 @@
 
 <Page classContainer="container mx-auto px-6 py-4" classContentSlot="px-4 py-2">
   <svelte:fragment slot="pageHeader">
-    <h2 class=" mt-4 text-2xl">Mi perro</h2>
+    <h2 class=" mt-4 text-2xl">Perfil de {data.dog.name}</h2>
   </svelte:fragment>
 
   <section>
-    <DogInfo dog={data.dog} />
+    <DogInfo dog={data.dog} title="Informacion" />
   </section>
+
   <section>
     <header>
       <h3 class=" text-xl mt-4 lg:mt-10">

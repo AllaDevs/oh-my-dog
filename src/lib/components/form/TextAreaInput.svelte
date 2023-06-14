@@ -16,8 +16,8 @@
 
   export let label: string;
   export let hint: string | undefined = undefined;
-  export let readonly: boolean = false;
-  export let autocomplete: string = 'off';
+  export let readonly = false;
+  export let autocomplete = 'off';
 
   const { value, errors, constraints } = formFieldProxy(form, field);
 </script>
@@ -43,7 +43,7 @@
       aria-invalid={!!$errors || undefined}
       {...$constraints}
       {...$$restProps}
-      class=" mt-2 block w-full rounded-md max-h-[140px] min-h-[80px] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 read-only:focus:ring-1 read-only:focus:ring-gray-300 sm:text-sm sm:leading-6"
+      class=" mt-2 block w-full rounded-md max-h-[140px] min-h-[80px] border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
     />
     {#if $errors}
       <p class=" text-sm text-red-500">
@@ -56,9 +56,16 @@
   </div>
 </div>
 
-<style>
-  div:has(div textarea[required]) label::after {
+<style lang="postcss">
+  div:has(div textarea[required]:not(:read-only)) label::after {
     content: ' *';
     color: red;
+  }
+
+  textarea:focus {
+    @apply ring-2 ring-teal-600;
+  }
+  textarea:read-only {
+    @apply cursor-not-allowed bg-gray-100 ring-gray-200;
   }
 </style>

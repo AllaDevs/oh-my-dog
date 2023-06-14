@@ -1,9 +1,9 @@
 <script lang="ts">
-  import EmailInput from '$lib/components/form/EmailInput.svelte';
-  import PasswordInput from '$lib/components/form/PasswordInput.svelte';
-  import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import TextInput from '$lib/components/form/TextInput.svelte';
+  import Button from '$cmp/element/Button.svelte';
+  import EmailInput from '$cmp/form/EmailInput.svelte';
+  import PasswordInput from '$cmp/form/PasswordInput.svelte';
+  import SelectInput from '$cmp/form/SelectInput.svelte';
+  import TextInput from '$cmp/form/TextInput.svelte';
   import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
@@ -40,6 +40,6 @@
   </div>
 
   <div class="mt-6 flex items-center justify-around gap-x-6">
-    <SubmitButton />
+    <Button type="submit" color="primary">Submit</Button>
   </div>
 </form>

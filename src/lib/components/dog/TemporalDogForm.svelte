@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { TemporalDogRegisterSchema } from '$lib/schemas';
-  import type { SuperForm } from 'sveltekit-superforms/client';
-
   import DateInput from '$lib/components/form/DateInput.svelte';
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
+  import type { TemporalDogRegisterSchema } from '$lib/schemas';
+  import type { SuperForm } from 'sveltekit-superforms/client';
   import DogSexInput from './DogSexInput.svelte';
   import DogSizeInput from './DogSizeInput.svelte';
 
@@ -14,7 +13,7 @@
   export let readonly = false;
 </script>
 
-<FieldGroup cols={3}>
+<FieldGroup cols="3">
   <svelte:fragment slot="title">
     <slot name="title">
       <h3 class=" text-xl font-semibold text-gray-900">
@@ -22,6 +21,7 @@
       </h3>
     </slot>
   </svelte:fragment>
+
   <svelte:fragment slot="fields">
     <TextInput label="Nombre" form={sForm} field="name" {readonly} />
     <DateInput
@@ -47,6 +47,7 @@
       {readonly}
     />
   </svelte:fragment>
+
   <svelte:fragment slot="actions">
     <slot name="actions" />
   </svelte:fragment>

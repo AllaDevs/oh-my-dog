@@ -1,10 +1,11 @@
 <script lang="ts">
   import DonationsTable from '$cmp/donation/DonationsTable.svelte';
+  import A from '$cmp/element/A.svelte';
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import ActionButton from '$lib/components/form/ActionButton.svelte';
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import ImageInput from '$lib/components/form/ImageInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import { DonationCampaignState } from '$lib/enums';
@@ -79,12 +80,9 @@
       Edicion campaña de donacion {formIsDisabled ? '(Terminada)' : ''}
     </h2>
     <div class="w-max md:self-end my-2">
-      <a
-        href="/vet/donation/campaign"
-        class="rounded-md bg-gray-300 px-3 py-2 text-xs md:text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-      >
+      <A href="/vet/donation/campaign" color="default" button>
         Volver a las campañas
-      </a>
+      </A>
     </div>
   </svelte:fragment>
 
@@ -96,7 +94,7 @@
         enctype="multipart/form-data"
         use:updateSForm.enhance
       >
-        <FieldGroup cols={1}>
+        <FieldGroup cols="1">
           <svelte:fragment slot="title">
             <slot name="title">
               <h3 class=" text-xl font-semibold text-gray-900">
@@ -104,6 +102,7 @@
               </h3>
             </slot>
           </svelte:fragment>
+
           <svelte:fragment slot="fields">
             <TextInput
               label="Nombre"
@@ -124,13 +123,15 @@
               disabled={formIsDisabled}
             />
           </svelte:fragment>
+
           <svelte:fragment slot="actions">
             {#if !formIsDisabled}
-              <SubmitButton>Actualizar</SubmitButton>
+              <Button type="submit" color="primary">Actualizar</Button>
             {/if}
           </svelte:fragment>
         </FieldGroup>
       </form>
+
       <div class="flex flex-wrap md:flex-col items-center justify-center">
         {#if campaignState === DonationCampaignState.CREATED || campaignState === DonationCampaignState.PAUSED}
           <ActionButton

@@ -1,14 +1,14 @@
 <script lang="ts">
+  import TemporalDogForm from '$cmp/dog/TemporalDogForm.svelte';
+  import Button from '$cmp/element/Button.svelte';
+  import ActionButton from '$cmp/form/ActionButton.svelte';
+  import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import TextAreaInput from '$cmp/form/TextAreaInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { PostState } from '$lib/enums.js';
   import { breedsToInputOptions } from '$lib/utils/functions.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
-
-  import TemporalDogForm from '$lib/components/dog/TemporalDogForm.svelte';
-  import FieldGroup from '$lib/components/form/FieldGroup.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
 
   export let data;
 
@@ -60,18 +60,16 @@
 <Page
   classContainer="container mx-auto max-w-screen-lg p-4"
   classHeaderSlot="mt-2"
-  classContentSlot="px-4 flex flex-col gap-4"
+  classContentSlot="p-4 flex flex-col gap-4"
 >
   <svelte:fragment slot="pageHeader">
-    <h2 class=" mt-4 text-3xl">Edicion post de adopcion</h2>
+    <h2 class=" mt-4 text-3xl">
+      Edicion post de adopcion {postIsResolved ? '(Resuelto)' : ''}
+    </h2>
   </svelte:fragment>
 
   <form method="POST" action="?/update" use:updateSForm.enhance>
-    <TemporalDogForm
-      sForm={updateSForm}
-      {breeds}
-      readonly={data.post.registered}
-    >
+    <TemporalDogForm sForm={updateSForm} {breeds} readonly={postIsResolved}>
       <svelte:fragment slot="title">
         <h3 class=" text-xl font-semibold text-gray-900">
           Informacion del perro
@@ -79,13 +77,16 @@
       </svelte:fragment>
       <svelte:fragment slot="actions">
         {#if !data.post.registered}
-          <SubmitButton disabled={postIsResolved}>Actualizar</SubmitButton>
+          <Button type="submit" disabled={postIsResolved} color="primary">
+            Actualizar
+          </Button>
         {/if}
       </svelte:fragment>
     </TemporalDogForm>
   </form>
+
   <form method="POST" action="?/resolve" use:deleteSForm.enhance>
-    <FieldGroup cols={1}>
+    <FieldGroup cols="1">
       <svelte:fragment slot="title">
         <h3 class=" text-xl font-semibold text-gray-900">Resolver adopcion</h3>
       </svelte:fragment>
@@ -98,23 +99,16 @@
         />
       </svelte:fragment>
       <svelte:fragment slot="actions">
-        <SubmitButton disabled={postIsResolved}>Resolver</SubmitButton>
+        <Button type="submit" disabled={postIsResolved} color="success">
+          Resolver
+        </Button>
       </svelte:fragment>
     </FieldGroup>
   </form>
+
   {#if !postIsResolved}
-    <form
-      method="POST"
-      action="?/delete"
-      use:deleteSForm.enhance
-      class="flex justify-end p-4"
-    >
-      <button
-        type="submit"
-        class="rounded-md bg-red-700/95 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-      >
-        Eliminar publicacion
-      </button>
-    </form>
+    <ActionButton action="?/delete" enhance={deleteSForm.enhance} color="error">
+      Eliminar publicacion
+    </ActionButton>
   {/if}
 </Page>

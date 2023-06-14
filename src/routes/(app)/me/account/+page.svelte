@@ -1,9 +1,7 @@
 <script lang="ts">
+  import AuthUpdateForm from '$cmp/auth/AuthUpdateForm.svelte';
+  import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import EmailInput from '$lib/components/form/EmailInput.svelte';
-  import Fieldset from '$lib/components/form/Fieldset.svelte';
-  import PasswordInput from '$lib/components/form/PasswordInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -31,56 +29,13 @@
 
 <Page
   classContainer="container mx-auto max-w-screen-lg mt-4 px-4"
-  classHeaderSlot="mt-2"
-  classContentSlot="mt-2"
+  classHeaderSlot="mt-2 md:mt-4 flex justify-between items-end"
+  classContentSlot="p-4"
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Mi autenticacion</h2>
+    <A href="/me" button>Regresar a Mi cuenta</A>
   </svelte:fragment>
 
-  <form method="POST" class=" mt-2 py-4" use:accountAuthSForm.enhance>
-    <div class=" flex flex-col gap-8">
-      <Fieldset>
-        <svelte:fragment slot="legend">Datos de autenticacion</svelte:fragment>
-        <svelte:fragment slot="fields">
-          <EmailInput
-            form={accountAuthSForm}
-            field={'currentEmail'}
-            label="Direccion de email actual"
-          />
-          <EmailInput
-            form={accountAuthSForm}
-            field={'newEmail'}
-            label="Nueva direccion de email"
-          />
-          <PasswordInput
-            form={accountAuthSForm}
-            field={'currentPassword'}
-            label="Contraseña actual"
-          />
-          <PasswordInput
-            form={accountAuthSForm}
-            field={'newPassword'}
-            label="Nueva contraseña"
-          />
-          <PasswordInput
-            form={accountAuthSForm}
-            field={'newPasswordConfirm'}
-            label="Confirmar nueva contraseña"
-          />
-        </svelte:fragment>
-        <svelte:fragment slot="actions">
-          <div class="mt-6 flex items-center justify-around">
-            <a
-              href="/me"
-              class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-            >
-              Regresar a Mi cuenta
-            </a>
-            <SubmitButton action="?/authUpdate">Editar cuenta</SubmitButton>
-          </div>
-        </svelte:fragment>
-      </Fieldset>
-    </div>
-  </form>
+  <AuthUpdateForm action="?/authUpdate" sForm={accountAuthSForm} />
 </Page>

@@ -1,7 +1,7 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -76,7 +76,7 @@
     </div>
 
     <div class="mt-8 flex items-center justify-around">
-      <SubmitButton>Cambiar contraseña</SubmitButton>
+      <Button type="submit" color="primary">Cambiar contraseña</Button>
     </div>
   </form>
 </Page>

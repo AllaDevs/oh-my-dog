@@ -1,7 +1,7 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -57,7 +57,9 @@
     </div>
 
     <div class="mt-8 flex items-center justify-around">
-      <SubmitButton>Enviar email de restablecimiento</SubmitButton>
+      <Button type="submit" color="primary">
+        Enviar email de restablecimiento
+      </Button>
     </div>
   </form>
 

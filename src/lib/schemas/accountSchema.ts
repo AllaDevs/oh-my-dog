@@ -14,6 +14,7 @@ export const accountAuthUpdateSchema = z.object({
     newPassword: z.optional(c.passwordSchema),
     newPasswordConfirm: z.optional(c.passwordSchema)
 });
+export type AccountAuthUpdateSchema = typeof accountAuthUpdateSchema;
 
 export const devAccountSchema = accountBaseSchema;
 

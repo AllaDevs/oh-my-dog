@@ -1,9 +1,9 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import ContactCard from '$cmp/client/ContactCard.svelte';
+  import AdoptionPostInfo from '$cmp/dog/AdoptionPostInfo.svelte';
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import ContactCard from '$lib/components/client/ContactCard.svelte';
-  import AdoptionPostInfo from '$lib/components/dog/AdoptionPostInfo.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import type { SubmitFunction } from '@sveltejs/kit';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -76,7 +76,7 @@
         use:enhance={enhanceClientContact}
       >
         <div class="grid place-items-center">
-          <SubmitButton>Contactar</SubmitButton>
+          <Button type="submit" color="primary">Contactar</Button>
         </div>
       </form>
     {:else}

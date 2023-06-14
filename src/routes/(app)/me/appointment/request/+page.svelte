@@ -1,8 +1,8 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
+  import DateInput from '$cmp/form/DateInput.svelte';
+  import SelectInput from '$cmp/form/SelectInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import DateInput from '$lib/components/form/DateInput.svelte';
-  import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import { AppointmentReason, Daytime } from '$lib/enums';
   import { prettyDate } from '$lib/utils/functions.js';
   import { dateProxy, superForm } from 'sveltekit-superforms/client';
@@ -75,7 +75,7 @@
     </div>
 
     <div class="mt-6 flex items-center justify-around gap-x-6">
-      <SubmitButton>Pedir Turno</SubmitButton>
+      <Button type="submit" color="primary">Pedir Turno</Button>
     </div>
     <div class="flex items-center justify-around mt-10 text-xl max-w-full">
       {#if $message}

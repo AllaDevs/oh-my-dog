@@ -1,8 +1,8 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import DateInput from '$lib/components/form/DateInput.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import { Daytime } from '$lib/enums';
   import { prettyDate } from '$lib/utils/functions.js';
@@ -72,7 +72,7 @@
     </div>
 
     <div class="mt-6 flex items-center justify-around gap-x-6">
-      <SubmitButton>Proponer cambio</SubmitButton>
+      <Button type="submit" color="primary">Proponer cambio</Button>
     </div>
     <div class="flex items-center justify-around mt-10 text-xl max-w-full">
       {#if $message}

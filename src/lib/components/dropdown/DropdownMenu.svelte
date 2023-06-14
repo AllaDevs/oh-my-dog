@@ -27,8 +27,9 @@
 
     <div class="grid relative place-items-center w-4 ml-2">
       <span
-        class="absolute text-base transition-transform duration-[500ms] {isOpen &&
-          ' rotate-90'}">></span
+        class="absolute text-base transition-transform duration-[500ms] {isOpen
+          ? 'rotate-90'
+          : ''}">></span
       >
     </div>
   </button>

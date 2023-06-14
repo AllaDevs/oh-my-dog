@@ -1,8 +1,9 @@
 <script lang="ts">
+  import A from '$cmp/element/A.svelte';
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import ImageInput from '$lib/components/form/ImageInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import toast from 'svelte-french-toast';
@@ -48,7 +49,7 @@
       enctype="multipart/form-data"
       use:registerSForm.enhance
     >
-      <FieldGroup cols={1}>
+      <FieldGroup cols="1">
         <svelte:fragment slot="title">
           <slot name="title">
             <h3 class=" text-xl font-semibold text-gray-900">
@@ -56,6 +57,7 @@
             </h3>
           </slot>
         </svelte:fragment>
+        
         <svelte:fragment slot="fields">
           <TextInput label="Nombre" form={registerSForm} field="name" />
           <TextAreaInput
@@ -65,14 +67,12 @@
           />
           <ImageInput label="Imagen" form={registerSForm} field="banner" />
         </svelte:fragment>
+
         <svelte:fragment slot="actions">
-          <a
-            href="/vet/donation/campaign"
-            class="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-          >
+          <A href="/vet/donation/campaign" color="default" button>
             Volver a las campañas
-          </a>
-          <SubmitButton>Registrar</SubmitButton>
+          </A>
+          <Button type="submit" color="primary">Registrar</Button>
         </svelte:fragment>
       </FieldGroup>
     </form>

@@ -1,10 +1,10 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import Button from '$cmp/element/Button.svelte';
+  import DateInput from '$cmp/form/DateInput.svelte';
+  import SelectInput from '$cmp/form/SelectInput.svelte';
+  import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import DateInput from '$lib/components/form/DateInput.svelte';
-  import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import TextInput from '$lib/components/form/TextInput.svelte';
   import { DogSex, DogSize } from '$lib/enums.js';
   import type { SubmitFunction } from '@sveltejs/kit';
   import toast from 'svelte-french-toast';
@@ -98,7 +98,7 @@
           >
             <input type="text" name="dogId" value={dog.id} hidden />
             <input type="text" value={dog.name} />
-            <SubmitButton>Dar en adopcion</SubmitButton>
+            <Button type="submit" color="primary">Dar en adopcion</Button>
           </form>
         </li>
       {:else}
@@ -139,7 +139,7 @@
       <TextInput label="Observación" form={sForm} field="observation" />
       <SelectInput label="Raza" form={sForm} field="breedId" options={breeds} />
       <div class=" flex justify-around mt-4">
-        <SubmitButton>Dar en adopcion</SubmitButton>
+        <Button type="submit" color="primary">Dar en adopcion</Button>
       </div>
     </form>
   </section>

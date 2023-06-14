@@ -1,6 +1,6 @@
 <script lang="ts">
+  import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import A from '$lib/components/element/A.svelte';
 
   export let data;
 </script>
@@ -16,9 +16,7 @@
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Clientes</h2>
-    <A href="/vet/client/register" color="teal" intensity={600}>
-      Nuevo cliente
-    </A>
+    <A href="/vet/client/register" color="primary" button>Nuevo cliente</A>
   </svelte:fragment>
 
   <div class="relative overflow-x-auto rounded scrollbar">
@@ -48,12 +46,7 @@
             </td>
             <td class="px-6 py-4">
               <div class=" min-w-max">
-                <A
-                  href="/vet/client/{client.id}"
-                  color="teal"
-                  opacity={80}
-                  intensity={600}
-                >
+                <A href="/vet/client/{client.id}" color="primary" button>
                   Ver cuenta
                 </A>
               </div>

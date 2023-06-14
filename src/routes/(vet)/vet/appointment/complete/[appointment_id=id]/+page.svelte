@@ -1,7 +1,7 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
   import { prettyDate } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
@@ -39,7 +39,7 @@
   <div class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
     <form method="POST" class=" mt-2 py-4" enctype="multipart/form-data">
       <div class=" pb-4 flex flex-col gap-4">
-        <FieldGroup cols={1}>
+        <FieldGroup cols="1">
           <svelte:fragment slot="title">
             <h3 class=" text-xl font-semibold text-gray-900">
               Datos para el registro médico:
@@ -57,7 +57,7 @@
           <svelte:fragment slot="actions" />
         </FieldGroup>
         <div class="mt-6 flex items-center justify-around gap-x-6">
-          <SubmitButton>Efectivizar</SubmitButton>
+          <Button type="submit" color="primary">Efectivizar</Button>
         </div>
         <div class="flex items-center justify-around mt-10 text-xl max-w-full">
           {#if $message}

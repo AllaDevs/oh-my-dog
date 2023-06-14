@@ -1,9 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import PasswordInput from '$lib/components/form/PasswordInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -67,14 +67,10 @@
     </div>
 
     <div class=" mt-8 flex items-center justify-around gap-4">
-      <button
-        type="button"
-        class=" rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
-        on:click={() => (noAccountHelp = !noAccountHelp)}
-      >
+      <Button on:click={() => (noAccountHelp = !noAccountHelp)} color="default">
         ¿No tienes una cuenta?
-      </button>
-      <SubmitButton>Iniciar Sesión</SubmitButton>
+      </Button>
+      <Button type="submit" color="primary">Iniciar Sesión</Button>
     </div>
 
     <p
