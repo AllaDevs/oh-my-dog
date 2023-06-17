@@ -12,7 +12,7 @@
   let author = post.publisher;
 </script>
 
-<div class="flex flex-col gap-4 lg:flex-row">
+<div class="flex flex-col gap-4 lg:flex-row lg:justify-around">
   <FieldGroup cols="2">
     <svelte:fragment slot="title">
       <h3 class=" text-lg font-semibold text-gray-900">

@@ -54,9 +54,9 @@
 </svelte:head>
 
 <Page
-  classContainer="container mx-auto max-w-fit p-4 scrollbar"
+  classContainer="container mx-auto max-w-screen-lg p-4 scrollbar"
   classHeaderSlot="mt-2"
-  classContentSlot="flex flex-col gap-8 px-4 justify-around"
+  classContentSlot="flex flex-col gap-8 px-4 justify-around mb-[10vh]"
 >
   <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-3xl">Adoptar perro</h2>
