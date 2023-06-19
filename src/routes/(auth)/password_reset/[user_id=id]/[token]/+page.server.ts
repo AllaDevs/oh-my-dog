@@ -93,7 +93,7 @@ export const actions = {
             await auth.invalidateAllUserSessions(passwordRecovery.authUserId);
         } catch (error) {
             console.log(error);
-            return setError(form, null, 'No se pudo actualizar la contraseña');
+            return setError(form, '', 'No se pudo actualizar la contraseña');
         }
 
         throw redirect(303, '/login');

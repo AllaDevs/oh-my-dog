@@ -1,4 +1,4 @@
-import { EmailError, adoptionContactHTML, systemEmail } from '$lib/email';
+import { EmailError, adoptionContactConfirmHTML, adoptionContactHTML, systemEmail } from '$lib/email';
 import { PostState } from '$lib/enums';
 import { c } from '$lib/schemas';
 import { redirectToLogin } from '$lib/server/auth';
@@ -61,10 +61,10 @@ export const load = (async (event) => {
         throw error(403, 'No puedes contactarte con tu propio post de adopción');
     }
 
-    const form = await superValidate(event.request, anonymousContactSchema, { id: 'anonymousContact' });
+    const form = await superValidate(event.request, anonymousContactSchema, { id: 'anonymous' });
     return {
+        form: form,
         post: post as DiscriminatedAdoptionPost,
-        anonymousForm: form
     };
 }) satisfies PageServerLoad;
 
@@ -107,7 +107,7 @@ export const actions = {
                 throw error(404, 'No se encontro el post de adopción con el que te quieres contactar');
             }
             if (adoptionPost.state === PostState.RESOLVED) {
-                return setError(form, null, 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
+                return setError(form, '', 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
             }
             if (!client) {
                 throw error(403, 'No eres un cliente registrado');
@@ -117,6 +117,7 @@ export const actions = {
             }
 
             const dogName = (adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name) ?? 'Uno de tus perros';
+
             await systemEmail(
                 {
                     name: adoptionPost.publisher.username,
@@ -125,7 +126,21 @@ export const actions = {
                 `${client.username} quiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}`,
                 `El cliente con los datos:\nNombre: ${client.username}\nApellido: ${client.email}\nEmail: ${client.email}\nTelefono: Email: ${client.phone}\nQuiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}, ponte en contacto con el para continuar con el proceso de adopción.`,
                 adoptionContactHTML(client.username, client.lastname, client.email, client.phone, dogName),
+            );
 
+            await systemEmail(
+                {
+                    name: client.username,
+                    address: client.email
+                },
+                `Confirmacion de contacto por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}`,
+                `Se contacto con el axito al autor de la publicion, el se pondra en contacto contigo mediante el email: ${adoptionPost.publisher.email}`,
+                adoptionContactConfirmHTML(
+                    adoptionPost.publisher.username,
+                    adoptionPost.publisher.lastname,
+                    adoptionPost.publisher.email,
+                    dogName
+                )
             );
         }
         catch (error) {
@@ -142,7 +157,7 @@ export const actions = {
         return { form };
     },
     anonymousContact: async ({ request, url, params }) => {
-        const form = await superValidate(request, anonymousContactSchema, { id: 'anonymousContact' });
+        const form = await superValidate(request, anonymousContactSchema, { id: 'anonymous' });
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
@@ -171,10 +186,11 @@ export const actions = {
                 throw error(404, 'No se encontro el post de adopción con el que te quieres contactar');
             }
             if (adoptionPost.state === PostState.RESOLVED) {
-                return setError(form, null, 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
+                return setError(form, '', 'El post de adopción ya fue resuelto, no puedes contactarte con el dueño');
             }
 
             const dogName = (adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name) ?? 'Uno de tus perros';
+
             await systemEmail(
                 {
                     name: adoptionPost.publisher.username,
@@ -183,16 +199,30 @@ export const actions = {
                 `${form.data.username} quiere contactarse contigo por la adopcion de ${dogName}`,
                 `El cliente con los datos:\nNombre: ${form.data.username}\nApellido: ${form.data.email}\nEmail: ${form.data.email}\nTelefono: Email: ${form.data.phone}\nQuiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}, ponte en contacto con el para continuar con el proceso de adopción.`,
                 adoptionContactHTML(form.data.username, form.data.lastname, form.data.email, form.data.phone, dogName),
+            );
 
+            await systemEmail(
+                {
+                    name: form.data.username,
+                    address: form.data.email
+                },
+                `Confirmacion de contacto por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}`,
+                `Se contacto con el axito al autor de la publicion, el se pondra en contacto contigo mediante el email: ${adoptionPost.publisher.email}`,
+                adoptionContactConfirmHTML(
+                    adoptionPost.publisher.username,
+                    adoptionPost.publisher.lastname,
+                    adoptionPost.publisher.email,
+                    dogName
+                )
             );
         }
         catch (error) {
             if (error instanceof EmailError) {
-                return setError(form, null, 'Ocurrio un error con el servicio de emails al enviar el mensaje, intente mas tarde');
+                return setError(form, '', 'Ocurrio un error con el servicio de emails al enviar el mensaje, intente mas tarde');
             }
 
             logError('adoption', 'Unexpected error sending client adoption contact email', error);
-            return setError(form, null, 'Ocurrio un error inesperado al enviar el email de contacto, intente mas tarde');
+            return setError(form, '', 'Ocurrio un error inesperado al enviar el email de contacto, intente mas tarde');
         }
 
         return { form };

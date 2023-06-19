@@ -6,6 +6,7 @@ import EmailConfirmedAppointment from './templates/EmailConfirmedAppointment.sve
 import EmailNewAccount from './templates/EmailNewAccount.svelte';
 import EmailRejectedAppointment from './templates/EmailRejectedAppointment.svelte';
 import EmailResetPassword from './templates/EmailResetPassword.svelte';
+import EmailAdoptionContactConfirmation from './templates/EmailAdoptionContactConfirmation.svelte';
 
 
 type RenderResult = {
@@ -55,6 +56,12 @@ export function adoptionContactHTML(username: string, lastname: string, email: s
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
+export function adoptionContactConfirmHTML(username: string, lastname: string, email: string, dogname: string) {
+    const r = (EmailAdoptionContactConfirmation as unknown as Renderable<EmailAdoptionContactConfirmation>).render({ username, lastname, email, dogname });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
+
 export default {
     newAccountHTML,
     resetPasswordHTML,
@@ -63,4 +70,5 @@ export default {
     cancelledAppoinmentHTML,
     rejectedAppoinmentHTML,
     changedAppoinmentHTML,
+    adoptionContactConfirmHTML,
 };

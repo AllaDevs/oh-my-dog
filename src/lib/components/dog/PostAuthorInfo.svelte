@@ -25,20 +25,14 @@
       label="Nombre"
       field="username"
       value={author.username}
-      readonly={true}
+      readonly
     />
     <TextInput
       label="Apellido"
       field="lastname"
       value={author.lastname}
-      readonly={true}
+      readonly
     />
-    <TelInput
-      label="Telefono"
-      field="phone"
-      value={author.phone}
-      readonly={true}
-    />
+    <TelInput label="Telefono" field="phone" value={author.phone} readonly />
   </svelte:fragment>
-  <svelte:fragment slot="actions" />
 </FieldGroup>

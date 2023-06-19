@@ -20,13 +20,13 @@ export const load = (async (event) => {
         }
     });
     if (!client) {
-        throw error(403, 'No eres un veterinario');
+        throw error(403, 'No eres un cliente');
     }
 
     const accountAuthForm = await superValidate(
         { currentEmail: client.email },
         accountAuthUpdateSchema,
-        { id: 'accountAuthForm', }
+        { id: 'accountAuthForm', errors: false }
     );
 
     return { accountAuthForm };

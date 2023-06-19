@@ -53,10 +53,10 @@ export const actions = {
                     return setError(form, 'password', 'Contraseña incorrecta');
                 }
 
-                return setError(form, null, `AUTH ${error.message}`);
+                return setError(form, '', `AUTH ${error.message}`);
             }
 
-            return setError(form, null, `UNKNOWN ${(error as Record<string, unknown>).message ?? (error as Record<string, unknown>).code ?? ''}`);
+            return setError(form, '', `UNKNOWN ${(error as Record<string, unknown>).message ?? (error as Record<string, unknown>).code ?? ''}`);
         }
 
         const redirectTo = url.searchParams.get('redirect_to');

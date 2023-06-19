@@ -1,13 +1,45 @@
 <script lang="ts">
-  import Header from './Header.svelte';
+  import { page } from '$app/stores';
+  import Header from '$cmp/layout/Header.svelte';
+  import Layout from '$cmp/layout/Layout.svelte';
 
-  export let data;
+  const BASEPATH = '/vet';
+
+  const navLinks = [
+    { href: '/vet/client', text: 'Clientes' },
+    { href: '/vet/appointment', text: 'Turnos' },
+    { href: '/vet/donation', text: 'Donaciones' },
+    { href: '/vet/provider', text: 'Paseadores y Cuidadores' },
+    { href: '/vet/subsidiary', text: 'Sucursales' },
+    { href: '/vet/me', text: 'Cuenta administrativa' },
+  ];
 </script>
 
-<Header user={data.user} />
+<Layout>
+  <svelte:fragment slot="header">
+    <Header homePath={BASEPATH} {navLinks}>
+      <svelte:fragment slot="right">
+        {#if $page.data.user}
+          <form method="POST" action="/vet/logout" class="header-item w-max">
+            <button
+              type="submit"
+              class=" p-2 font-bold underline-offset-2 hover:underline"
+            >
+              Cerrar Sesión
+            </button>
+          </form>
+        {/if}
+      </svelte:fragment>
+    </Header>
+  </svelte:fragment>
 
-<slot />
+  <svelte:fragment slot="main">
+    <slot />
+  </svelte:fragment>
 
-<footer>
-  <!-- temporal placeholder -->
-</footer>
+  <!-- <svelte:fragment slot="footer">
+    <footer>
+      footer placeholder
+    </footer>
+  </svelte:fragment> -->
+</Layout>

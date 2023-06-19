@@ -1,14 +1,13 @@
 <script lang="ts">
+  import DogSexInput from '$cmp/dog/DogSexInput.svelte';
+  import DogSizeInput from '$cmp/dog/DogSizeInput.svelte';
+  import DateInput from '$cmp/form/DateInput.svelte';
+  import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import SelectInput from '$cmp/form/SelectInput.svelte';
+  import TextInput from '$cmp/form/TextInput.svelte';
   import type { DogRegisterSchema } from '$lib/schemas';
   import type { SuperForm } from 'sveltekit-superforms/client';
   import type { z } from 'zod';
-
-  import DateInput from '$lib/components/form/DateInput.svelte';
-  import FieldGroup from '$lib/components/form/FieldGroup.svelte';
-  import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import TextInput from '$lib/components/form/TextInput.svelte';
-  import DogSexInput from './DogSexInput.svelte';
-  import DogSizeInput from './DogSizeInput.svelte';
 
   export let sForm: SuperForm<DogRegisterSchema, unknown>;
   export let breeds: { value: string; text: string }[] = [];
@@ -17,7 +16,7 @@
   } = {};
 </script>
 
-<FieldGroup cols={2}>
+<FieldGroup cols="2">
   <svelte:fragment slot="title">
     <slot name="title">
       <h3 class=" text-xl font-semibold text-gray-900">

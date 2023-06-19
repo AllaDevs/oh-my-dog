@@ -1,12 +1,13 @@
 import { providerCompleteRegisterSchema } from '$lib/schemas/providerSchema';
 import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { defaultData, message, superValidate } from 'sveltekit-superforms/server';
+import { error, fail, redirect, type Actions } from '@sveltejs/kit';
+import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from './$types';
 
+
 const initialFormData = {
-    workingHour: [defaultData(workingHourSchema)]
+    workingHour: [defaultValues(workingHourSchema)]
 };
 
 export const load = (async ({ params, url }) => {
@@ -14,7 +15,8 @@ export const load = (async ({ params, url }) => {
     const form = await superValidate(
         initialFormData,
         providerCompleteRegisterSchema,
-        { errors: false });
+        { errors: false }
+    );
 
     const oldProvider = await prisma.dogServiceProvider.findUnique({
         where: {
@@ -30,16 +32,16 @@ export const load = (async ({ params, url }) => {
         }
     });
 
-    if (oldProvider) {
-        form.data.type = oldProvider.type;
-        form.data.email = oldProvider.email;
-        form.data.areas = oldProvider.areas;
-        form.data.username = oldProvider.username;
-        form.data.lastname = oldProvider.lastname;
-        form.data.description = oldProvider.description!;
-    } else {
-        return message(form, "No se encontró el proveedor", { status: 400 });
+    if (!oldProvider) {
+        throw error(404, 'No se encontró el proveedor que buscabas');
     }
+
+    form.data.type = oldProvider.type;
+    form.data.email = oldProvider.email;
+    form.data.areas = oldProvider.areas;
+    form.data.username = oldProvider.username;
+    form.data.lastname = oldProvider.lastname;
+    form.data.description = oldProvider.description!;
 
     return { form };
 }) satisfies PageServerLoad;

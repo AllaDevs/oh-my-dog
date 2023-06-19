@@ -1,4 +1,5 @@
-import type { AdoptionPost, Client, RegisteredDog, TemporalDog } from '@prisma/client';
+import type { AdoptionPost, Breed, Client, RegisteredDog, TemporalDog } from '@prisma/client';
+
 
 export type AdoptionPostDiscriminated = AdoptionPost & ({
     registered: true,
@@ -25,3 +26,23 @@ export type AdoptionPostDiscriminatedComplete = (AdoptionPost & {
         };
     },
 }));
+
+export type AdoptionPostDisc = (
+    AdoptionPost &
+    {
+        publisher: Client,
+    } &
+    (
+        {
+            registered: true,
+            dog: RegisteredDog & {
+                breed: Breed;
+            },
+        } | {
+            registered: false,
+            dog: TemporalDog & {
+                breed: Breed;
+            },
+        }
+    )
+);

@@ -10,13 +10,13 @@
     }
     /* Scrollbar For Chrome, EDGE, Opera, Others */
     .scrollbar::-webkit-scrollbar {
-        @apply w-2 rounded
+        @apply w-[4px] h-[4px] md:w-[6px] md:h-[6px] rounded;
     }
     .scrollbar::-webkit-scrollbar-track { 
-        @apply bg-teal-50
+        @apply bg-teal-50 bg-inherit;
     }
     .scrollbar::-webkit-scrollbar-thumb { 
-        @apply bg-teal-600 rounded
+        @apply bg-teal-600 rounded;
     }
 }
 
@@ -35,9 +35,13 @@
 
 html,
 body {
-    @apply h-full;
+    @apply h-full overflow-hidden;
 }
 
 body {
-    @apply bg-teal-50 scrollbar;
+    @apply bg-teal-50;
+}
+
+body > div {
+    @apply h-full overflow-hidden;
 }

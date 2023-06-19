@@ -1,16 +1,17 @@
 <script lang="ts">
-  export let cols : 1 | 2 | 3 = 1;
+  export let cols : "1" | "2" | "3" = "1";
+
   let gridCols = 'grid-cols-1';
   $: switch (cols) {
-    case 1: {
+    case "1": {
       gridCols = 'grid-cols-1';
       break;
     }
-    case 2: {
+    case "2": {
       gridCols = 'grid-cols-1 md:grid-cols-2 md:gap-x-8'
       break;
     }
-    case 3: {
+    case "3": {
       gridCols = 'grid-cols-1 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3 lg:gap-x-6'
       break;
     }
@@ -24,7 +25,7 @@
     <slot name="title" />
   </div>
 
-  <div class=" grid mt-2 gap-2 {gridCols}">
+  <div class=" grid mt-2 gap-2 md:gap-y-4 {gridCols}">
     <slot name="fields" />
   </div>
 

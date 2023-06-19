@@ -1,5 +1,5 @@
 <script lang="ts">
-  interface $$slots {
+  interface $$Slots {
     belowInput: {};
     oppositeToLabel: {};
     options: {};
@@ -12,9 +12,9 @@
 
   export let label: string;
   export let hint: string | undefined = undefined;
-  export let readonly: boolean = false;
-  export let required: boolean = false;
-  export let unselectedText: string = 'Sin seleccionar';
+  export let readonly = false;
+  export let required = false;
+  export let unselectedText = 'Sin seleccionar';
   /**
    * If an option is pre-selected, this must be the value of the option.
    */
@@ -24,25 +24,25 @@
 
 <div class=" mt-2">
   <div class=" flex justify-between text-sm font-medium">
-    <label for={String(field)} class=" max-w-fit text-gray-900">
+    <label for={field} class=" max-w-fit text-gray-900">
       {label}
     </label>
-    {#if $$slots.opossiteToLabel}
-      <slot name="opossiteToLabel" />
+    {#if $$slots.oppositeToLabel}
+      <slot name="oppositeToLabel" />
     {:else if hint}
       <span class=" text-gray-500">{hint}</span>
     {/if}
   </div>
   <div class=" flex flex-col gap-2">
     <select
-      id={String(field)}
-      name={String(field)}
+      id={field}
+      name={field}
       autocomplete="off"
       disabled={readonly}
       {required}
       {value}
       {...$$restProps}
-      class=" mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+      class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
     >
       {#if unselectedText}
         <option value="">{unselectedText}</option>
@@ -63,9 +63,16 @@
   </div>
 </div>
 
-<style>
-  div:has(+ div select[required]) label::after {
+<style lang="postcss">
+  div:has(div select[required]:not(:read-only)) label::after {
     content: ' *';
     color: red;
+  }
+
+  select:focus {
+    @apply ring-2 ring-teal-600;
+  }
+  select:read-only {
+    @apply cursor-not-allowed bg-gray-100 ring-gray-200;
   }
 </style>

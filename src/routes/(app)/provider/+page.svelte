@@ -1,4 +1,5 @@
 <script>
+  import Page from '$cmp/layout/Page.svelte';
   import ProviderCard from '$lib/components/service/ProviderCard.svelte';
   import { TabItem, Tabs } from 'flowbite-svelte';
 
@@ -9,7 +10,9 @@
   <title>Servicios de Terceros</title>
 </svelte:head>
 
-<main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
+<Page
+  classContentSlot=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto"
+>
   <div
     class="flex flex-row space-between mt-10 mb-10 ml-12 mr-12 justify-between"
   >
@@ -45,4 +48,4 @@
       {/each}
     </TabItem>
   </Tabs>
-</main>
+</Page>

@@ -4,17 +4,15 @@
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import TelInput from '$lib/components/form/TelInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
-
-  import type { UnwrapEffects } from 'sveltekit-superforms';
+  import type { ClientCompleteRegisterSchema } from '$lib/schemas';
   import type { SuperForm } from 'sveltekit-superforms/client';
 
-  type T = $$Generic<AnyZodObject>;
-
-  export let sForm: SuperForm<UnwrapEffects<T>, unknown>;
+  export let sForm: SuperForm<ClientCompleteRegisterSchema, unknown>;
 </script>
 
 <FieldGroup>
   <svelte:fragment slot="title">Nuevo cliente</svelte:fragment>
+
   <svelte:fragment slot="fields">
     <TextInput
       label="Nombre"
@@ -45,7 +43,7 @@
       label="Numero de telefono"
       form={sForm}
       field="phone"
-      info="Formato: 123-456-7890"
+      hint="Formato: 123-456-7890"
     />
     <TextInput label="DNI" autocomplete="off" form={sForm} field="dni" />
   </svelte:fragment>

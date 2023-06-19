@@ -81,11 +81,17 @@ export type DonationCampaignState =
     (typeof DonationCampaignState)[keyof typeof DonationCampaignState];
 
 export const DonationReason = {
-    FREE: 'FREE',
+    GENERAL: 'GENERAL',
     CAMPAIGN: 'CAMPAIGN'
 } satisfies typeof prismaClient.DonationReason;
 
 export type DonationReason = (typeof DonationReason)[keyof typeof DonationReason];
+
+export const PaymentPlatform = {
+    MERCADOPAGO: 'MERCADOPAGO',
+} satisfies typeof prismaClient.PaymentPlatform;
+
+export type PaymentPlatform = (typeof PaymentPlatform)[keyof typeof PaymentPlatform];
 
 export const PostState = {
     RESOLVED: 'RESOLVED',

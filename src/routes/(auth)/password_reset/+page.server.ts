@@ -100,20 +100,20 @@ export const actions = {
                     }
                 }
                 if (error.code === EmailError.CONNECTION_FAILED) {
-                    return setError(form, null, 'Ocurrio un error con el servidor de emails, intenta de nuevo más tarde');
+                    return setError(form, '', 'Ocurrio un error con el servidor de emails, intenta de nuevo más tarde');
                 }
                 if (error.code === EmailError.UNABLE_TO_SEND) {
-                    return setError(form, null, 'No se pudo enviar el correo de recuperación de contraseña, intenta de nuevo más tarde');
+                    return setError(form, '', 'No se pudo enviar el correo de recuperación de contraseña, intenta de nuevo más tarde');
                 }
                 // console.error(JSON.stringify(error, null, 2));
-                return setError(form, null, 'Ocurrio un error enviando el correo de recuperación de contraseña, intenta de nuevo más tarde');
+                return setError(form, '', 'Ocurrio un error enviando el correo de recuperación de contraseña, intenta de nuevo más tarde');
             }
             // if (error instanceof Prisma.PrismaClientKnownRequestError) {
             //     console.error(JSON.stringify(error, null, 2));
-            //     return setError(form, null, 'Ocurrio un error con la base de datos, intenta de nuevo más tarde');
+            //     return setError(form, '', 'Ocurrio un error con la base de datos, intenta de nuevo más tarde');
             // }
             console.error(JSON.stringify(error, null, 2));
-            return setError(form, null, 'Ocurrio un error inesperado, intenta de nuevo más tarde');
+            return setError(form, '', 'Ocurrio un error inesperado, intenta de nuevo más tarde');
         }
 
         return message(form, true);

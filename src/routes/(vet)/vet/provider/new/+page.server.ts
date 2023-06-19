@@ -2,11 +2,12 @@ import { providerCompleteRegisterSchema } from '$lib/schemas/providerSchema';
 import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
 import { fail, type Actions } from '@sveltejs/kit';
-import { defaultData, message, superValidate } from 'sveltekit-superforms/server';
+import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from '../$types';
 
+
 const initialFormData = {
-    workingHour: [defaultData(workingHourSchema)]
+    workingHour: [defaultValues(workingHourSchema)]
 };
 
 export const load: PageServerLoad = async (event) => {
@@ -14,7 +15,8 @@ export const load: PageServerLoad = async (event) => {
     const form = await superValidate(
         initialFormData,
         providerCompleteRegisterSchema,
-        { errors: false });
+        { errors: false }
+    );
 
     return { form };
 };

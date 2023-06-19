@@ -14,7 +14,16 @@ export const load = (async ({ params, url }) => {
         },
         include: {
             dog: true,
-            donation: true,
+            donation: {
+                include: {
+                    campaign: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
+                }
+            },
             appointment: true
         }
     });

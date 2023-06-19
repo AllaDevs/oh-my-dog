@@ -31,7 +31,7 @@ export const load = (async (event) => {
     const accountAuthForm = await superValidate(
         { currentEmail: vet.email },
         accountAuthUpdateSchema,
-        { id: 'accountAuthForm' }
+        { id: 'accountAuthForm', errors: false }
     );
 
     return { accountForm, accountAuthForm };
@@ -49,7 +49,7 @@ export const actions = {
 
         const { currentEmail, newEmail, currentPassword, newPassword, newPasswordConfirm } = accountAuthForm.data;
         if (!newEmail && !newPassword && !newPasswordConfirm) {
-            return setError(accountAuthForm, null, 'Debes ingresar un nuevo correo o una nueva contraseña para actualizar tu cuenta');
+            return setError(accountAuthForm, '', 'Debes ingresar un nuevo correo o una nueva contraseña para actualizar tu cuenta');
         }
         if (newEmail) {
             if (!currentPassword) {
@@ -66,7 +66,7 @@ export const actions = {
             }
             catch (error) {
                 console.error("Error during email verification", error);
-                setError(accountAuthForm, null, 'Ocurrio un error inesperado durante la validacion del correo');
+                setError(accountAuthForm, '', 'Ocurrio un error inesperado durante la validacion del correo');
             }
             if (!accountAuthForm.valid) {
                 return fail(400, { accountAuthForm });
@@ -102,10 +102,10 @@ export const actions = {
                         return setError(accountAuthForm, 'currentPassword', 'Contraseña incorrecta');
                     }
                     console.log("lucia error", error);
-                    return setError(accountAuthForm, null, 'Ocurrio un error durante la validacion de las credenciales');
+                    return setError(accountAuthForm, '', 'Ocurrio un error durante la validacion de las credenciales');
                 }
                 console.log("error", error);
-                return setError(accountAuthForm, null, 'Ocurrio un error inesperado durante la validacion de las credenciales');
+                return setError(accountAuthForm, '', 'Ocurrio un error inesperado durante la validacion de las credenciales');
             }
             if (newEmail) {
                 try {
@@ -144,7 +144,7 @@ export const actions = {
                     locals.auth.setSession(session);
                     accountAuthForm.data.currentEmail = newEmail;
                     accountAuthForm.data.newEmail = undefined;
-                    accountAuthForm.data.currentPassword = undefined;
+                    accountAuthForm.data.currentPassword = '';
                     accountAuthForm.data.newPassword = undefined;
                     accountAuthForm.data.newPasswordConfirm = undefined;
                 }
@@ -159,13 +159,13 @@ export const actions = {
                     const key = await auth.useKey('email', currentEmail, newPassword);
                     const session = await auth.createSession(key.userId);
                     locals.auth.setSession(session);
-                    accountAuthForm.data.currentPassword = undefined;
+                    accountAuthForm.data.currentPassword = '';
                     accountAuthForm.data.newPassword = undefined;
                     accountAuthForm.data.newPasswordConfirm = undefined;
                 }
                 catch (error) {
                     console.log("error during PASSWORD update only", error);
-                    return setError(accountAuthForm, null, 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
+                    return setError(accountAuthForm, '', 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
                 }
             }
         }

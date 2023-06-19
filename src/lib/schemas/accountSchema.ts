@@ -10,10 +10,11 @@ export const accountBaseSchema = z.object({
 export const accountAuthUpdateSchema = z.object({
     currentEmail: c.emailSchema,
     newEmail: z.optional(c.emailSchema),
-    currentPassword: z.optional(c.passwordSchema),
+    currentPassword: c.passwordSchema,
     newPassword: z.optional(c.passwordSchema),
     newPasswordConfirm: z.optional(c.passwordSchema)
 });
+export type AccountAuthUpdateSchema = typeof accountAuthUpdateSchema;
 
 export const devAccountSchema = accountBaseSchema;
 

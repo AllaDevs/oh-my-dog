@@ -85,7 +85,7 @@ model AuthPasswordRecovery {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    authUser   AuthUser @relation(fields: [authUserId], references: [id])
+    authUser   AuthUser @relation(fields: [authUserId], references: [id], onDelete: Cascade)
     authUserId String   @unique
     email      String   @unique
     token      String   @default(uuid())
@@ -414,7 +414,7 @@ model DonationCampaign {
 
     name        String
     description String
-    banner      Image
+    banner      Image?
     endDate     DateTime?
     state       DonationCampaignState
     donation    Donation[]
@@ -431,17 +431,23 @@ model Donation {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
 
-    amount     Float
-    reason     DonationReason
-    client     Client?           @relation(fields: [clientId], references: [id])
-    clientId   String?           @db.ObjectId
-    campaign   DonationCampaign? @relation(fields: [campaingId], references: [id])
-    campaingId String?           @db.ObjectId
+    amount          Float
+    paymentId       String            @unique
+    paymentPlatform PaymentPlatform
+    reason          DonationReason
+    campaign        DonationCampaign? @relation(fields: [campaingId], references: [id])
+    campaingId      String?           @db.ObjectId
+    client          Client?           @relation(fields: [clientId], references: [id])
+    clientId        String?           @db.ObjectId
 }
 
 enum DonationReason {
-    FREE
+    GENERAL
     CAMPAIGN
+}
+
+enum PaymentPlatform {
+    MERCADOPAGO
 }
 
 // ---------------------------------------------------------------------------

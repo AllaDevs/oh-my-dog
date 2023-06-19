@@ -28,6 +28,11 @@
     "material-icon-theme.saturation": 1,
     "svelte.enable-ts-plugin": true,
     "svelte.plugin.svelte.format.config.singleQuote": true,
+    "tailwindCSS.experimental.classRegex": [
+        "class\\w+=\"([^\"]*)",
+        "\\w+Class=\"([^\"]*)"
+    ],
     "typescript.format.semicolons": "insert",
-    "typescript.preferences.quoteStyle": "single"
+    "typescript.preferences.quoteStyle": "single",
+    "editor.linkedEditing": true
 }

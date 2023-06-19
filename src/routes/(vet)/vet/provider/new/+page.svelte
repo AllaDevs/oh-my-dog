@@ -1,12 +1,12 @@
 <script lang="ts">
-  import FieldGroup from '$lib/components/form/FieldGroup.svelte';
-  import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
-  import TextAreaInput from '$lib/components/form/TextAreaInput.svelte';
-  import TextInput from '$lib/components/form/TextInput.svelte';
-  import WorkingHourRegisterCard from '$lib/components/vet/WorkingHourRegisterCard.svelte';
+  import Button from '$cmp/element/Button.svelte';
+  import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import SelectInput from '$cmp/form/SelectInput.svelte';
+  import TextAreaInput from '$cmp/form/TextAreaInput.svelte';
+  import TextInput from '$cmp/form/TextInput.svelte';
+  import WorkingHourRegisterCard from '$cmp/vet/WorkingHourRegisterCard.svelte';
   import { DogServiceType } from '$lib/enums';
-  import { createFieldCopier } from '$lib/utils/functions.js';
+  import { fieldValueCloner } from '$lib/utils/functions.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
@@ -27,7 +27,7 @@
   });
   const { form: registerData, errors } = registerSForm;
 
-  const cloneHourDefault = createFieldCopier($registerData, ['workingHour', 0]);
+  const cloneHourDefault = fieldValueCloner($registerData, ['workingHour', 0]);
 
   function addWorkingHour() {
     $registerData.workingHour.push(cloneHourDefault());
@@ -56,7 +56,7 @@
     use:registerSForm.enhance
   >
     <div class=" pb-4 flex flex-col gap-4">
-      <FieldGroup cols={2}>
+      <FieldGroup cols="2">
         <svelte:fragment slot="title">
           <h3 class=" text-xl font-semibold text-gray-900">
             {'Nuevo proveedor'}
@@ -121,14 +121,19 @@
     </div>
 
     <div class="mt-6 flex items-center justify-around">
-      <button
+      <!-- <button
         type="button"
         on:click={addWorkingHour}
         class=" mt-2 rounded-md bg-teal-300 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300"
       >
         Agregar otra franja
-      </button>
-      <SubmitButton action="?/provider">Registrar proveedor</SubmitButton>
+      </button> -->
+      <Button on:click={addWorkingHour} color="primary">
+        Agregar otra franja horaria
+      </Button>
+      <Button type="submit" formaction="?/provider" color="primary">
+        Registrar proveedor
+      </Button>
     </div>
   </form>
 </main>

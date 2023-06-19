@@ -1,7 +1,8 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
+  import Page from '$cmp/layout/Page.svelte';
   import DateInput from '$lib/components/form/DateInput.svelte';
   import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import { Daytime } from '$lib/enums';
   import { prettyDate } from '$lib/utils/functions.js';
@@ -23,64 +24,66 @@
   yearFrom.setFullYear(new Date().getFullYear() + 1);
 </script>
 
-<div
-  class="flex flex-column space-between mt-10 mb-10 ml-12 mr-12 justify-between items-left"
->
-  <h3 class="text-3xl font-semibold text-gray-900">
-    Propuesta de cambio del turno
-  </h3>
-  <p class="btn variant-filled btn-sm">
-    Día: {prettyDate(appointment.date)}
-  </p>
-  <p class="btn variant-filled btn-sm">
-    Horario: {te.Daytime(appointment.daytime)}
-  </p>
-  <p class="btn variant-filled btn-sm">
-    Motivo: {te.AppointmentReason(appointment.reason)}
-  </p>
-</div>
+<Page>
+  <div
+    class="flex flex-column space-between mt-10 mb-10 ml-12 mr-12 justify-between items-left"
+  >
+    <h3 class="text-3xl font-semibold text-gray-900">
+      Propuesta de cambio del turno
+    </h3>
+    <p class="btn variant-filled btn-sm">
+      Día: {prettyDate(appointment.date)}
+    </p>
+    <p class="btn variant-filled btn-sm">
+      Horario: {te.Daytime(appointment.daytime)}
+    </p>
+    <p class="btn variant-filled btn-sm">
+      Motivo: {te.AppointmentReason(appointment.reason)}
+    </p>
+  </div>
 
-<form method="POST" class=" max-w-sm">
-  <div class="space-y-12 space-x-12 flex items-center justify-around">
-    <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
-      <DateInput
-        label="Fecha"
-        field="date"
-        unsetLabel="Seleccione una fecha"
-        min={today}
-        form={sForm}
-      />
-      <SelectInput
-        label="Horario"
-        field="daytime"
-        unselectedLabel="Seleccione un horario"
-        form={sForm}
-        options={[
-          { value: Daytime.MORNING, text: te.Daytime(Daytime.MORNING) },
-          { value: Daytime.AFTERNOON, text: te.Daytime(Daytime.AFTERNOON) },
-        ]}
-      />
-      <TextInput
-        label="Mensaje"
-        field="message"
-        unselectedLabel="Mensaje para el cliente"
-        form={sForm}
-      />
+  <form method="POST" class=" max-w-sm">
+    <div class="space-y-12 space-x-12 flex items-center justify-around">
+      <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
+        <DateInput
+          label="Fecha"
+          field="date"
+          unsetLabel="Seleccione una fecha"
+          min={today}
+          form={sForm}
+        />
+        <SelectInput
+          label="Horario"
+          field="daytime"
+          unselectedLabel="Seleccione un horario"
+          form={sForm}
+          options={[
+            { value: Daytime.MORNING, text: te.Daytime(Daytime.MORNING) },
+            { value: Daytime.AFTERNOON, text: te.Daytime(Daytime.AFTERNOON) },
+          ]}
+        />
+        <TextInput
+          label="Mensaje"
+          field="message"
+          unselectedLabel="Mensaje para el cliente"
+          form={sForm}
+        />
+      </div>
     </div>
-  </div>
 
-  <div class="mt-6 flex items-center justify-around gap-x-6">
-    <SubmitButton>Proponer cambio</SubmitButton>
-  </div>
-  <div class="flex items-center justify-around mt-10 text-xl max-w-full">
-    {#if $message}
-      <p
-        class="text-{$message === 'Pedido de cambio exitoso!'
-          ? 'green'
-          : 'red'}-500 text-sm font-semibold leading-5 mb-4 text-center"
-      >
-        {$message}
-      </p>
-    {/if}
-  </div>
-</form>
+    <div class="mt-6 flex items-center justify-around gap-x-6">
+      <Button type="submit" color="primary">Proponer cambio</Button>
+    </div>
+    <div class="flex items-center justify-around mt-10 text-xl max-w-full">
+      {#if $message}
+        <p
+          class="text-{$message === 'Pedido de cambio exitoso!'
+            ? 'green'
+            : 'red'}-500 text-sm font-semibold leading-5 mb-4 text-center"
+        >
+          {$message}
+        </p>
+      {/if}
+    </div>
+  </form>
+</Page>
