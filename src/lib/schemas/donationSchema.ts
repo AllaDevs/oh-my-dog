@@ -4,7 +4,7 @@ import { c } from './commonSchema';
 
 export const donationCampaignBase = z.object({
     name: z.string().max(80),
-    description: z.string().min(128).refine(d => d.split(/\s+/).length <= 200),
+    description: z.string().min(16).refine(d => d.split(/\s+/).length <= 200),
     banner: c.imageSchema
 });
 
@@ -14,4 +14,15 @@ export type DonationCampaignRegisterSchema = typeof donationCampaignRegisterSche
 
 export const donationCampaignUpdateSchema = donationCampaignBase.extend({
     banner: c.imageSchema.optional()
-})
+});
+
+
+const donationFormBaseSchema = z.object({
+    amount: z.number().int().min(100),
+});
+
+export let generalDonationSchema = donationFormBaseSchema;
+export type GeneralDonationSchema = typeof generalDonationSchema;
+
+export let campaignDonationSchema = donationFormBaseSchema;
+export type CampaignDonationSchema = typeof campaignDonationSchema;

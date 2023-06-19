@@ -4,6 +4,7 @@
   import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { DonationReason } from '$lib/enums';
+    import { friendlyDate } from '$lib/utils/functions';
   import { te } from '$lib/utils/translateEnums.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -121,7 +122,7 @@
                 Monto: {donation.amount}
               </h4>
               <p>
-                Fecha: {donation.createdAt.toString()}
+                Fecha: {friendlyDate(donation.createdAt)}
               </p>
               <p>
                 Motivo: {te.DonationReason(donation.reason)}

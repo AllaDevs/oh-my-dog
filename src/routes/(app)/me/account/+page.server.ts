@@ -20,7 +20,7 @@ export const load = (async (event) => {
         }
     });
     if (!client) {
-        throw error(403, 'No eres un veterinario');
+        throw error(403, 'No eres un cliente');
     }
 
     const accountAuthForm = await superValidate(

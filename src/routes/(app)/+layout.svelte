@@ -10,6 +10,7 @@
     { href: '/me/appointment', text: 'Turnos', requiresLogin: true },
     { href: '/me', text: 'Mi cuenta', requiresLogin: true },
     { href: '/adoption', text: 'Adopcion' },
+    { href: '/donation', text: 'Donacion' },
     { href: '/provider', text: 'Paseadores y cuidadores' },
   ];
 </script>

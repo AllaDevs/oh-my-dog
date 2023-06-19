@@ -20,7 +20,7 @@ export const load = (async (event) => {
         }
     });
     if (!dog) {
-        throw error(404, 'Perro no encontrado');
+        throw error(404, 'No se encontro el perro encontrado');
     }
 
     return {

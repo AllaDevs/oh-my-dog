@@ -80,9 +80,7 @@
       Edicion campaña de donacion {formIsDisabled ? '(Terminada)' : ''}
     </h2>
     <div class="w-max md:self-end my-2">
-      <A href="/vet/donation/campaign" color="default" button>
-        Volver a las campañas
-      </A>
+      <A href="/vet/donation" color="default" button>Volver a las campañas</A>
     </div>
   </svelte:fragment>
 

@@ -7,6 +7,7 @@
 
 <script lang="ts">
   import A from '$cmp/element/A.svelte';
+  import { friendlyDate } from '$lib/utils/functions';
   import type { Client, Donation } from '@prisma/client';
 
   type T = $$Generic<
@@ -41,7 +42,7 @@
             {donor.lastname}
           </td>
           <td class="px-6 py-4">
-            {donation.createdAt.toISOString()}
+            {friendlyDate(donation.createdAt)}
           </td>
           <td class="px-6 py-4">
             {donation.amount}

@@ -57,7 +57,7 @@
             </h3>
           </slot>
         </svelte:fragment>
-        
+
         <svelte:fragment slot="fields">
           <TextInput label="Nombre" form={registerSForm} field="name" />
           <TextAreaInput
@@ -69,7 +69,7 @@
         </svelte:fragment>
 
         <svelte:fragment slot="actions">
-          <A href="/vet/donation/campaign" color="default" button>
+          <A href="/vet/donation" color="default" button>
             Volver a las campañas
           </A>
           <Button type="submit" color="primary">Registrar</Button>

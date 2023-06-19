@@ -1,4 +1,3 @@
-import { MAX_IMAGE_SIZE } from '$lib/config';
 import type { Breed } from '@prisma/client';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { FieldPath, FormPathLeaves, SuperValidated, UnwrapEffects } from 'sveltekit-superforms/index';
@@ -38,7 +37,7 @@ export function getImage(formData: FormData, name: string, maxFileSize: number =
 }
 
 
-export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: SuperValidated<T, unknown>, field: FormPathLeaves<z.infer<T>>) {
+export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: SuperValidated<T, unknown>, field: FormPathLeaves<z.infer<T>>, maxFileSize: number = 4 * 1024 * 1024) {
     const imageFile = formData.get(field);
     if (!imageFile) {
         return null;
@@ -53,7 +52,7 @@ export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData:
         return null;
     }
 
-    if (imageFile.size > MAX_IMAGE_SIZE) {
+    if (imageFile.size > maxFileSize) {
         setError(form, field, 'Imagen demasiado grande');
         return null;
     }
@@ -159,4 +158,9 @@ export function prettyDate(date: Date): string {
         .split('T')[0]
         .split('-')
         .join('/');
+}
+
+
+export function friendlyDate(date: Date): string {
+    return date.toLocaleString();
 }

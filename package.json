@@ -36,10 +36,12 @@
     "dependencies": {
         "@lucia-auth/adapter-prisma": "^2.0.0",
         "@prisma/client": "^4.14.0",
+        "@types/mercadopago": "^1.5.8",
         "cloudinary": "^1.36.4",
         "flowbite": "^1.6.5",
         "flowbite-svelte": "^0.37.2",
         "lucia-auth": "^1.5.0",
+        "mercadopago": "^1.5.16",
         "nodemailer": "^6.9.1"
     }
 }

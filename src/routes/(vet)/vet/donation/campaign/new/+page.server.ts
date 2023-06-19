@@ -7,6 +7,7 @@ import { Prisma, type DonationCampaign } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
 import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
+import { CAMPAIGN_IMAGE_MAX_SIZE } from '$lib/config';
 
 
 const initialFormData = defaultValues(donationCampaignRegisterSchema);
@@ -23,7 +24,7 @@ export const actions = {
         const formData = await request.formData();
         const form = await superValidate(formData, donationCampaignRegisterSchema);
 
-        const formImage = validateImage(formData, form, 'banner')!;
+        const formImage = validateImage(formData, form, 'banner', CAMPAIGN_IMAGE_MAX_SIZE)!;
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });

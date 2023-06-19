@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 .launcheditor.bat
 static/.dev
 .dev_local/
+ngrok.exe

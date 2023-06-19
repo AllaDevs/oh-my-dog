@@ -11,7 +11,7 @@ export const load = (async (event) => {
         throw redirect(303, handleLoginRedirect(event));
     }
 
-    const [dogs, appointments] = await prisma.$transaction([
+    const [dogs, appointments, donations] = await Promise.all([
         prisma.registeredDog.findMany({
             where: {
                 ownerId: user.userId
@@ -38,11 +38,17 @@ export const load = (async (event) => {
                     }
                 }
             }
+        }),
+        prisma.donation.findMany({
+            where: {
+                clientId : user.userId,
+            }
         })
     ]);
 
     return {
         dogs: dogs,
-        appointments: appointments
+        appointments: appointments,
+        donations: donations
     };
 }) satisfies PageServerLoad;
