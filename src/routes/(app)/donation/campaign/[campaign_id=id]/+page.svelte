@@ -13,7 +13,9 @@
     taintedMessage: false,
   });
 
-  onMount(() => notifyDonationStatus(data.donationStatus));
+  onMount(() => {
+    notifyDonationStatus(data.donationStatus);
+  });
 </script>
 
 <svelte:head>
@@ -36,9 +38,9 @@
     <div
       class="lg:p-4 rounded shadow-lg bg-teal-100/50 border border-gray-900 lg:grid lg:grid-cols-2"
     >
-      <div class="my-auto h-full">
+      <div class="my-auto h-full border-b border-gray-900">
         <img
-          class="h-60 lg:h-full object-cover rounded-t border-b border-gray-900"
+          class="h-60 lg:h-full object-cover rounded-t mx-auto"
           src={data.campaign.banner?.url}
           alt="banner de la campaña de donacion {data.campaign.name}"
         />

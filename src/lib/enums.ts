@@ -87,6 +87,12 @@ export const DonationReason = {
 
 export type DonationReason = (typeof DonationReason)[keyof typeof DonationReason];
 
+export const PaymentPlatform = {
+    MERCADOPAGO: 'MERCADOPAGO',
+} satisfies typeof prismaClient.PaymentPlatform;
+
+export type PaymentPlatform = (typeof PaymentPlatform)[keyof typeof PaymentPlatform];
+
 export const PostState = {
     RESOLVED: 'RESOLVED',
     WAITING: 'WAITING'

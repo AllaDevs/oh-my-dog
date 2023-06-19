@@ -431,17 +431,23 @@ model Donation {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
 
-    amount     Float
-    reason     DonationReason
-    client     Client?           @relation(fields: [clientId], references: [id])
-    clientId   String?           @db.ObjectId
-    campaign   DonationCampaign? @relation(fields: [campaingId], references: [id])
-    campaingId String?           @db.ObjectId
+    amount          Float
+    paymentId       String            @unique
+    paymentPlatform PaymentPlatform
+    reason          DonationReason
+    campaign        DonationCampaign? @relation(fields: [campaingId], references: [id])
+    campaingId      String?           @db.ObjectId
+    client          Client?           @relation(fields: [clientId], references: [id])
+    clientId        String?           @db.ObjectId
 }
 
 enum DonationReason {
     GENERAL
     CAMPAIGN
+}
+
+enum PaymentPlatform {
+    MERCADOPAGO
 }
 
 // ---------------------------------------------------------------------------

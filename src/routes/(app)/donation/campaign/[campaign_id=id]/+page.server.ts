@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import { NGROK_URL } from '$lib/config';
-import { DonationCampaignState } from '$lib/enums';
+import { DonationCampaignState, Role } from '$lib/enums';
 import { campaignDonationSchema } from '$lib/schemas';
 import { mp } from '$lib/server/mercadopago';
 import { prisma } from '$lib/server/prisma';
@@ -76,7 +76,7 @@ export const actions = {
             auto_return: "approved",
             // @ts-expect-error
             metadata: {
-                client_id: user?.userId,
+                client_id: user && user.role === Role.CLIENT ? user.userId : undefined,
                 campaign_id: params.campaign_id
             }
         } satisfies Parameters<typeof mp.preferences.create>[0];

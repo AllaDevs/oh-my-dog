@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import { NGROK_URL } from '$lib/config';
-import { DonationCampaignState } from '$lib/enums';
+import { DonationCampaignState, Role } from '$lib/enums';
 import { generalDonationSchema } from '$lib/schemas';
 import { mp } from '$lib/server/mercadopago';
 import { prisma } from '$lib/server/prisma';
@@ -30,7 +30,7 @@ export const load = (async ({ url }) => {
 
 
 export const actions = {
-    generalDonation: async ({ locals, request, params, url }) => {
+    generalDonation: async ({ locals, request, url }) => {
         const form = await superValidate(request, generalDonationSchema);
         if (!form.valid) {
             return fail(400, { generalForm: form });
@@ -68,7 +68,7 @@ export const actions = {
             auto_return: "approved",
             // @ts-expect-error
             metadata: {
-                client_id: user?.userId,
+                client_id: user && user.role === Role.CLIENT ? user.userId : undefined,
                 campaign_id: undefined
             }
         } satisfies Parameters<typeof mp.preferences.create>[0];

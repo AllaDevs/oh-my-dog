@@ -13,11 +13,14 @@
     taintedMessage: false,
   });
 
-  onMount(() => notifyDonationStatus(data.donationStatus));
+  onMount(() => {
+    notifyDonationStatus(data.donationStatus);
+    // history.replaceState({}, '', new URL($page.url.origin + $page.url.pathname));
+  });
 </script>
 
 <svelte:head>
-  <title>Campañas de donacion</title>
+  <title>Donacion</title>
 </svelte:head>
 
 <Page
@@ -33,12 +36,13 @@
     <GeneralDonationForm
       action="?/generalDonation"
       sForm={generalSForm}
-      title="Donacion general a la veterinaria"
+      title="Donar a la veterinaria"
     />
   </section>
 
   <section>
-    <h3 class="mt-4 text-xl font-semibold">Listado de campañas</h3>
+    <h2 class=" mt-4 text-xl font-medium">Listado de campañas</h2>
+    <!-- <h3 class="mt-4 text-xl font-semibold">Listado de campañas</h3> -->
     <ul
       class="grid gap-8 grid-cols my-4 lg:grid-cols-2 lg:gap-16 lg:mt-8 lg:mb-16"
     >

@@ -15,7 +15,7 @@
   <FieldGroup cols="1">
     <svelte:fragment slot="title">
       <slot name="title">
-        <h3 class=" text-xl font-semibold text-gray-900">
+        <h3 class=" text-xl font-medium text-gray-900">
           {title ?? 'Formulario de donacion'}
         </h3>
       </slot>
