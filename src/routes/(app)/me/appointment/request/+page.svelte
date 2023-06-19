@@ -21,9 +21,13 @@
   $: if ($message) console.log($message);
 </script>
 
-<form method="POST" class=" max-w-sm">
-  <div class="space-y-12 space-x-12 flex items-center justify-evenly">
-    <div class="mt-10 pb-4 grid grid-cols-1 gap-x-6 gap-y-8">
+<svelte:head>
+  <title>Nuevo Turno</title>
+</svelte:head>
+
+<main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
+  <form method="POST" class=" mt-2 py-4" enctype="multipart/form-data">
+    <div class=" pb-4 flex flex-col gap-4">
       <DateInput
         label="Fecha"
         field="date"
@@ -65,20 +69,9 @@
         options={clientDogs}
       />
     </div>
-  </div>
 
-  <div class="mt-6 flex items-center justify-around gap-x-6">
-    <SubmitButton>Pedir Turno</SubmitButton>
-  </div>
-  <div class="flex items-center justify-around mt-10 text-xl max-w-full">
-    {#if $message}
-      <p
-        class="text-{$message === 'Pedido de turno exitoso!'
-          ? 'green'
-          : 'red'}-500 text-sm font-semibold leading-5 mb-4 text-center"
-      >
-        {$message}
-      </p>
-    {/if}
-  </div>
-</form>
+    <div class="mt-6 flex items-center justify-around gap-x-6">
+      <SubmitButton>Pedir Turno</SubmitButton>
+    </div>
+  </form>
+</main>

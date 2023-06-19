@@ -1,6 +1,6 @@
 import { AppointmentReason, AppointmentState, Daytime } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
@@ -28,6 +28,7 @@ export const load: PageServerLoad = async (event) => {
     const clientDogs = await prisma.registeredDog.findMany({
         where: {
             ownerId: client!.id,
+            archived: false
         },
         select: {
             id: true,
@@ -100,6 +101,6 @@ export const actions: Actions = {
             return message(form, "Pedido de turno fallido!", { status: 400 });
         };
 
-        return message(form, "Pedido de turno exitoso!");
+        throw redirect(303, '/me/appointment');
     }
 };
