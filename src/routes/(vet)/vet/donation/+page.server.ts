@@ -1,21 +1,20 @@
-import { DonationReason } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
 import type { PageServerLoad } from './$types';
 
 
 export const load = (async () => {
-    const [campaigns, generalDonations] = await Promise.all([
+    const [campaigns, donors] = await Promise.all([
         prisma.donationCampaign.findMany(),
-        prisma.donation.findMany({
+        prisma.client.findMany({
             where: {
-                reason: DonationReason.GENERAL
+                discountAmount: {
+                    gt: 0
+                }
             },
             include: {
-                client: {
+                _count: {
                     select: {
-                        id: true,
-                        username: true,
-                        lastname: true
+                        donation: true
                     }
                 }
             }
@@ -24,6 +23,6 @@ export const load = (async () => {
 
     return {
         campaigns,
-        generalDonations
+        donors
     };
 }) satisfies PageServerLoad;

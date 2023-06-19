@@ -4,7 +4,7 @@ import { c } from './commonSchema';
 
 export const donationCampaignBase = z.object({
     name: z.string().max(80),
-    description: z.string().min(16).refine(d => d.split(/\s+/).length <= 200),
+    description: z.string().refine(d => d.split(/\s+/).length <= 200),
     banner: c.imageSchema
 });
 

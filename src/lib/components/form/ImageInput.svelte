@@ -17,6 +17,7 @@
   export let label: string;
   export let hint: string | undefined = undefined;
   export let readonly = false;
+  export let disabled = false;
 
   const { value, errors, constraints } = formFieldProxy(form, field);
 </script>
@@ -38,7 +39,7 @@
       id={field}
       name={field}
       autocomplete="off"
-      disabled={readonly}
+      disabled={readonly || disabled}
       accept="image/jpeg, image/png, image/webp, image/jpg, image/avif"
       bind:value={$value}
       aria-invalid={!!$errors || undefined}
@@ -81,15 +82,24 @@ Example:
   }
 
   input {
-    @apply cursor-pointer outline-none text-gray-900 bg-white focus:ring-2 focus:ring-inset focus:ring-teal-600;
+    @apply cursor-pointer outline-none text-gray-900 bg-white;
+  }
+  input::file-selector-button {
+    @apply bg-teal-300/75 outline-none text-gray-900 border-none ring-1 border-gray-300 ring-inset hover:bg-teal-200 mr-2 focus:ring-2 focus:ring-inset focus:ring-teal-600;
+    @apply cursor-pointer font-medium py-1.5 px-4 rounded-l-md;
   }
 
+  input:focus {
+    @apply ring-2 ring-teal-600;
+  }
   input:focus::file-selector-button {
     @apply ring-2;
   }
 
-  input::file-selector-button {
-    @apply bg-teal-300/75 outline-none text-gray-900 border-none ring-1 border-gray-300 ring-inset hover:bg-teal-200 mr-2 focus:ring-2 focus:ring-inset focus:ring-teal-600;
-    @apply cursor-pointer font-medium py-1.5 px-4 rounded-l-md;
+  input:disabled {
+    @apply cursor-not-allowed bg-gray-100 ring-gray-200;
+  }
+  input:disabled::file-selector-button {
+    @apply cursor-not-allowed bg-gray-100 ring-gray-200 hover:bg-gray-100;
   }
 </style>

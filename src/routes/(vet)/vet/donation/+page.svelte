@@ -1,6 +1,6 @@
 <script lang="ts">
   import CampaignCardSimple from '$cmp/donation/CampaignCardSimple.svelte';
-  import DonationsTable from '$cmp/donation/DonationsTable.svelte';
+  import DonorsTable from '$cmp/donation/DonorsTable.svelte';
   import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
 
@@ -33,13 +33,7 @@
     >
       {#each data.campaigns as campaign (campaign.id)}
         <li class="max-w-[28rem] mx-auto lg:max-w-[52rem]">
-          <CampaignCardSimple {campaign}>
-            <!-- <svelte:fragment slot="actions">
-              <A href="/donation/campaign/{campaign.id}" color="primary" button>
-                Ver campaña
-              </A>
-            </svelte:fragment> -->
-          </CampaignCardSimple>
+          <CampaignCardSimple {campaign} />
         </li>
       {:else}
         <li>
@@ -51,6 +45,6 @@
 
   <section class="grid gap-4">
     <h3 class=" text-xl mt-4 lg:mt-10">Donaciones generales</h3>
-    <DonationsTable donations={data.generalDonations} />
+    <DonorsTable donors={data.donors} />
   </section>
 </Page>
