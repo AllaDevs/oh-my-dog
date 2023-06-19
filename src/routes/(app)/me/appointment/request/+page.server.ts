@@ -18,12 +18,14 @@ export const load: PageServerLoad = async (event) => {
 
     const client = await prisma.client.findUnique({
         where: {
-            userId: user!.userId
+            id: user!.userId
         },
         select: {
             id: true
         }
     });
+
+    const dogId = event.url.searchParams.get("dog_id");
 
     const clientDogs = await prisma.registeredDog.findMany({
         where: {
@@ -38,6 +40,10 @@ export const load: PageServerLoad = async (event) => {
     });
 
     const form = await superValidate(schema);
+
+    if (dogId && clientDogs.find(dog => dog.id === dogId)) {
+        form.data.dogId = dogId;
+    }
 
     return { form, clientDogs };
 };
@@ -54,7 +60,7 @@ export const actions: Actions = {
         const { session, user } = await locals.auth.validateUser();
         const client = await prisma.client.findUnique({
             where: {
-                userId: user!.userId
+                id: user!.userId
             },
             select: {
                 id: true

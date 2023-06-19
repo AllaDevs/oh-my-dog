@@ -1,10 +1,8 @@
 <script lang="ts">
   import { AppointmentState } from '$lib/enums';
-  import {
-    appointmentReasonMapper,
-    appointmentStateMapper,
-    dayTimeMapper,
-  } from '$lib/utils/mappers';
+  import { prettyDate } from '$lib/utils/functions.js';
+  import { te } from '$lib/utils/translateEnums.js';
+
   export let data;
   const tableHeaders = [
     'Última modificación',

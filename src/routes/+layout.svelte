@@ -14,9 +14,3 @@
 <Toaster />
 
 <slot />
-
-<style lang="postcss">
-  :global(body) {
-    @apply bg-teal-50/75;
-  }
-</style>

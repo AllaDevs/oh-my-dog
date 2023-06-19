@@ -1,4 +1,7 @@
-import type { AppointmentReason, AppointmentState, Daytime } from '../enums';
+import type { AppointmentReason, AppointmentState, Daytime } from '$lib/enums';
+
+
+export type * from './posts';
 
 export type DateString = `${number}-${number}-${number}`;
 
@@ -18,5 +21,3 @@ export type Appointment = {
     };
     dogId: string;
 }
-
-

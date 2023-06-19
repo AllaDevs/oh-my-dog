@@ -12,3 +12,13 @@ export type FirstArg<T, K = undefined> = T extends (...args: infer Args) => unkn
     : never
     : never
     : never;
+
+export type PathType<T, K extends any[]> = K extends [infer First, ...infer Rest]
+    ? First extends keyof T
+    ? Rest extends []
+    ? T[First]
+    : PathType<T[First], Rest>
+    : never
+    : never;
+
+export type SuccessOf<T extends { success: boolean; } & Record<string, unknown>> = T extends { success: true; } & Record<string, unknown> ? T : never;

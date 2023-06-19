@@ -3,6 +3,7 @@
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import SubmitButton from '$lib/components/form/SubmitButton.svelte';
   import { AppointmentReason, Daytime } from '$lib/enums';
+  import { prettyDate } from '$lib/utils/functions.js';
   import { dateProxy, superForm } from 'sveltekit-superforms/client';
 
   export let data;
@@ -12,7 +13,7 @@
 
   const clientDogs = data.clientDogs.map((dog) => ({
     value: dog.id,
-    label: `${dog.name} - ${dog.birthdate.toLocaleDateString()}`,
+    text: `${dog.name} - ${prettyDate(dog.birthdate)}`,
   }));
   const formDate = dateProxy(form, 'date', { format: 'date' });
   const today = new Date()
@@ -41,8 +42,8 @@
         unselectedLabel="Seleccione un horario"
         form={sForm}
         options={[
-          { value: Daytime.MORNING, label: 'Mañana' },
-          { value: Daytime.AFTERNOON, label: 'Tarde' },
+          { value: Daytime.MORNING, text: 'Mañana' },
+          { value: Daytime.AFTERNOON, text: 'Tarde' },
         ]}
       />
       <SelectInput
@@ -51,13 +52,13 @@
         unselectedLabel="Seleccione un motivo"
         form={sForm}
         options={[
-          { value: AppointmentReason.VACCINE, label: 'Vacuna' },
-          { value: AppointmentReason.ANTIRABIC, label: 'Antirrábica' },
-          { value: AppointmentReason.DEWORMING, label: 'Desparasitación' },
-          { value: AppointmentReason.CASTRATION, label: 'Castración' },
+          { value: AppointmentReason.VACCINE, text: 'Vacuna' },
+          { value: AppointmentReason.ANTIRABIC, text: 'Antirrábica' },
+          { value: AppointmentReason.DEWORMING, text: 'Desparasitación' },
+          { value: AppointmentReason.CASTRATION, text: 'Castración' },
           {
             value: AppointmentReason.GENERAL_CONSULTATION,
-            label: 'Consulta general',
+            text: 'Consulta general',
           },
         ]}
       />

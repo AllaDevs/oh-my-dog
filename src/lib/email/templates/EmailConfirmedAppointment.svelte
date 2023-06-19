@@ -4,9 +4,6 @@
   export let username: string;
   export let date: string;
   export let daytime: string;
-  //'Turno aceptado!',
-  //`Hola ${client.username}. Queríamos informarte que tu pedido de turno para el día ${appointment.date.toLocaleDateString()} ha sido confirmado!
-  // Te esperamos a la ${dayTimeMapper(appointment.daytime)}.`
 </script>
 
 <EmailFrame title="Veterinaria OhMyDog">
