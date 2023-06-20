@@ -7,11 +7,12 @@
 
   const navLinks = [
     { href: `/`, text: 'Site home' },
-    { href: `${BASEPATH}/breed`, text: 'Breeds' },
-    { href: `${BASEPATH}/vet`, text: 'Vets' },
-    // { href: `${BASEPATH}/client`, text: 'Clients' },
-    // { href: `${BASEPATH}/dog`, text: 'Dogs' },
-    // { href: `${BASEPATH}/services`, text: 'Services' },
+    { href: `/dev`, text: 'Home' },
+    { href: `/dev/vet`, text: 'Vets' },
+    { href: `/dev/breed`, text: 'Breeds' },
+    // { href: `/dev/client`, text: 'Clients' },
+    // { href: `/dev/dog`, text: 'Dogs' },
+    // { href: `/dev/services`, text: 'Services' },
   ];
 
   export let data;
@@ -23,12 +24,7 @@
       <svelte:fragment slot="right">
         {#if data.user}
           <form method="POST" action="/logout" class="header-item">
-            <button
-              type="submit"
-              class=" rounded p-2 font-bold underline-offset-2 hover:bg-teal-200 hover:underline"
-            >
-              Cerrar Sesión
-            </button>
+            <button type="submit" class="nav-button"> Cerrar Sesión </button>
           </form>
         {/if}
       </svelte:fragment>
@@ -51,3 +47,9 @@
     </div>
   </svelte:fragment> -->
 </Layout>
+
+<style lang="postcss">
+  .nav-button {
+    @apply p-2 font-semibold text-gray-900 hover:text-black underline-offset-2 hover:underline whitespace-nowrap;
+  }
+</style>
