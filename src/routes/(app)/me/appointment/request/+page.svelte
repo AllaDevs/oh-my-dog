@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from '$cmp/element/Button.svelte';
   import DateInput from '$cmp/form/DateInput.svelte';
   import SelectInput from '$cmp/form/SelectInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
@@ -72,14 +73,12 @@
       </div>
 
       <div class="mt-6 flex items-center justify-around gap-x-6">
-        <SubmitButton>Pedir Turno</SubmitButton>
+        <Button type="submit" color="primary">Pedir Turno</Button>
       </div>
       <div class="flex items-center justify-around mt-10 text-xl max-w-full">
         {#if $message}
           <p
-            class="text-{$message === 'Pedido de turno exitoso!'
-              ? 'green'
-              : 'red'}-500 text-sm font-semibold leading-5 mb-4 text-center"
+            class="text-red-500 text-sm font-semibold leading-5 mb-4 text-center"
           >
             {$message}
           </p>

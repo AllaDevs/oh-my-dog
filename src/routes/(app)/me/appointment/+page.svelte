@@ -1,4 +1,5 @@
 <script lang="ts">
+  import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { AppointmentState } from '$lib/enums';
   import { prettyDate } from '$lib/utils/functions.js';
@@ -19,14 +20,13 @@
 <svelte:head>
   <title>Mis Turnos</title>
 </svelte:head>
-<Page>
-  <div
-    class="flex flex-row space-between mt-10 mb-10 ml-12 mr-12 justify-between"
-  >
-    <p class="text-3xl font-semibold text-gray-900">Listado de turnos</p>
-    <a
-      href="./appointment/request"
-      class="btn rounded bg-teal-500 text-gray-100 p-2">Pedir turno</a
+<Page
+  classContainer="container mx-auto px-6 py-4 text-gray-700"
+  classContentSlot="py-2"
+>
+  <div class="flex flex-row justify-between mb-7 mt-7">
+    <h2 class=" mt-4 text-2xl">Mis turnos</h2>
+    <A href="./appointment/request" color="primary" button={true}>Pedir turno</A
     >
   </div>
   {#if !data.clientAppointments || data.clientAppointments.length == 0}

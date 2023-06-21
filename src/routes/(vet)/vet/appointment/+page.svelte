@@ -39,7 +39,7 @@
         // FAILURE
         case 'failure': {
           toast.error(
-            `Ocurrio un error inesperado al intentar modificar el turno`
+            `Ocurrió un error inesperado al intentar modificar el turno`
           );
           break;
         }
@@ -169,14 +169,14 @@
     <button on:click={() => filterAppointments()}>Filtrar</button>
   </div>
 </div> -->
-<Page>
-  <div
-    class="flex flex-row space-between mt-10 mb-10 ml-12 mr-12 justify-between"
-  >
-    <p class="text-3xl font-semibold text-gray-900">Listado de turnos</p>
-    <a href="/vet/appointment" class="btn rounded bg-teal-500 text-gray-100 p-2"
-      >Filtrar</a
-    >
+
+<Page
+  classContainer="container mx-auto px-6 py-4 text-gray-700"
+  classContentSlot="py-2"
+>
+  <div class="flex flex-row justify-between mb-7 mt-7">
+    <h2 class=" mt-4 text-2xl">Listado de turnos</h2>
+    <A href="/vet/appointment" color="primary" button={true}>Filtrar</A>
   </div>
   {#if !data.appointments || data.appointments.length == 0}
     <p class="text-2xl font-semibold text-gray-900 text-center">
@@ -184,7 +184,7 @@
     </p>
   {:else}
     <article class="px-4 py-2">
-      <div class="relative overflow-x-auto">
+      <div class="relative overflow-x-auto m-7">
         <table class="w-full text-sm text-left text-white-500 border">
           <thead class=" text-sm text-gray-100 uppercase bg-teal-900">
             <tr>
@@ -238,9 +238,8 @@
                       {#if appointment.date <= new Date(Date.now() + 86400000)}
                         <A
                           href="/vet/appointment/complete/{appointment.id}"
-                          color="teal"
-                          opacity={80}
-                          intensity={600}>Efectivizar</A
+                          color="primary"
+                          button={true}>Efectivizar</A
                         >
                       {/if}
                     {:else if appointment.state == AppointmentState.VET_REQUEST}
@@ -298,9 +297,8 @@
                       </form>
                       <A
                         href="/vet/appointment/change/{appointment.id}"
-                        color="teal"
-                        opacity={80}
-                        intensity={600}>Proponer Cambio</A
+                        color="primary"
+                        button={true}>Proponer Cambio</A
                       >
                     {:else if appointment.state == AppointmentState.CANCELLED || appointment.state == AppointmentState.DONE || appointment.state == AppointmentState.CLIENT_REJECTED || appointment.state == AppointmentState.VET_REJECTED}
                       <p>Turno cerrado</p>

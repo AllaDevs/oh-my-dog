@@ -1,4 +1,5 @@
 <script>
+  import A from '$cmp/element/A.svelte';
   import ProviderPreviewCard from '$lib/components/service/ProviderPreviewCard.svelte';
   import { TabItem, Tabs } from 'flowbite-svelte';
 
@@ -14,9 +15,7 @@
     class="flex flex-row space-between mt-10 mb-10 ml-12 mr-12 justify-between"
   >
     <p class="text-3xl font-semibold text-gray-900">Servicios de terceros</p>
-    <a
-      href="/vet/provider/new"
-      class="btn rounded bg-teal-500 text-gray-100 p-2">Nuevo Proveedor</a
+    <A href="/vet/provider/new" color="primary" button={true}>Nuevo Proveedor</A
     >
   </div>
   <Tabs

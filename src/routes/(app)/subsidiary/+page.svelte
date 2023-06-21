@@ -1,5 +1,4 @@
 <script lang="ts">
-  import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import Map from '$cmp/subsidiary/Map.svelte';
   import SubsidiaryCard from '$cmp/subsidiary/SubsidiaryCard.svelte';
@@ -21,13 +20,9 @@
   classContainer="container mx-auto px-6 py-4 text-gray-700"
   classContentSlot="py-2"
 >
-  <div class="flex flex-row justify-between mb-7 mt-7">
+  <svelte:fragment slot="pageHeader">
     <h2 class=" mt-4 text-2xl">Nuestras sucursales</h2>
-    <A href="./vet/subsidiary/new" color="primary" button={true}
-      >Nueva Sucursal</A
-    >
-  </div>
-
+  </svelte:fragment>
   {#each data.subsidiaries as subsidiary}
     <SubsidiaryCard
       name={subsidiary.address.street}

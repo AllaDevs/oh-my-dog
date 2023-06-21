@@ -275,8 +275,8 @@ model Subsidiary {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    location Location?
-    address  Address?
+    location Location
+    address  Address
 
     workingHour WorkingHour[]
 }
