@@ -24,28 +24,30 @@
     activeClass="flex rounded-lg divide-x divide-gray-200 shadow bg-teal-500"
   >
     <TabItem open title="Paseadores" class="w-full">
-      {#each data.walkers as walker}
-        <ProviderCard
-          id={walker.id}
-          username={walker.username}
-          lastname={walker.lastname}
-          email={walker.email}
-          areas={walker.areas}
-          workingHours={walker.workingHour}
-        />
-      {/each}
+      <div class=" grid mt-2 gap-2 grid-cols-1 md:gap-x-5">
+        {#each data.walkers as walker}
+          <ProviderCard
+            id={walker.id}
+            username={walker.username}
+            lastname={walker.lastname}
+            areas={walker.areas}
+            workingHours={walker.workingHour}
+          />
+        {/each}
+      </div>
     </TabItem>
     <TabItem title="Cuidadores" class="w-full">
-      {#each data.sitters as sitter}
-        <ProviderCard
-          id={sitter.id}
-          username={sitter.username}
-          lastname={sitter.lastname}
-          email={sitter.email}
-          areas={sitter.areas}
-          workingHours={sitter.workingHour}
-        />
-      {/each}
+      <div class=" grid mt-2 gap-2 grid-cols-1 md:gap-x-5">
+        {#each data.sitters as sitter}
+          <ProviderCard
+            id={sitter.id}
+            username={sitter.username}
+            lastname={sitter.lastname}
+            areas={sitter.areas}
+            workingHours={sitter.workingHour}
+          />
+        {/each}
+      </div>
     </TabItem>
   </Tabs>
 </Page>

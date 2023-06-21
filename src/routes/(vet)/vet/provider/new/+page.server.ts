@@ -1,7 +1,7 @@
 import { providerCompleteRegisterSchema } from '$lib/schemas/providerSchema';
 import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
-import { fail, type Actions } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from '../$types';
 
@@ -63,7 +63,7 @@ export const actions: Actions = {
         };
 
 
-        return message(form, "Proveedor creado de forma exitosa!");
+        throw redirect(300, "/vet/provider");
 
     }
 };

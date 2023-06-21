@@ -44,7 +44,10 @@
 <svelte:head>
   <title>Nuevo proveedor</title>
 </svelte:head>
-<Page>
+<Page
+  classContainer="container mx-auto px-6 py-4 text-gray-700"
+  classContentSlot="py-2"
+>
   <div class="mt-10 mb-3 ml-12">
     <h3 class="text-3xl font-semibold text-gray-900">Registro de Proveedor</h3>
   </div>

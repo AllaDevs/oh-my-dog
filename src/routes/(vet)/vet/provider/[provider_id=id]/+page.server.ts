@@ -91,7 +91,7 @@ export const actions: Actions = {
         };
 
 
-        return message(form, "Proveedor creado de forma exitosa!");
+        throw redirect(300, "/vet/provider");
 
     },
     delete: async ({ request, locals, params, url }) => {

@@ -1,4 +1,5 @@
 import { AppointmentReason, AppointmentState, Day, Daytime, DogSex, DogSize, DonationReason } from '$lib/enums';
+import { DogServiceType } from '@prisma/client';
 
 
 class EnumTranslationError extends Error {
@@ -8,6 +9,16 @@ class EnumTranslationError extends Error {
     }
 }
 
+function tProviderType(type: DogServiceType) {
+    switch (type) {
+        case DogServiceType.WALKING:
+            return 'Paseador';
+        case DogServiceType.SITTING:
+            return 'Cuidador';
+        default:
+            throw new EnumTranslationError(`Invalid provider type: ${type}`);
+    }
+}
 
 function tDayTime(dayTime: Daytime) {
     switch (dayTime) {
@@ -123,6 +134,7 @@ const translationEnum = {
     DogSize: tDogSize,
     Day: tDay,
     DonationReason: tDonationReason,
+    DogServiceType: tProviderType,
 };
 
 export default translationEnum;
