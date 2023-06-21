@@ -1,3 +1,4 @@
+import { c } from '$lib/schemas';
 import { auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
 import type { AuthPasswordRecovery } from '@prisma/client';
@@ -9,9 +10,10 @@ import type { Actions, PageServerLoad } from './$types';
 
 
 const schema = z.object({
-    password: z.string().min(8),
-    passwordConfirm: z.string().min(8)
+    password: c.passwordMin8chSchema,
+    passwordConfirm: c.passwordMin8chSchema
 });
+
 
 export const load = (async ({ locals, params }) => {
     const [session, form, passwordRecovery] = await Promise.all([

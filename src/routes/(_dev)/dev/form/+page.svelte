@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$cmp/element/Button.svelte';
+  import DniInput from '$cmp/form/DniInput.svelte';
   import EmailInput from '$cmp/form/EmailInput.svelte';
   import PasswordInput from '$cmp/form/PasswordInput.svelte';
   import SelectInput from '$cmp/form/SelectInput.svelte';
@@ -37,6 +38,7 @@
         { value: 'bar', text: 'Barcelona' },
       ]}
     />
+    <DniInput form={sForm} field="dni" min="1000000" />
   </div>
 
   <div class="mt-6 flex items-center justify-around gap-x-6">

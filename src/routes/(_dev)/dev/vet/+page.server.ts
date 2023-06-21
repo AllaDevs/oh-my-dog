@@ -1,3 +1,4 @@
+import { c } from '$lib/schemas';
 import { Lucia, auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
 import { Prisma, Role } from '@prisma/client';
@@ -8,10 +9,10 @@ import type { Actions, PageServerLoad } from './$types';
 
 
 const schema = z.object({
-    username: z.string().min(3),
-    lastname: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(8)
+    username: c.usernameSchema,
+    lastname: c.lastnameSchema,
+    email: c.emailSchema,
+    password: c.passwordMin8chSchema
 });
 
 

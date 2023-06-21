@@ -1,4 +1,4 @@
-import { dev } from '$app/environment';
+import { c } from '$lib/schemas';
 import { auth } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
@@ -7,12 +7,11 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
 
-const PASSWORD_MIN_LENGTH = dev ? 2 : 8;
-
 const schema = z.object({
-    email: z.string().email(),
-    password: z.string().min(PASSWORD_MIN_LENGTH)
+    email: c.emailSchema,
+    password: c.passwordMin8chSchema
 });
+
 
 export const load = (async (event) => {
     const session = await event.locals.auth.validate();
@@ -44,18 +43,25 @@ export const actions = {
             locals.auth.setSession(session);
         }
         catch (error) {
-            console.error(error);
             if (error instanceof LuciaError) {
-                if (error.message === 'AUTH_INVALID_KEY_ID') {
-                    return setError(form, 'email', 'Email no registrado');
+                if (
+                    error.message === 'AUTH_INVALID_KEY_ID' ||
+                    error.message === 'AUTH_INVALID_PASSWORD'
+                ) {
+                    return setError(form, 'password', 'Email no registrado o la contraseña no corresponde');
                 }
-                if (error.message === 'AUTH_INVALID_PASSWORD') {
-                    return setError(form, 'password', 'Contraseña incorrecta');
-                }
+                // if (error.message === 'AUTH_INVALID_KEY_ID') {
+                //     return setError(form, 'email', 'Email no registrado');
+                // }
+                // if (error.message === 'AUTH_INVALID_PASSWORD') {
+                //     return setError(form, 'password', 'Contraseña incorrecta');
+                // }
 
+                console.error('Unhandled lucia error in loging:\n', error);
                 return setError(form, '', `AUTH ${error.message}`);
             }
 
+            console.error('Unhandled error in loging:\n', error);
             return setError(form, '', `UNKNOWN ${(error as Record<string, unknown>).message ?? (error as Record<string, unknown>).code ?? ''}`);
         }
 

@@ -1,22 +1,27 @@
+import { c } from '$lib/schemas';
 import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
+
 const schema = z.object({
     text: z.string(),
-    email: z.string().email(),
-    password: z.string().min(8),
-    city: z.string()
+    email: c.emailSchema,
+    password: c.passwordMin8chSchema,
+    city: z.string(),
+    dni: c.dniSchema
 });
 
+
 export const load = (async (event) => {
-    const form = superValidate(schema);
+    const form = superValidate(schema, { errors: false });
     return { form };
 }) satisfies PageServerLoad;
 
+
 export const actions = {
-    basic: async ({ request, locals, url }) => {
+    basic: async ({ request }) => {
         const form = await superValidate(request, schema);
         if (!form.valid) {
             console.error(form);

@@ -1,4 +1,5 @@
 import { EmailError, resetPasswordHTML, systemEmail } from '$lib/email';
+import { c } from '$lib/schemas';
 import { prisma } from '$lib/server/prisma';
 import { Prisma } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
@@ -10,8 +11,9 @@ import type { Actions, PageServerLoad } from './$types';
 const TOKEN_EXPIRATION = 1000 * 60 * 60 * 24; // 1 day
 
 const schema = z.object({
-    email: z.string().email()
+    email: c.emailSchema
 });
+
 
 export const load = (async (event) => {
     const session = await event.locals.auth.validate();

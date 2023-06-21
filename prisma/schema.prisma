@@ -130,7 +130,7 @@ model Client {
     lastname String
     email    String    @unique
 
-    dni            String           @unique
+    dni            Int              @unique
     birthdate      DateTime
     phone          String
     discountAmount Float            @default(0)

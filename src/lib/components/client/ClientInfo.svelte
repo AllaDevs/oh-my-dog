@@ -48,7 +48,7 @@
       value={client.phone}
       readonly
     />
-    <TextInput label="DNI" field="dni" value={client.dni} readonly />
+    <TextInput label="DNI" field="dni" value={`${client.dni}`} readonly />
   </svelte:fragment>
 
   <svelte:fragment slot="actions">
