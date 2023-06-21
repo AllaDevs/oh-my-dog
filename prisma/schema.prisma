@@ -276,7 +276,8 @@ model Subsidiary {
     updatedAt DateTime @updatedAt
 
     location Location
-    address  Address
+    address  String
+    name     String
 
     workingHour WorkingHour[]
 }
@@ -458,13 +459,6 @@ type Image {
     width  Int
     height Int
     url    String
-}
-
-type Address {
-    street  String
-    number  String
-    city    String
-    country String
 }
 
 type Location {

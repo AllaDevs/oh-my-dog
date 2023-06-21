@@ -11,7 +11,7 @@
 <svelte:head>
   <script
     async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZvYlSiAUZzxF5WYBM1Rfc9828_MNYGzs&callback=initMap"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZvYlSiAUZzxF5WYBM1Rfc9828_MNYGzs&callback=initMap&libraries=places&v=weekly"
   >
   </script>
   <title>Sucursales</title>
@@ -23,15 +23,13 @@
 >
   <div class="flex flex-row justify-between mb-7 mt-7">
     <h2 class=" mt-4 text-2xl">Nuestras sucursales</h2>
-    <A href="./vet/subsidiary/new" color="primary" button={true}
-      >Nueva Sucursal</A
-    >
+    <A href="./subsidiary/new" color="primary" button={true}>Nueva Sucursal</A>
   </div>
 
   {#each data.subsidiaries as subsidiary}
     <SubsidiaryCard
-      name={subsidiary.address.street}
-      adress={subsidiary.address}
+      name={subsidiary.name}
+      address={subsidiary.address}
       workingHour={subsidiary.workingHour}
     />
   {/each}

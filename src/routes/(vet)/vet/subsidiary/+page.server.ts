@@ -9,6 +9,7 @@ export const load: PageServerLoad = async (event) => {
             id: true,
             location: true,
             address: true,
+            name: true,
             workingHour: true,
             // phone: true
         }

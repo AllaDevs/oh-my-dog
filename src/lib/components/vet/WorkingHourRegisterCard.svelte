@@ -4,11 +4,15 @@
   import HourInput from '$cmp/form/HourInput.svelte';
   import SelectInput from '$cmp/form/SelectInput.svelte';
   import type { ProviderCompleteRegisterSchema } from '$lib/schemas/providerSchema';
+  import type { SubsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
   import { Day } from '@prisma/client';
   import { createEventDispatcher } from 'svelte';
   import type { SuperForm } from 'sveltekit-superforms/client';
 
-  export let sForm: SuperForm<ProviderCompleteRegisterSchema, unknown>;
+  export let sForm: SuperForm<
+    ProviderCompleteRegisterSchema | SubsidiaryCompleteRegisterSchema,
+    unknown
+  >;
   export let index: number;
   export let title: string | undefined = undefined;
   export let allowRemoval = true;

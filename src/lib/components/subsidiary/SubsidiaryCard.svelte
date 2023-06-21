@@ -1,23 +1,17 @@
 <script lang="ts">
   import { te } from '$lib/utils/translateEnums';
-  import type { Address, WorkingHour } from '@prisma/client';
+  import type { WorkingHour } from '@prisma/client';
 
   // export let workingHour: WorkingHour[];
   export let name: string;
-  export let address: Address;
-  export let workingHours: WorkingHour[];
+  export let address: string;
+  export let workingHour: WorkingHour[];
   // turn areas to string and map them with days
   function workingHourString(workingHour: WorkingHour) {
     let string = '';
     string += te.Day(workingHour.day) + ': ';
     string += workingHour.start.getHours() + ' - ' + workingHour.end.getHours();
     return string;
-  }
-
-  function addressString(address: Address) {
-    let newAddress = '';
-    newAddress += address.city + ' - ' + address.street + ', ' + address.number;
-    return newAddress;
   }
 </script>
 
@@ -28,9 +22,9 @@
     Sucursal - {name}
   </h5>
   <!-- <p><b>Telefono:</b> {subsidiary.phone}</p> -->
-  <p><b>Dirección:</b> {addressString(address)}</p>
+  <p><b>Dirección:</b> {address}</p>
   <p><b>Horario:</b></p>
-  {#each workingHours as hour}
+  {#each workingHour as hour}
     <p>{workingHourString(hour)}</p>
   {/each}
 </div>
