@@ -1,7 +1,7 @@
 <script lang="ts">
   import EmailFrame from './EmailFrame.svelte';
 
-  export let username: string;
+  export let firstname: string;
   export let lastname: string;
   export let password: string;
 </script>
@@ -13,7 +13,7 @@
 
   <main class="py-4">
     <p>
-      Bienvenido {username}
+      Bienvenido {firstname}
       {lastname} a la mejor clínica veterinaria para perros de la ciudad.
     </p>
     <p>Tu contraseña es: <b>{password}</b></p>

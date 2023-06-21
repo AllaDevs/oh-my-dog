@@ -21,7 +21,7 @@
     <TextInput
       label="Nombre"
       form={sForm}
-      field="username"
+      field="firstname"
       autocomplete="given-name"
     />
     <TextInput

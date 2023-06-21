@@ -67,7 +67,7 @@
         <svelte:fragment slot="fields">
           <TextInput
             label="Nombre"
-            field="username"
+            field="firstname"
             unselectedLabel="Ingrese su nombre"
             form={registerSForm}
           />

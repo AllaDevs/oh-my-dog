@@ -3,7 +3,7 @@ import { c } from './commonSchema';
 
 
 export const accountBaseSchema = z.object({
-    username: c.usernameSchema,
+    firstname: c.firstnameSchema,
     lastname: c.lastnameSchema,
 });
 

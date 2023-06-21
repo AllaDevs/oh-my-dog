@@ -56,7 +56,7 @@ export const actions = {
                     id: params.client_id
                 },
                 data: {
-                    username: form.data.username,
+                    firstname: form.data.firstname,
                     lastname: form.data.lastname,
                     birthdate: new Date(form.data.birthdate),
                     phone: form.data.phone,

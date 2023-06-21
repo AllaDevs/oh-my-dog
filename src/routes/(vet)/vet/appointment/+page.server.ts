@@ -75,18 +75,18 @@ export const actions: Actions = {
                 client: {
                     select: {
                         id: true,
-                        username: true,
+                        firstname: true,
                         email: true
                     }
                 }
             }
         });
         await systemEmail(
-            { name: appointment.client.username, address: appointment.client.email },
+            { name: appointment.client.firstname, address: appointment.client.email },
             'Turno aceptado!',
-            `Hola ${appointment.client.username}. Queríamos informarte que tu pedido de turno para el día ${prettyDate(appointment.date)} ha sido confirmado!
+            `Hola ${appointment.client.firstname}. Queríamos informarte que tu pedido de turno para el día ${prettyDate(appointment.date)} ha sido confirmado!
             Te esperamos a la ${te.Daytime(appointment.daytime)}.`,
-            confirmedAppoinmentHTML(appointment.client.username, prettyDate(appointment.date), te.Daytime(appointment.daytime))
+            confirmedAppoinmentHTML(appointment.client.firstname, prettyDate(appointment.date), te.Daytime(appointment.daytime))
         );
     },
     reject: async ({ request, locals, url }) => {
@@ -108,7 +108,7 @@ export const actions: Actions = {
                 client: {
                     select: {
                         id: true,
-                        username: true,
+                        firstname: true,
                         email: true
                     }
                 }
@@ -118,11 +118,11 @@ export const actions: Actions = {
         // Send confirmation email to client
         // Change appointment status to vet rejected
         await systemEmail(
-            { name: appointment.client.username, address: appointment.client.email },
+            { name: appointment.client.firstname, address: appointment.client.email },
             'Turno rechazado',
-            `Hola ${appointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${prettyDate(appointment.date)} a la ${te.Daytime(appointment.daytime)}, el mismo ha sido rechazado.
+            `Hola ${appointment.client.firstname}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${prettyDate(appointment.date)} a la ${te.Daytime(appointment.daytime)}, el mismo ha sido rechazado.
             Por favor pedí un turno para una nueva fecha y nos pondremos en contacto!`,
-            rejectedAppoinmentHTML(appointment.client.username, prettyDate(appointment.date), te.Daytime(appointment.daytime))
+            rejectedAppoinmentHTML(appointment.client.firstname, prettyDate(appointment.date), te.Daytime(appointment.daytime))
         );
 
     },
@@ -145,18 +145,18 @@ export const actions: Actions = {
                 client: {
                     select: {
                         id: true,
-                        username: true,
+                        firstname: true,
                         email: true
                     }
                 }
             }
         });
         await systemEmail(
-            { name: appointment.client.username, address: appointment.client.email },
+            { name: appointment.client.firstname, address: appointment.client.email },
             'Turno cancelado',
-            `Hola ${appointment.client.username}. Queríamos informarte que lamentablemente hemos tenido que cancelar tu turno para el ${prettyDate(appointment.date)} a la ${te.Daytime(appointment.daytime)}.
+            `Hola ${appointment.client.firstname}. Queríamos informarte que lamentablemente hemos tenido que cancelar tu turno para el ${prettyDate(appointment.date)} a la ${te.Daytime(appointment.daytime)}.
             Por favor pedí un nuevo turno y nos pondremos en contacto!`,
-            cancelledAppoinmentHTML(appointment.client.username, prettyDate(appointment.date), te.Daytime(appointment.daytime))
+            cancelledAppoinmentHTML(appointment.client.firstname, prettyDate(appointment.date), te.Daytime(appointment.daytime))
         );
     }
 };

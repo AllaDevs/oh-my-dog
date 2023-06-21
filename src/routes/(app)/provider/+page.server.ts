@@ -10,7 +10,7 @@ export const load: PageServerLoad = async (event) => {
         select: {
             id: true,
             email: true,
-            username: true,
+            firstname: true,
             lastname: true,
             workingHour: true,
             type: true,

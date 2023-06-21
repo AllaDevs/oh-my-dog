@@ -20,7 +20,7 @@
 
 <Page classContainer="container mx-auto px-6 py-4" classContentSlot="px-4 py-2">
   <svelte:fragment slot="pageHeader">
-    <h2 class=" mt-4 text-2xl">Bienvenido <b>{data.vet.username}</b></h2>
+    <h2 class=" mt-4 text-2xl">Bienvenido <b>{data.vet.firstname}</b></h2>
     <h6 class=" mt-1 text-sm text-gray-500">
       Que tengas un buen dia de trabajo!
     </h6>

@@ -61,7 +61,7 @@ export const dogSexSchema = z.nativeEnum(DogSex);
 
 
 export const contactBaseSchema = z.object({
-    username: firstnameSchema,
+    firstname: firstnameSchema,
     lastname: lastnameSchema,
     email: emailSchema,
     phone: phoneSchema,
@@ -76,7 +76,7 @@ const commonSchema = {
     dniSchema,
     passwordSchema,
     passwordMin8chSchema,
-    usernameSchema: firstnameSchema,
+    firstnameSchema,
     lastnameSchema,
     emailSchema,
     dogNameSchema,

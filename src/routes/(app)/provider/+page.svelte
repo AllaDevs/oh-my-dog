@@ -27,7 +27,7 @@
       {#each data.walkers as walker}
         <ProviderCard
           id={walker.id}
-          username={walker.username}
+          firstname={walker.firstname}
           lastname={walker.lastname}
           email={walker.email}
           areas={walker.areas}
@@ -39,7 +39,7 @@
       {#each data.sitters as sitter}
         <ProviderCard
           id={sitter.id}
-          username={sitter.username}
+          firstname={sitter.firstname}
           lastname={sitter.lastname}
           email={sitter.email}
           areas={sitter.areas}

@@ -22,7 +22,7 @@
       <div class="mt-4 grid grid-cols-1 gap-y-4">
         <TextInput
           label="Nombre"
-          field="username"
+          field="firstname"
           autocomplete="given-name"
           form={sForm}
         />
@@ -65,7 +65,7 @@
     <ul>
       {#each data.vets as vet}
         <li class=" border border-gray-900/10 p-4">
-          <p>{vet.username}</p>
+          <p>{vet.firstname}</p>
           <p>{vet.lastname}</p>
           <p>{vet.email}</p>
         </li>

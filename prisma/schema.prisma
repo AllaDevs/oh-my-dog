@@ -103,10 +103,12 @@ model Admin {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    authUser AuthUser?
-    username String
-    lastname String
-    email    String    @unique
+    authUser  AuthUser?
+    firstname String
+    lastname  String
+    email     String    @unique
+
+    @@map("admin")
 }
 
 model Vet {
@@ -114,10 +116,12 @@ model Vet {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    authUser AuthUser?
-    username String
-    lastname String
-    email    String    @unique
+    authUser  AuthUser?
+    firstname String
+    lastname  String
+    email     String    @unique
+
+    @@map("vet")
 }
 
 model Client {
@@ -125,10 +129,10 @@ model Client {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    authUser AuthUser?
-    username String
-    lastname String
-    email    String    @unique
+    authUser  AuthUser?
+    firstname String
+    lastname  String
+    email     String    @unique
 
     dni            Int              @unique
     birthdate      DateTime
@@ -142,6 +146,8 @@ model Client {
     donation       Donation[]
     review         Review[]
     temporalDog    TemporalDog[]
+
+    @@map("client")
 }
 
 model Appointment {
@@ -158,6 +164,8 @@ model Appointment {
     clientId String        @db.ObjectId
     dog      RegisteredDog @relation(fields: [dogId], references: [id])
     dogId    String        @db.ObjectId
+
+    @@map("appointment")
 }
 
 enum AppointmentState {
@@ -210,6 +218,8 @@ model RegisteredDog {
     adoptionPost   AdoptionPost?
     tracingPost    TracingPost[]
     medicalRecord  MedicalRecord[]
+
+    @@map("registered_dog")
 }
 
 model MedicalRecord {
@@ -223,6 +233,8 @@ model MedicalRecord {
 
     dog   RegisteredDog @relation(fields: [dogId], references: [id])
     dogId String        @db.ObjectId
+
+    @@map("medical_record")
 }
 
 model TemporalDog {
@@ -245,6 +257,8 @@ model TemporalDog {
     breedId      String        @db.ObjectId
     adoptionPost AdoptionPost?
     tracingPost  TracingPost?
+
+    @@map("temporal_dog")
 }
 
 enum DogSize {
@@ -264,6 +278,8 @@ model Breed {
     name          String          @unique
     registeredDog RegisteredDog[]
     temporalDog   TemporalDog[]
+
+    @@map("breed")
 }
 
 // ---------------------------------------------------------------------------
@@ -279,6 +295,8 @@ model Subsidiary {
     address  Address?
 
     workingHour WorkingHour[]
+
+    @@map("subsidiary")
 }
 
 // NOTE: refactor for not repeating day?
@@ -294,6 +312,8 @@ model WorkingHour {
     subsidiaryId         String?             @db.ObjectId
     dogServiceProvider   DogServiceProvider? @relation(fields: [dogServiceProviderId], references: [id])
     dogServiceProviderId String?             @db.ObjectId
+
+    @@map("working_hour")
 }
 
 enum Day {
@@ -318,11 +338,13 @@ model DogServiceProvider {
     type        DogServiceType
     email       String
     areas       String
-    username    String
+    firstname   String
     lastname    String
     description String?
     review      Review[]
     workingHour WorkingHour[]
+
+    @@map("dog_service_provider")
 }
 
 enum DogServiceType {
@@ -342,6 +364,8 @@ model Review {
     dogServiceId  String?             @db.ObjectId
     tracingPost   TracingPost?        @relation(fields: [tracingPostId], references: [id])
     tracingPostId String?             @db.ObjectId
+
+    @@map("review")
 }
 
 // ---------------------------------------------------------------------------
@@ -358,6 +382,8 @@ model CrossBreedPost {
     publisherId String        @db.ObjectId
     dog         RegisteredDog @relation(fields: [dogId], references: [id])
     dogId       String        @unique @db.ObjectId
+
+    @@map("cross_breed_post")
 }
 
 model AdoptionPost {
@@ -374,6 +400,8 @@ model AdoptionPost {
     registeredDog    RegisteredDog? @relation(fields: [dogId], references: [id])
     temporalDog      TemporalDog?   @relation(fields: [dogId], references: [id])
     dogId            String         @unique @db.ObjectId
+
+    @@map("adoption_post")
 }
 
 model TracingPost {
@@ -391,6 +419,8 @@ model TracingPost {
     tempDog     TemporalDog?   @relation(fields: [tempDogId], references: [id])
     tempDogId   String?        @unique @db.ObjectId
     review      Review[]
+
+    @@map("tracing_post")
 }
 
 enum PostState {
@@ -418,6 +448,8 @@ model DonationCampaign {
     endDate     DateTime?
     state       DonationCampaignState
     donation    Donation[]
+
+    @@map("donation_campaign")
 }
 
 enum DonationCampaignState {
@@ -439,6 +471,8 @@ model Donation {
     campaingId      String?           @db.ObjectId
     client          Client?           @relation(fields: [clientId], references: [id])
     clientId        String?           @db.ObjectId
+
+    @@map("donation")
 }
 
 enum DonationReason {

@@ -6,7 +6,7 @@ export const load: PageServerLoad = async (event) => {
     const clients = await prisma.client.findMany({
         select: {
             id: true,
-            username: true,
+            firstname: true,
             lastname: true,
             email: true,
         },

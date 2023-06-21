@@ -26,7 +26,7 @@ export const load = (async ({ params, url }) => {
             type: true,
             email: true,
             areas: true,
-            username: true,
+            firstname: true,
             lastname: true,
             description: true
         }
@@ -39,7 +39,7 @@ export const load = (async ({ params, url }) => {
     form.data.type = oldProvider.type;
     form.data.email = oldProvider.email;
     form.data.areas = oldProvider.areas;
-    form.data.username = oldProvider.username;
+    form.data.firstname = oldProvider.firstname;
     form.data.lastname = oldProvider.lastname;
     form.data.description = oldProvider.description!;
 
@@ -76,7 +76,7 @@ export const actions: Actions = {
                     type: form.data.type,
                     email: form.data.email,
                     areas: form.data.areas,
-                    username: form.data.username,
+                    firstname: form.data.firstname,
                     lastname: form.data.lastname,
                     description: form.data.description,
                     workingHour: {

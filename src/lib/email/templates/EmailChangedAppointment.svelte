@@ -1,7 +1,7 @@
 <script lang="ts">
   import EmailFrame from './EmailFrame.svelte';
 
-  export let username: string;
+  export let firstname: string;
   export let date: string;
   export let daytime: string;
   export let newDate: string;
@@ -16,7 +16,7 @@
 
   <main class="py-4">
     <p>
-      Hola {username}!
+      Hola {firstname}!
     </p>
     <p>
       Queríamos informarte que no pudimos aceptar tu pedido de turno para el día <b

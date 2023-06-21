@@ -8,7 +8,6 @@
   import type { ClientCompleteRegisterSchema } from '$lib/schemas';
   import type { SuperForm } from 'sveltekit-superforms/client';
 
-
   export let sForm: SuperForm<ClientCompleteRegisterSchema, unknown>;
   export let title: string | undefined = undefined;
 </script>
@@ -24,7 +23,7 @@
       label="Nombre"
       autocomplete="given-name"
       form={sForm}
-      field="username"
+      field="firstname"
     />
     <TextInput
       label="Apellido"

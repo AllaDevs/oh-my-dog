@@ -48,7 +48,7 @@
       <svelte:fragment slot="fields">
         <TextInput
           form={accountSForm}
-          field="username"
+          field="firstname"
           label="Nombre"
           readonly
         />

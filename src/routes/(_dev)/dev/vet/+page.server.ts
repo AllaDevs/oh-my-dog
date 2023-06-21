@@ -9,7 +9,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 
 const schema = z.object({
-    username: c.usernameSchema,
+    firstname: c.firstnameSchema,
     lastname: c.lastnameSchema,
     email: c.emailSchema,
     password: c.passwordMin8chSchema
@@ -37,7 +37,7 @@ export const actions = {
             success = await prisma.$transaction(async (prisma) => {
                 const vet = await prisma.vet.create({
                     data: {
-                        username: form.data.username,
+                        firstname: form.data.firstname,
                         lastname: form.data.lastname,
                         email: form.data.email
                     }

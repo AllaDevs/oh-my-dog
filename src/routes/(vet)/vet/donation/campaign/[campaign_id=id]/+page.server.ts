@@ -1,14 +1,14 @@
 import { DonationCampaignState } from '$lib/enums';
 import { donationCampaignUpdateSchema } from '$lib/schemas';
 import { redirectToLogin } from '$lib/server/auth';
+import { uploadImage } from '$lib/server/cloudinary';
 import { prisma } from '$lib/server/prisma';
+import { validateImage } from '$lib/utils/functions';
 import type { DonationCampaign, Image } from '@prisma/client';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
-import { validateImage } from '$lib/utils/functions';
-import { uploadImage } from '$lib/server/cloudinary';
 
 
 const startCampaignSchema = z.object({});
@@ -32,7 +32,7 @@ export const load = (async ({ locals, params, url }) => {
                     client: {
                         select: {
                             id: true,
-                            username: true,
+                            firstname: true,
                             lastname: true
                         }
                     }
@@ -227,7 +227,7 @@ export const actions = {
                         width: dogImage.data.width,
                         height: dogImage.data.height,
                         url: dogImage.data.secure_url
-                    }
+                    };
                 }
                 else {
                     setError(form, 'banner', 'Error al subir la imagen, carguela mas tarde');

@@ -120,23 +120,23 @@ export const actions = {
 
             await systemEmail(
                 {
-                    name: adoptionPost.publisher.username,
+                    name: adoptionPost.publisher.firstname,
                     address: adoptionPost.publisher.email,
                 },
-                `${client.username} quiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}`,
-                `El cliente con los datos:\nNombre: ${client.username}\nApellido: ${client.email}\nEmail: ${client.email}\nTelefono: Email: ${client.phone}\nQuiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}, ponte en contacto con el para continuar con el proceso de adopción.`,
-                adoptionContactHTML(client.username, client.lastname, client.email, client.phone, dogName),
+                `${client.firstname} quiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}`,
+                `El cliente con los datos:\nNombre: ${client.firstname}\nApellido: ${client.email}\nEmail: ${client.email}\nTelefono: Email: ${client.phone}\nQuiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}, ponte en contacto con el para continuar con el proceso de adopción.`,
+                adoptionContactHTML(client.firstname, client.lastname, client.email, client.phone, dogName),
             );
 
             await systemEmail(
                 {
-                    name: client.username,
+                    name: client.firstname,
                     address: client.email
                 },
                 `Confirmacion de contacto por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}`,
                 `Se contacto con el axito al autor de la publicion, el se pondra en contacto contigo mediante el email: ${adoptionPost.publisher.email}`,
                 adoptionContactConfirmHTML(
-                    adoptionPost.publisher.username,
+                    adoptionPost.publisher.firstname,
                     adoptionPost.publisher.lastname,
                     adoptionPost.publisher.email,
                     dogName
@@ -193,23 +193,23 @@ export const actions = {
 
             await systemEmail(
                 {
-                    name: adoptionPost.publisher.username,
+                    name: adoptionPost.publisher.firstname,
                     address: adoptionPost.publisher.email,
                 },
-                `${form.data.username} quiere contactarse contigo por la adopcion de ${dogName}`,
-                `El cliente con los datos:\nNombre: ${form.data.username}\nApellido: ${form.data.email}\nEmail: ${form.data.email}\nTelefono: Email: ${form.data.phone}\nQuiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}, ponte en contacto con el para continuar con el proceso de adopción.`,
-                adoptionContactHTML(form.data.username, form.data.lastname, form.data.email, form.data.phone, dogName),
+                `${form.data.firstname} quiere contactarse contigo por la adopcion de ${dogName}`,
+                `El cliente con los datos:\nNombre: ${form.data.firstname}\nApellido: ${form.data.email}\nEmail: ${form.data.email}\nTelefono: Email: ${form.data.phone}\nQuiere contactarse contigo por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}, ponte en contacto con el para continuar con el proceso de adopción.`,
+                adoptionContactHTML(form.data.firstname, form.data.lastname, form.data.email, form.data.phone, dogName),
             );
 
             await systemEmail(
                 {
-                    name: form.data.username,
+                    name: form.data.firstname,
                     address: form.data.email
                 },
                 `Confirmacion de contacto por la adopcion de ${adoptionPost.registered ? adoptionPost.registeredDog?.name : adoptionPost.temporalDog?.name}`,
                 `Se contacto con el axito al autor de la publicion, el se pondra en contacto contigo mediante el email: ${adoptionPost.publisher.email}`,
                 adoptionContactConfirmHTML(
-                    adoptionPost.publisher.username,
+                    adoptionPost.publisher.firstname,
                     adoptionPost.publisher.lastname,
                     adoptionPost.publisher.email,
                     dogName

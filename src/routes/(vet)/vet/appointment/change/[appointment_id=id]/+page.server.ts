@@ -30,7 +30,7 @@ export const load = (async ({ locals, params, url }) => {
             client: {
                 select: {
                     id: true,
-                    username: true
+                    firstname: true
                 }
             }
         }
@@ -88,7 +88,7 @@ export const actions: Actions = {
                 client: {
                     select: {
                         id: true,
-                        username: true,
+                        firstname: true,
                         email: true
                     }
                 }
@@ -97,11 +97,11 @@ export const actions: Actions = {
         // Send change request email to client
         // Change appointment status to vet_request
         await systemEmail(
-            { name: newAppointment.client.username, address: newAppointment.client.email },
+            { name: newAppointment.client.firstname, address: newAppointment.client.email },
             'Propuesta de cambio',
-            `Hola ${newAppointment.client.username}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${prettyDate(newAppointment.date)} a la ${te.Daytime(newAppointment.daytime)}.
+            `Hola ${newAppointment.client.firstname}. Queríamos informarte que no pudimos aceptar tu pedido de turno para el día ${prettyDate(newAppointment.date)} a la ${te.Daytime(newAppointment.daytime)}.
             Se ha generado una propuesta de cambio para el día ${prettyDate(form.data.date)} a la ${te.Daytime(form.data.daytime)}, por favor, ingresa a tu cuenta para aceptarla o rechazarla.`,
-            changedAppoinmentHTML(newAppointment.client.username, prettyDate(newAppointment.date), te.Daytime(newAppointment.daytime), prettyDate(form.data.date), te.Daytime(form.data.daytime), form.data.message)
+            changedAppoinmentHTML(newAppointment.client.firstname, prettyDate(newAppointment.date), te.Daytime(newAppointment.daytime), prettyDate(form.data.date), te.Daytime(form.data.daytime), form.data.message)
         );
 
         throw redirect(303, '/vet/appointment');

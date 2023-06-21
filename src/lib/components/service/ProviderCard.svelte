@@ -3,7 +3,7 @@
   import type { WorkingHour } from '@prisma/client';
 
   export let id: string;
-  export let username: string;
+  export let firstname: string;
   export let lastname: string;
   // export let workingHour: WorkingHour[];
   export let email: string;
@@ -23,7 +23,7 @@
     class="flex min-h-full flex-col rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:scale-105 hover:border-teal-500 hover:bg-teal-100/50"
   >
     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-      {username}
+      {firstname}
       {lastname}
     </h5>
     <p><b>Mail:</b> {email}</p>
