@@ -24,25 +24,25 @@
     activeClass="flex rounded-lg divide-x divide-gray-200 shadow bg-teal-500"
   >
     <TabItem open title="Paseadores" class="w-full">
-      <div class=" grid mt-2 gap-2 grid-cols-1 md:grid-cols-2 md:gap-x-8">
+      <div class=" grid mt-2 gap-2 grid-cols-1 md:grid-cols-1 md:gap-x-8 w-fit">
         {#each data.walkers as walker}
           <ProviderPreviewCard
             id={walker.id}
             username={walker.username}
             lastname={walker.lastname}
-            email={walker.email}
+            areas={walker.areas}
           />
         {/each}
       </div>
     </TabItem>
     <TabItem title="Cuidadores" class="w-full">
-      <div class=" grid mt-2 gap-2 grid-cols-1 md:grid-cols-2 md:gap-x-8">
+      <div class=" grid mt-2 gap-2 grid-cols-1 md:grid-cols-1 md:gap-x-8">
         {#each data.sitters as sitter}
           <ProviderPreviewCard
             id={sitter.id}
             username={sitter.username}
             lastname={sitter.lastname}
-            email={sitter.email}
+            areas={sitter.areas}
           />
         {/each}
       </div>

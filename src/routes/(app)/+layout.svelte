@@ -12,6 +12,7 @@
     { href: '/adoption', text: 'Adopcion' },
     { href: '/donation', text: 'Donacion' },
     { href: '/provider', text: 'Paseadores y cuidadores' },
+    { href: '/subsidiary', text: 'Sucursales' },
   ];
 </script>
 
