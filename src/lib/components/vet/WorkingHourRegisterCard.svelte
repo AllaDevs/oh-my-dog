@@ -9,10 +9,9 @@
   import { createEventDispatcher } from 'svelte';
   import type { SuperForm } from 'sveltekit-superforms/client';
 
-  export let sForm: SuperForm<
-    ProviderCompleteRegisterSchema | SubsidiaryCompleteRegisterSchema,
-    unknown
-  >;
+  export let sForm:
+    | SuperForm<ProviderCompleteRegisterSchema, unknown>
+    | SuperForm<SubsidiaryCompleteRegisterSchema, unknown>;
   export let index: number;
   export let title: string | undefined = undefined;
   export let allowRemoval = true;
