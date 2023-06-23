@@ -1,7 +1,7 @@
 <script lang="ts">
   import EmailFrame from './EmailFrame.svelte';
 
-  export let username: string;
+  export let firstname: string;
   export let lastname: string;
   export let email: string;
   export let dogname: string;
@@ -15,7 +15,8 @@
   </header>
   <main>
     <p>
-      Se te informa que se contacto con exito a <b>{username} {lastname}</b> por el post de adopcion de <b>{dogname}</b>.
+      Se te informa que se contacto con exito a <b>{firstname} {lastname}</b>
+      por el post de adopcion de <b>{dogname}</b>.
     </p>
     <p>
       El publicante estara en contacto contigo mediante el email <b>{email}</b>.
@@ -23,7 +24,7 @@
   </main>
   <footer class="bg-gray-200 py-4 text-white">
     <p class="text-center">
-      Atentamente,<br/>
+      Atentamente,<br />
       El equipo de OhMyDog
     </p>
   </footer>

@@ -12,7 +12,7 @@ import type { Actions, PageServerLoad } from './$types';
 const deletePostSchema = z.object({});
 
 const resolvePostSchema = z.object({
-    detail: z.string().max(256),
+    detail: z.string().max(256, `Maximo de 256 caracteres`),
 });
 
 

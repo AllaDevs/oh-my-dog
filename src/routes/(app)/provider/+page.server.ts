@@ -16,7 +16,7 @@ export const load: PageServerLoad = async (event) => {
         select: {
             id: true,
             email: true,
-            username: true,
+            firstname: true,
             lastname: true,
             workingHour: true,
             type: true,
@@ -48,7 +48,7 @@ export const actions: Actions = {
                 id: user!.userId
             },
             select: {
-                username: true,
+                firstname: true,
                 lastname: true,
                 email: true,
             }
@@ -58,7 +58,7 @@ export const actions: Actions = {
                 id: form.data.providerId
             },
             select: {
-                username: true,
+                firstname: true,
                 lastname: true,
                 email: true,
             }
@@ -66,17 +66,17 @@ export const actions: Actions = {
         if (!client || !provider) return fail(400, { form });
         await systemEmail(
             client.email,
-            `Hola ${client.username}`,
-            `Hola! Te enviamos los datos de contacto del proveedor que solicitaste, ${provider.username} ${provider.lastname}. Podrás contactarlo por medio del mail ${provider.email}, estamos seguros de
+            `Hola ${client.firstname}`,
+            `Hola! Te enviamos los datos de contacto del proveedor que solicitaste, ${provider.firstname} ${provider.lastname}. Podrás contactarlo por medio del mail ${provider.email}, estamos seguros de
             que será muy bueno con tus perros!`,
-            providerToClientHTML(client.username, provider.username, provider.lastname, provider.email)
+            providerToClientHTML(client.firstname, provider.firstname, provider.lastname, provider.email)
         );
         await systemEmail(
             provider.email,
-            `Hola ${provider.username}!`,
-            `Te informamos que el cliente ${client.username} ${client.lastname} solicitó tus datos
+            `Hola ${provider.firstname}!`,
+            `Te informamos que el cliente ${client.firstname} ${client.lastname} solicitó tus datos
             de contacto. Podrás contactarlo por medio del mail ${client.email}, esperamos que lleguen a un muy buen acuerdo!`,
-            clientToProviderHTML(client.username, provider.username, provider.lastname, client.email)
+            clientToProviderHTML(client.firstname, provider.firstname, provider.lastname, client.email)
         );
     }
 };;

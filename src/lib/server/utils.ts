@@ -51,10 +51,10 @@ export async function registerAdmin(name?: string, password?: string) {
     try {
         const finalEmail = `${name ?? 'a'}@a.com`;
         const finalPassword = password ?? 'adminadmin';
-        const finalName = name ?? 'default username';
+        const finalName = name ?? 'default firstname';
         const admin = await prisma.admin.create({
             data: {
-                username: finalName,
+                firstname: finalName,
                 lastname: name ?? 'default lastname',
                 email: finalEmail
             }

@@ -18,7 +18,7 @@
       label="Nombre"
       autocomplete="given-name"
       form={sForm}
-      field="username"
+      field="firstname"
     />
     <TextInput
       label="Apellido"

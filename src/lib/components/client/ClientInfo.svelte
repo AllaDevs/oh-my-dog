@@ -20,8 +20,8 @@
   <svelte:fragment slot="fields">
     <TextInput
       label="Nombre"
-      field="username"
-      value={client.username}
+      field="firstname"
+      value={client.firstname}
       readonly
     />
     <TextInput
@@ -48,7 +48,7 @@
       value={client.phone}
       readonly
     />
-    <TextInput label="DNI" field="dni" value={client.dni} readonly />
+    <TextInput label="DNI" field="dni" value={client.dni.toString()} readonly />
   </svelte:fragment>
 
   <svelte:fragment slot="actions">

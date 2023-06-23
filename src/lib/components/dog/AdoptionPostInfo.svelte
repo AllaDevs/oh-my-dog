@@ -61,8 +61,8 @@
     <svelte:fragment slot="fields">
       <TextInput
         label="Nombre"
-        field="username"
-        value={author.username}
+        field="firstname"
+        value={author.firstname}
         readonly
       />
       <TextInput

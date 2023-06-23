@@ -9,7 +9,7 @@ export const load: PageServerLoad = async (event) => {
     const providers = await prisma.dogServiceProvider.findMany({
         select: {
             id: true,
-            username: true,
+            firstname: true,
             lastname: true,
             workingHour: true,
             type: true,

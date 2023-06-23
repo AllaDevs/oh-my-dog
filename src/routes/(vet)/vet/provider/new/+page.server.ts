@@ -48,7 +48,7 @@ export const actions: Actions = {
                     type: form.data.type,
                     email: form.data.email,
                     areas: form.data.areas,
-                    username: form.data.username,
+                    firstname: form.data.firstname,
                     lastname: form.data.lastname,
                     description: form.data.description,
                     workingHour: {

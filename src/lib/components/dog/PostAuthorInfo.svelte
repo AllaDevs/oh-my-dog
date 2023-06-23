@@ -4,7 +4,7 @@
   import TextInput from '$lib/components/styledInput/TextInput.svelte';
 
   type T = $$Generic<{
-    username: string;
+    firstname: string;
     lastname: string;
     phone: string;
   }>;
@@ -23,8 +23,8 @@
   <svelte:fragment slot="fields">
     <TextInput
       label="Nombre"
-      field="username"
-      value={author.username}
+      field="firstname"
+      value={author.firstname}
       readonly
     />
     <TextInput

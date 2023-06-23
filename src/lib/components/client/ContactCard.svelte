@@ -22,7 +22,7 @@
   </svelte:fragment>
 
   <svelte:fragment slot="fields">
-    <TextInput label="Nombre" field="username" form={sForm} />
+    <TextInput label="Nombre" field="firstname" form={sForm} />
     <TextInput label="Apellido" field="lastname" form={sForm} />
     <EmailInput
       label="Direccion de email"

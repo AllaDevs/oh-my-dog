@@ -4,7 +4,7 @@ import { dogRegisterSchema } from './dogSchema';
 
 
 const clientBaseSchema = z.object({
-    username: c.usernameSchema,
+    firstname: c.firstnameSchema,
     lastname: c.lastnameSchema,
     email: c.emailSchema,
     birthdate: c.birthdateSchema,

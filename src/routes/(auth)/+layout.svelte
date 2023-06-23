@@ -10,20 +10,12 @@
       <svelte:fragment slot="right">
         {#if $page.data.user}
           <form method="POST" action="/logout" class="header-item">
-            <button
-              type="submit"
-              class=" p-2 font-bold underline-offset-2 hover:underline whitespace-nowrap"
-            >
-              Cerrar Sesión
-            </button>
+            <button type="submit" class="nav-button"> Cerrar Sesión </button>
           </form>
         {:else}
           {@const onLogin = $page.url.pathname === '/login'}
           <div class="header-item">
-            <a
-              href={onLogin ? '/' : '/login'}
-              class=" p-2 font-bold underline-offset-2 hover:underline whitespace-nowrap"
-            >
+            <a href={onLogin ? '/' : '/login'} class="nav-button">
               {onLogin ? 'Inicio' : 'Iniciar Sesión'}
             </a>
           </div>
@@ -42,3 +34,9 @@
     </div>
   </svelte:fragment> -->
 </Layout>
+
+<style lang="postcss">
+  .nav-button {
+    @apply p-2 font-semibold text-gray-900 hover:text-black underline-offset-2 hover:underline whitespace-nowrap;
+  }
+</style>

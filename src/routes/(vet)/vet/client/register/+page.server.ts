@@ -78,7 +78,7 @@ export const actions = {
 
             client = await prisma.client.create({
                 data: {
-                    username: form.data.username,
+                    firstname: form.data.firstname,
                     lastname: form.data.lastname,
                     email: form.data.email,
                     birthdate: new Date(form.data.birthdate),
@@ -201,10 +201,10 @@ export const actions = {
 
         try {
             await systemEmail(
-                { name: form.data.username, address: form.data.email },
+                { name: form.data.firstname, address: form.data.email },
                 'Cuenta creada en ¡Oh my dog!',
-                `Bienvenido ${form.data.username} a ¡Oh my dog!. Tu contraseña es: ${generatedPassword}, puedes cambiarla en 'Mi cuenta'.`,
-                newAccountHTML(form.data.username, form.data.lastname, generatedPassword)
+                `Bienvenido ${form.data.firstname} a ¡Oh my dog!. Tu contraseña es: ${generatedPassword}, puedes cambiarla en 'Mi cuenta'.`,
+                newAccountHTML(form.data.firstname, form.data.lastname, generatedPassword)
             );
         }
         catch (error) {

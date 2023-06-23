@@ -31,7 +31,7 @@
       {#each donors as donor (donor.id)}
         <tr class=" border-b border-gray-200">
           <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-            {donor.username}
+            {donor.firstname}
             {donor.lastname}
           </td>
           <td class="px-6 py-4">

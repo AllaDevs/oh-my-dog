@@ -6,9 +6,9 @@
   const BASEPATH = '/';
 
   const navLinks = [
-    //{ href: '/', text: 'Inicio' },
-    { href: '/me/appointment', text: 'Turnos', requiresLogin: true },
+    { href: '/', text: 'Inicio' },
     { href: '/me', text: 'Mi cuenta', requiresLogin: true },
+    { href: '/me/appointment', text: 'Mis turnos', requiresLogin: true },
     { href: '/adoption', text: 'Adopcion' },
     { href: '/donation', text: 'Donacion' },
     { href: '/provider', text: 'Paseadores y cuidadores' },
@@ -22,30 +22,12 @@
     <Header homePath={BASEPATH} {navLinks}>
       <svelte:fragment slot="right">
         {#if $page.data.user}
-          <div class="header-item md:hidden">
-            <a
-              href="/me"
-              class=" p-2 font-bold underline-offset-2 hover:underline"
-            >
-              Mi cuenta
-            </a>
-          </div>
           <form method="POST" action="/logout" class="header-item w-max">
-            <button
-              type="submit"
-              class=" p-2 font-bold underline-offset-2 hover:underline"
-            >
-              Cerrar Sesión
-            </button>
+            <button type="submit" class="nav-button"> Cerrar Sesión </button>
           </form>
         {:else if $page.url.pathname !== '/login'}
           <div class="header-item w-max">
-            <a
-              href="/login"
-              class=" p-2 font-bold underline-offset-2 hover:underline"
-            >
-              Iniciar Sesión
-            </a>
+            <a href="/login" class="nav-button"> Iniciar Sesión </a>
           </div>
         {/if}
       </svelte:fragment>
@@ -62,3 +44,9 @@
     </div>
   </svelte:fragment> -->
 </Layout>
+
+<style lang="postcss">
+  .nav-button {
+    @apply p-2 font-semibold text-gray-900 hover:text-black underline-offset-2 hover:underline whitespace-nowrap;
+  }
+</style>

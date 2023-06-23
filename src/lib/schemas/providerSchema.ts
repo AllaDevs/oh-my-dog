@@ -7,7 +7,7 @@ const providerBaseSchema = z.object({
     type: z.nativeEnum(DogServiceType),
     email: z.string().email(),
     areas: z.string(),
-    username: z.string(),
+    firstname: z.string(),
     lastname: z.string(),
     description: z.string().max(280).optional()
 });

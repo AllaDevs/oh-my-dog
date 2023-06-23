@@ -69,7 +69,7 @@ export const actions: Actions = {
                 client: {
                     select: {
                         id: true,
-                        username: true,
+                        firstname: true,
                         email: true
                     }
                 }
@@ -95,7 +95,7 @@ export const actions: Actions = {
                 client: {
                     select: {
                         id: true,
-                        username: true,
+                        firstname: true,
                         email: true
                     }
                 }

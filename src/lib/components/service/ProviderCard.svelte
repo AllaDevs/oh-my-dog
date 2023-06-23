@@ -4,7 +4,7 @@
   import type { WorkingHour } from '@prisma/client';
 
   export let id: string;
-  export let username: string;
+  export let firstname: string;
   export let lastname: string;
   export let areas: string;
   export let workingHours: WorkingHour[];
@@ -23,7 +23,7 @@
   class="flex min-h-full flex-col rounded border border-teal-500/50 bg-teal-100/25 p-4"
 >
   <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-    {username}
+    {firstname}
     {lastname}
   </h5>
   <p class="max-w-full break-words"><b>Areas:</b> {areas}</p>

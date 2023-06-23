@@ -29,7 +29,7 @@
           <ProviderCard
             logged={data.client ? true : false}
             id={walker.id}
-            username={walker.username}
+            firstname={walker.firstname}
             lastname={walker.lastname}
             areas={walker.areas}
             workingHours={walker.workingHour}
@@ -46,7 +46,7 @@
           <ProviderCard
             logged={data.client ? true : false}
             id={sitter.id}
-            username={sitter.username}
+            firstname={sitter.firstname}
             lastname={sitter.lastname}
             areas={sitter.areas}
             workingHours={sitter.workingHour}

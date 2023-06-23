@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   const ANONYMOUS_DONOR = {
-    username: 'Anonimo',
+    firstname: 'Anonimo',
     lastname: '',
   } as const;
 </script>
@@ -12,7 +12,7 @@
 
   type T = $$Generic<
     Donation & {
-      client: Pick<Client, 'id' | 'username' | 'lastname'> | null;
+      client: Pick<Client, 'id' | 'firstname' | 'lastname'> | null;
     }
   >;
 
@@ -38,7 +38,7 @@
         {@const donor = donation.client ?? ANONYMOUS_DONOR}
         <tr class=" border-b border-gray-200">
           <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-            {donor.username}
+            {donor.firstname}
             {donor.lastname}
           </td>
           <td class="px-6 py-4">

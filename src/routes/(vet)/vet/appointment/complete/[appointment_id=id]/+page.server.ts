@@ -27,7 +27,7 @@ export const load = (async ({ locals, params, url }) => {
             client: {
                 select: {
                     id: true,
-                    username: true
+                    firstname: true
                 }
             }
         }
