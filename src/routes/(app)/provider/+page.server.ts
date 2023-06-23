@@ -7,7 +7,7 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
 const schema = z.object({
-    appointmentId: z.string()
+    providerId: z.string()
 });
 
 export const load: PageServerLoad = async (event) => {
@@ -34,6 +34,7 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
     contact: async ({ request, locals, url }) => {
         const { session, user } = await locals.auth.validateUser();
+        console.log(user);
         const form = await superValidate(request, schema);
         if (!form.valid) {
             console.error(form);
@@ -54,7 +55,7 @@ export const actions: Actions = {
         });
         const provider = await prisma.dogServiceProvider.findUnique({
             where: {
-                id: form.data.appointmentId
+                id: form.data.providerId
             },
             select: {
                 username: true,
@@ -72,7 +73,7 @@ export const actions: Actions = {
         );
         await systemEmail(
             provider.email,
-            `Hola {providerName}!`,
+            `Hola ${provider.username}!`,
             `Te informamos que el cliente ${client.username} ${client.lastname} solicitó tus datos
             de contacto. Podrás contactarlo por medio del mail ${client.email}, esperamos que lleguen a un muy buen acuerdo!`,
             clientToProviderHTML(client.username, provider.username, provider.lastname, client.email)

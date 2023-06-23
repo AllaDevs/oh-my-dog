@@ -5,6 +5,7 @@
 
   export let data;
   let container: HTMLDivElement;
+  // @ts-expect-error
   let map: google.maps.Map;
   let zoom = 12;
   let center = { lat: -34.92945, lng: -57.93453 };
@@ -12,9 +13,11 @@
 
   function relocateCenter(id: string) {
     // search fot id on data.subsidiaries
+  // @ts-expect-error
     let newCenter: google.maps.LatLng | undefined;
     for (let i = 0; i < data.subsidiaries.length; i++) {
       if (data.subsidiaries[i].id === id) {
+  // @ts-expect-error
         newCenter = new google.maps.LatLng({
           lat: data.subsidiaries[i].location.latitude,
           lng: data.subsidiaries[i].location.longitude,
@@ -31,9 +34,11 @@
     mounted = true;
   });
 
+  // @ts-expect-error
   $: if (mounted && google) initMap();
 
   function initMap() {
+  // @ts-expect-error
     map = new google.maps.Map(container, {
       zoom,
       center,
@@ -41,10 +46,12 @@
     map.setCenter(center);
     map.setZoom(zoom);
     for (let i = 0; i < data.subsidiaries.length; i++) {
+  // @ts-expect-error
       const latlng = new google.maps.LatLng({
         lat: data.subsidiaries[i].location.latitude,
         lng: data.subsidiaries[i].location.longitude,
       });
+  // @ts-expect-error
       const marker = new google.maps.Marker({
         position: latlng,
         map: map,

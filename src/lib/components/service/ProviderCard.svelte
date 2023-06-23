@@ -9,6 +9,7 @@
   export let areas: string;
   export let workingHours: WorkingHour[];
   export let description: string;
+  export let logged: boolean;
   // turn areas to string and map them with days
   function workingHourString(workingHour: WorkingHour) {
     let string = '';
@@ -35,7 +36,9 @@
     <div>
       <form action="?/contact" method="post">
         <input type="text" class="hidden" value={id} name="providerId" />
-        <Button type="submit" color="primary">Contactar</Button>
+        {#if logged}
+          <Button type="submit" color="primary">Contactar</Button>
+        {/if}
       </form>
     </div>
   </div>

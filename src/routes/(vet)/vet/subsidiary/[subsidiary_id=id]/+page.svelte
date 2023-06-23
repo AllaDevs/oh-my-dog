@@ -42,6 +42,7 @@
   let actualInput: HTMLInputElement;
   let card: HTMLDivElement;
   let container: HTMLDivElement;
+  // @ts-expect-error
   let map: google.maps.Map;
   let zoom = 13;
   let center = { lat: -34.92945, lng: -57.93453 };
@@ -52,9 +53,11 @@
     mounted = true;
   });
 
+  // @ts-expect-error
   $: if (mounted && google) initMap();
 
   function initMap() {
+  // @ts-expect-error
     map = new google.maps.Map(container, {
       zoom,
       center,
@@ -62,6 +65,7 @@
     // Make the search bar into a Places Autocomplete search bar and select
     // which detail fields should be returned about the place that
     // the user selects from the suggestions.
+  // @ts-expect-error
     const autocomplete = new google.maps.places.Autocomplete(actualInput, {
       types: ['address'],
       componentRestrictions: { country: 'ar' },
@@ -70,12 +74,14 @@
     autocomplete.setFields(['address_components', 'geometry', 'name']);
 
     // Set the origin point when the user selects an address
+  // @ts-expect-error
     const originMarker = new google.maps.Marker({
       map: map,
     });
     originMarker.setVisible(false);
     let originLocation = map.getCenter();
 
+  // @ts-expect-error
     let oldLatLng = new google.maps.LatLng({
       lat: data.oldSubsidiary.location.latitude,
       lng: data.oldSubsidiary.location.longitude,

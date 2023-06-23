@@ -27,6 +27,7 @@
       <div class=" grid mt-2 gap-2 grid-cols-1 md:gap-x-5">
         {#each data.walkers as walker}
           <ProviderCard
+            logged={data.client ? true : false}
             id={walker.id}
             username={walker.username}
             lastname={walker.lastname}
@@ -43,6 +44,7 @@
       <div class=" grid mt-2 gap-2 grid-cols-1 md:gap-x-5">
         {#each data.sitters as sitter}
           <ProviderCard
+            logged={data.client ? true : false}
             id={sitter.id}
             username={sitter.username}
             lastname={sitter.lastname}
