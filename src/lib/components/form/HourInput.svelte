@@ -38,6 +38,7 @@
       id={field}
       name={field}
       autocomplete="off"
+      step={'900'}
       {readonly}
       bind:value={$value}
       aria-invalid={!!$errors || undefined}

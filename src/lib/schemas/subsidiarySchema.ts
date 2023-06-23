@@ -1,11 +1,10 @@
 import { z } from 'zod';
-import { c } from './commonSchema';
 import { workingHourSchema } from './workingHourSchema';
 
 
 const subsidiaryBaseSchema = z.object({
     name: z.string(),
-    location: c.locationSchema,
+    location: z.string(),
     address: z.string()
 });
 

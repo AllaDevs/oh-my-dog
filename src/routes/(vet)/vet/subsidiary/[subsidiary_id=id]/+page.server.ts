@@ -1,16 +1,15 @@
 import { subsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
 import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
-import { fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
-import type { PageServerLoad } from '../$types';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 const initialFormData = {
     workingHour: [defaultValues(workingHourSchema)]
 };
 
-export const load: PageServerLoad = async (event) => {
+export const load = (async ({ params, url }) => {
 
     const form = await superValidate(
         initialFormData,
@@ -18,11 +17,29 @@ export const load: PageServerLoad = async (event) => {
         { errors: false }
     );
 
-    return { form };
-};
+    const oldSubsidiary = await prisma.subsidiary.findUnique({
+        where: {
+            id: params.subsidiary_id
+        },
+        select: {
+            name: true,
+            address: true,
+            location: true,
+        }
+    });
+
+    if (!oldSubsidiary) {
+        throw error(404, 'No se encontró el proveedor que buscabas');
+    }
+
+    form.data.name = oldSubsidiary.name;
+    form.data.address = oldSubsidiary.address;
+
+    return { form, oldSubsidiary };
+}) satisfies PageServerLoad;
 
 export const actions: Actions = {
-    register: async ({ request, locals, url }) => {
+    update: async ({ request, locals, params, url }) => {
         const formData = await request.formData();
         const form = await superValidate(formData, subsidiaryCompleteRegisterSchema);
         if (!form.valid) {
@@ -43,13 +60,14 @@ export const actions: Actions = {
                     });
             };
 
-            console.log(form.data);
-
-            const newProvider = await prisma.subsidiary.create({
+            const newProvider = await prisma.subsidiary.update({
+                where: {
+                    id: params.subsidiary_id
+                },
                 data: {
                     name: form.data.name,
-                    location: { latitude: parseFloat(form.data.location.split(", ")[0]), longitude: parseFloat(form.data.location.split(", ")[1]) },
                     address: form.data.address,
+                    location: { latitude: parseFloat(form.data.location.split(", ")[0]), longitude: parseFloat(form.data.location.split(", ")[1]) },
                     workingHour: {
                         create: workingHours
                     }
@@ -62,7 +80,26 @@ export const actions: Actions = {
         };
 
 
-        return message(form, "Sucursal creada de forma exitosa!");
+        return message(form, "Sucursal actualizada de forma exitosa!");
 
+    },
+    delete: async ({ request, locals, params, url }) => {
+        const formData = await request.formData();
+        const form = await superValidate(formData, subsidiaryCompleteRegisterSchema);
+        try {
+
+            const deleted = await prisma.subsidiary.delete({
+                where: {
+                    id: params.subsidiary_id
+                }
+            });
+
+        }
+        catch (error) {
+            console.error(error);
+            return message(form, { error: "Eliminación fallida" });
+        }
+        throw redirect(300, "/vet/subsidiary");
     }
+
 };

@@ -1,8 +1,8 @@
 import { prisma } from '$lib/server/prisma';
-import type { PageServerLoad } from '../$types';
+import type { Actions, PageServerLoad } from './$types';
 
 
-export const load: PageServerLoad = async (event) => {
+export const load = (async ({ params, url }) => {
 
     const subsidiaries = await prisma.subsidiary.findMany({
         select: {
@@ -16,4 +16,11 @@ export const load: PageServerLoad = async (event) => {
     });
 
     return { subsidiaries };
+}) satisfies PageServerLoad;
+
+export const actions: Actions = {
+    edit: async ({ params }) => {
+    },
+    delete: async ({ params }) => {
+    }
 };
