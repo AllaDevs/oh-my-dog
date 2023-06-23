@@ -20,7 +20,7 @@
     id: 'start',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se resolvio la adopcion con exito', { duration: 3000 });
+        toast.success('Se resolvio la acción con exito', { duration: 3000 });
         campaignState = DonationCampaignState.ACTIVE;
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
@@ -32,7 +32,7 @@
     id: 'pause',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se resolvio la adopcion con exito', { duration: 3000 });
+        toast.success('Se resolvio la acción con exito', { duration: 3000 });
         campaignState = DonationCampaignState.PAUSED;
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
@@ -44,7 +44,7 @@
     id: 'end',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se resolvio la adopcion con exito', { duration: 3000 });
+        toast.success('Se resolvio la acción con exito', { duration: 3000 });
         campaignState = DonationCampaignState.ENDED;
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));

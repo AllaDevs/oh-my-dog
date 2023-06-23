@@ -13,7 +13,7 @@
     { href: '/donation', text: 'Donacion' },
     { href: '/provider', text: 'Paseadores y cuidadores' },
     { href: '/subsidiary', text: 'Sucursales' },
-    { href: '/urgency', text: 'URGENCIAS', warning: true },
+    { href: '/subsidiary/urgency', text: 'URGENCIAS', warning: true },
   ];
 </script>
 

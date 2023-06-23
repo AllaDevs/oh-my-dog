@@ -38,6 +38,8 @@
       zoom,
       center,
     });
+    map.setCenter(center);
+    map.setZoom(zoom);
     for (let i = 0; i < data.subsidiaries.length; i++) {
       const latlng = new google.maps.LatLng({
         lat: data.subsidiaries[i].location.latitude,

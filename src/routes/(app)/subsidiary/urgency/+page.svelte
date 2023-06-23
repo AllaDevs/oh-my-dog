@@ -16,7 +16,7 @@
     </p>
     <p class="text-lg">Mirá las direcciones en el mapa de sucursales:</p>
     <div class="max-w-auto p-4 m-4">
-      <A href="./subsidiary" color="default" button={true}>Mapa</A>
+      <A href="/subsidiary" color="default" button={true}>Mapa</A>
     </div>
   </div>
 </Page>
