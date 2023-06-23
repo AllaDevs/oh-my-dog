@@ -8,6 +8,7 @@
   let map: google.maps.Map;
   let zoom = 12;
   let center = { lat: -34.92945, lng: -57.93453 };
+  let mounted = false;
 
   function relocateCenter(id: string) {
     // search fot id on data.subsidiaries
@@ -27,6 +28,12 @@
   }
 
   onMount(() => {
+    mounted = true;
+  });
+
+  $: if (mounted && google) initMap();
+
+  function initMap() {
     map = new google.maps.Map(container, {
       zoom,
       center,
@@ -42,7 +49,7 @@
         title: data.subsidiaries[i].name,
       });
     }
-  });
+  }
 </script>
 
 <svelte:head>
