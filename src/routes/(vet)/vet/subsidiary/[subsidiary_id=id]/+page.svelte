@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$cmp/element/Button.svelte';
+  import ActionButton from '$cmp/form/ActionButton.svelte';
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
@@ -154,7 +155,7 @@
               form={registerSForm}
             />
             <TextInput
-              label="Dirección"
+              label="Dirección detallada"
               field="address"
               hint="Descripción breve"
               unselectedLabel="Ingrese la dirección"
@@ -165,6 +166,7 @@
               type="text"
               id="pac-input"
               name="pac-input"
+              placeholder="Dirección en el mapa"
               class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
             />
             <div class="hidden">
@@ -193,6 +195,9 @@
         <Button on:click={addWorkingHour} color="primary">
           Agregar otra franja horaria
         </Button>
+        <ActionButton class="p-0 md:p-0" color="error" action="?/delete"
+          >Eliminar</ActionButton
+        >
         <Button type="submit" formaction="?/update" color="primary">
           Actualizar sucursal
         </Button>

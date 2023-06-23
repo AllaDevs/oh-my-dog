@@ -58,16 +58,21 @@
     <h2 class=" mt-4 text-2xl">Nuestras sucursales</h2>
     <A href="./subsidiary/new" color="primary" button={true}>Nueva Sucursal</A>
   </div>
-
-  {#each data.subsidiaries as subsidiary}
-    <SubsidiaryCard
-      vet={true}
-      id={subsidiary.id}
-      name={subsidiary.name}
-      address={subsidiary.address}
-      workingHour={subsidiary.workingHour}
-      on:relocate={(e) => relocateCenter(e.detail)}
-    />
-  {/each}
-  <div class="h-full w-full mt-7" bind:this={container} />
+  {#if data.subsidiaries.length > 0}
+    {#each data.subsidiaries as subsidiary}
+      <SubsidiaryCard
+        vet={true}
+        id={subsidiary.id}
+        name={subsidiary.name}
+        address={subsidiary.address}
+        workingHour={subsidiary.workingHour}
+        on:relocate={(e) => relocateCenter(e.detail)}
+      />
+    {/each}
+    <div class="h-full w-full mt-7" bind:this={container} />
+  {:else}
+    <h4 class=" mt-4 text-2xl">
+      De momento no tenemos sucursales para mostrar!
+    </h4>
+  {/if}
 </Page>

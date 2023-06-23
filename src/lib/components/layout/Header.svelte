@@ -6,6 +6,7 @@
     href: string;
     text: string;
     requiresLogin?: boolean;
+    warning?: boolean;
   };
 
   export let homePath: string;
@@ -45,14 +46,16 @@
       >
         <ul class=" flex" class:hidden={!navLinksOnHome && onHome}>
           <slot name="navLinks">
-            {#each navLinks as { href, text, requiresLogin }}
+            {#each navLinks as { href, text, requiresLogin, warning }}
               {@const current = $page.url.pathname === href}
               {#if !requiresLogin || user}
                 <li class=" w-max p-1 sm:p-2 md:px-4">
                   <a
                     aria-current={current ? 'page' : false}
                     href={current ? '#main' : href}
-                    class=" font-medium rounded p-2 underline-offset-2 hover:text-gray-800 hover:underline"
+                    class={warning
+                      ? 'text-white font-medium bg-red-500 rounded p-2 hover:text-gray-100 hover:bg-red-600'
+                      : ' font-medium rounded p-2 underline-offset-2 hover:text-gray-800 hover:underline'}
                   >
                     {text}
                   </a>

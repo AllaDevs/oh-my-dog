@@ -1,10 +1,9 @@
 import { subsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
 import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
-import type { PageServerLoad } from '../$types';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 const initialFormData = {
     workingHour: [defaultValues(workingHourSchema)]
@@ -62,7 +61,7 @@ export const actions: Actions = {
         };
 
 
-        return message(form, "Sucursal creada de forma exitosa!");
+        throw redirect(300, "/vet/subsidiary");
 
     }
 };

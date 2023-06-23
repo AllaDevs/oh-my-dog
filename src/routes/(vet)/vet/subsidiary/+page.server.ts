@@ -1,5 +1,5 @@
 import { prisma } from '$lib/server/prisma';
-import type { Actions, PageServerLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
 
 export const load = (async ({ params, url }) => {
@@ -17,10 +17,3 @@ export const load = (async ({ params, url }) => {
 
     return { subsidiaries };
 }) satisfies PageServerLoad;
-
-export const actions: Actions = {
-    edit: async ({ params }) => {
-    },
-    delete: async ({ params }) => {
-    }
-};

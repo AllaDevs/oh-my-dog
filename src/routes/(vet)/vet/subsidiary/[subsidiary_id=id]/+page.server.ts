@@ -78,9 +78,7 @@ export const actions: Actions = {
             console.error(error);
             return message(form, "Creación fallida", { status: 400 });
         };
-
-
-        return message(form, "Sucursal actualizada de forma exitosa!");
+        throw redirect(300, "/vet/subsidiary");
 
     },
     delete: async ({ request, locals, params, url }) => {
@@ -97,9 +95,10 @@ export const actions: Actions = {
         }
         catch (error) {
             console.error(error);
-            return message(form, { error: "Eliminación fallida" });
+            return fail(400, { form });
         }
-        throw redirect(300, "/vet/subsidiary");
+
+        throw redirect(303, '/vet/subsidiary');;
     }
 
 };

@@ -81,7 +81,7 @@
       if (!place.geometry) {
         // User entered the name of a Place that was not suggested and
         // pressed the Enter key, or the Place Details request failed.
-        window.alert("No address available for input: '" + place.name + "'");
+        window.alert("No existe la ubicación: '" + place.name + "'");
         return;
       }
 
@@ -140,7 +140,7 @@
               form={registerSForm}
             />
             <TextInput
-              label="Dirección"
+              label="Dirección detallada"
               field="address"
               hint="Descripción breve"
               unselectedLabel="Ingrese la dirección"
@@ -151,6 +151,7 @@
               type="text"
               id="pac-input"
               name="pac-input"
+              placeholder="Dirección en el mapa"
               class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
             />
             <div class="hidden">

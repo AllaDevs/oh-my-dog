@@ -1,7 +1,6 @@
 <script lang="ts">
   import A from '$cmp/element/A.svelte';
   import Button from '$cmp/element/Button.svelte';
-  import ActionButton from '$cmp/form/ActionButton.svelte';
   import { te } from '$lib/utils/translateEnums';
   import type { WorkingHour } from '@prisma/client';
   import { createEventDispatcher } from 'svelte';
@@ -35,12 +34,8 @@
   {#each workingHour as hour}
     <p>{workingHourString(hour)}</p>
   {/each}
-  <p><b>Veterinaria:</b> {vet}</p>
   <div class="mt-3 gap-2 flex flex-row max-h-min">
     {#if vet}
-      <ActionButton class="p-0 md:p-0" color="error" action="?/delete"
-        >Eliminar</ActionButton
-      >
       <A href="./subsidiary/{id}" color="primary" button={true}>Editar</A>
     {/if}
     <Button color="primary" on:click={() => dispatch('relocate', id)}
