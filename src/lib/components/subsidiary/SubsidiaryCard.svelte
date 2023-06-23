@@ -1,11 +1,16 @@
 <script lang="ts">
+  import A from '$cmp/element/A.svelte';
+  import Button from '$cmp/element/Button.svelte';
   import { te } from '$lib/utils/translateEnums';
-  import type { Address, WorkingHour } from '@prisma/client';
+  import type { WorkingHour } from '@prisma/client';
+  import { createEventDispatcher } from 'svelte';
 
   // export let workingHour: WorkingHour[];
   export let name: string;
-  export let address: Address;
-  export let workingHours: WorkingHour[];
+  export let address: string;
+  export let workingHour: WorkingHour[];
+  export let id: string;
+  export let vet: boolean;
   // turn areas to string and map them with days
   function workingHourString(workingHour: WorkingHour) {
     let string = '';
@@ -14,23 +19,27 @@
     return string;
   }
 
-  function addressString(address: Address) {
-    let newAddress = '';
-    newAddress += address.city + ' - ' + address.street + ', ' + address.number;
-    return newAddress;
-  }
+  const dispatch = createEventDispatcher<{ relocate: string }>();
 </script>
 
 <div
-  class="flex min-h-full flex-col rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:scale-105 hover:border-teal-500 hover:bg-teal-100/50"
+  class="flex min-h-fit flex-col rounded border border-teal-500/50 bg-teal-100/25 p-4"
 >
   <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
     Sucursal - {name}
   </h5>
   <!-- <p><b>Telefono:</b> {subsidiary.phone}</p> -->
-  <p><b>Dirección:</b> {addressString(address)}</p>
-  <p><b>Horario:</b></p>
-  {#each workingHours as hour}
+  <p><b>Dirección:</b> {address}</p>
+  <p><b>Horarios:</b></p>
+  {#each workingHour as hour}
     <p>{workingHourString(hour)}</p>
   {/each}
+  <div class="mt-3 gap-2 flex flex-row max-h-min">
+    {#if vet}
+      <A href="./subsidiary/{id}" color="primary" button={true}>Editar</A>
+    {/if}
+    <Button color="primary" on:click={() => dispatch('relocate', id)}
+      >Ver en mapa</Button
+    >
+  </div>
 </div>

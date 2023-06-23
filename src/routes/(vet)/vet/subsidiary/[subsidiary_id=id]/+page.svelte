@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$cmp/element/Button.svelte';
+  import ActionButton from '$cmp/form/ActionButton.svelte';
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
@@ -18,7 +19,7 @@
     },
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Sucursal registrada con exito', { duration: 5000 });
+        toast.success('Sucursal actualizada con exito', { duration: 5000 });
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors), { duration: 10000 });
       }
@@ -69,9 +70,23 @@
     autocomplete.setFields(['address_components', 'geometry', 'name']);
 
     // Set the origin point when the user selects an address
-    const originMarker = new google.maps.Marker({ map: map });
+    const originMarker = new google.maps.Marker({
+      map: map,
+    });
     originMarker.setVisible(false);
     let originLocation = map.getCenter();
+
+    let oldLatLng = new google.maps.LatLng({
+      lat: data.oldSubsidiary.location.latitude,
+      lng: data.oldSubsidiary.location.longitude,
+    });
+    map.setCenter(oldLatLng);
+    lastLoc = oldLatLng.toString();
+    originLocation = oldLatLng;
+    map.setCenter(oldLatLng);
+    map.setZoom(14);
+    originMarker.setPosition(oldLatLng);
+    originMarker.setVisible(true);
 
     autocomplete.addListener('place_changed', async () => {
       originMarker.setVisible(false);
@@ -180,8 +195,11 @@
         <Button on:click={addWorkingHour} color="primary">
           Agregar otra franja horaria
         </Button>
-        <Button type="submit" formaction="?/register" color="primary">
-          Registrar sucursal
+        <ActionButton class="p-0 md:p-0" color="error" action="?/delete"
+          >Eliminar</ActionButton
+        >
+        <Button type="submit" formaction="?/update" color="primary">
+          Actualizar sucursal
         </Button>
       </div>
     </form>

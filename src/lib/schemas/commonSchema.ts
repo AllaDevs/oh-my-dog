@@ -39,6 +39,12 @@ export const contactBaseSchema = z.object({
 });
 export type ContactBaseSchema = typeof contactBaseSchema;
 
+export const locationSchema = z.object({
+    latitude: z.number(),
+    longitude: z.number()
+});
+
+
 
 const commonSchema = {
     imageSchema,
@@ -53,7 +59,8 @@ const commonSchema = {
     dogSizeSchema,
     dogSexSchema,
     moongoIdSchema,
-    contactBaseSchema
+    contactBaseSchema,
+    locationSchema
 };
 
 export { commonSchema as c };

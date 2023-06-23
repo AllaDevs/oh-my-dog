@@ -22,6 +22,7 @@
     type?: ButtonType;
     formaction?: string;
     disabled?: boolean;
+    class?: string;
   }
 
   export let type: ButtonType = 'button';

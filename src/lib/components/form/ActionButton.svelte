@@ -9,6 +9,7 @@
     enhance?: (node: HTMLFormElement) => { destroy(): void };
     color?: Color;
     disabled?: boolean;
+    class?: string;
   }
 
   export let action: string;
