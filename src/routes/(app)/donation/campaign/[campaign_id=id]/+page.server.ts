@@ -74,7 +74,7 @@ export const actions = {
             statement_descriptor: "Veterinaria ¡Oh my dog!",
             notification_url: notificationUrl,
             auto_return: "approved",
-            // @ts-expect-error
+            // @ts-expect-error due to missing type on library
             metadata: {
                 client_id: user && user.role === Role.CLIENT ? user.userId : undefined,
                 campaign_id: params.campaign_id
