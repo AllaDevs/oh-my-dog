@@ -69,5 +69,5 @@
       on:relocate={(e) => relocateCenter(e.detail)}
     />
   {/each}
-  <div class="h-[70vh] w-[90vw] mt-7" bind:this={container} />
+  <div class="h-full w-full mt-7" bind:this={container} />
 </Page>

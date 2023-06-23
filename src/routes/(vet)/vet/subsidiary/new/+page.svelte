@@ -8,7 +8,6 @@
   import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
-  import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
   export let data;
 
   // enhanced
@@ -185,6 +184,5 @@
         </Button>
       </div>
     </form>
-    <SuperDebug data={$form} />
   </main>
 </Page>
