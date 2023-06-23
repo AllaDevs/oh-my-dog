@@ -2,7 +2,7 @@
   export let id: string;
   export let username: string;
   export let lastname: string;
-  export let areas: string;
+  export let email: string;
   // export let workingHour: WorkingHour[];
   // turn areas to string and map them with days
 </script>
@@ -15,7 +15,7 @@
       {username}
       {lastname}
     </h5>
-    <p class="text-black break-words"><b>Areas:</b> {areas}</p>
+    <p class="text-black break-words"><b>Mail:</b> {email}</p>
     <!-- {#each weekdayHours as day}
     <p><b>{day.name}:</b> {each day.hours as hour}{hour}{/each}</p>
   {/each} -->

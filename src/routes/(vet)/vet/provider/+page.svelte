@@ -34,7 +34,7 @@
             id={walker.id}
             username={walker.username}
             lastname={walker.lastname}
-            areas={walker.areas}
+            email={walker.email}
           />
         {/each}
       </div>
@@ -46,7 +46,7 @@
             id={sitter.id}
             username={sitter.username}
             lastname={sitter.lastname}
-            areas={sitter.areas}
+            email={sitter.email}
           />
         {/each}
       </div>

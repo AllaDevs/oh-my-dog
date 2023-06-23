@@ -32,6 +32,9 @@
             lastname={walker.lastname}
             areas={walker.areas}
             workingHours={walker.workingHour}
+            description={walker.description
+              ? walker.description
+              : 'Sin descripción'}
           />
         {/each}
       </div>
@@ -45,6 +48,9 @@
             lastname={sitter.lastname}
             areas={sitter.areas}
             workingHours={sitter.workingHour}
+            description={sitter.description
+              ? sitter.description
+              : 'Sin descripción'}
           />
         {/each}
       </div>

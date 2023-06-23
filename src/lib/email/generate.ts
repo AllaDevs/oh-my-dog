@@ -1,12 +1,14 @@
 import type { ComponentProps, SvelteComponent } from 'svelte';
 import EmailAdoptionContact from './templates/EmailAdoptionContact.svelte';
+import EmailAdoptionContactConfirmation from './templates/EmailAdoptionContactConfirmation.svelte';
 import EmailCancelledAppointment from './templates/EmailCancelledAppointment.svelte';
 import EmailChangedAppointment from './templates/EmailChangedAppointment.svelte';
+import EmailClientToProvider from './templates/EmailClientToProvider.svelte';
 import EmailConfirmedAppointment from './templates/EmailConfirmedAppointment.svelte';
 import EmailNewAccount from './templates/EmailNewAccount.svelte';
+import EmailProviderToClient from './templates/EmailProviderToClient.svelte';
 import EmailRejectedAppointment from './templates/EmailRejectedAppointment.svelte';
 import EmailResetPassword from './templates/EmailResetPassword.svelte';
-import EmailAdoptionContactConfirmation from './templates/EmailAdoptionContactConfirmation.svelte';
 
 
 type RenderResult = {
@@ -61,6 +63,15 @@ export function adoptionContactConfirmHTML(username: string, lastname: string, e
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
+export function providerToClientHTML(username: string, providerName: string, providerLastName: string, email: string) {
+    const r = (EmailProviderToClient as unknown as Renderable<EmailProviderToClient>).render({ username, providerName, providerLastName, email });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
+export function clientToProviderHTML(username: string, lastname: string, providerName: string, email: string) {
+    const r = (EmailClientToProvider as unknown as Renderable<EmailClientToProvider>).render({ username, lastname, providerName, email });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
 
 export default {
     newAccountHTML,
