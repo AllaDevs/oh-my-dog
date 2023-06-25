@@ -1,7 +1,7 @@
 <script lang="ts">
   import EmailFrame from './EmailFrame.svelte';
 
-  export let username: string;
+  export let firstname: string;
   export let providerName: string;
   export let providerLastName: string;
   export let email: string;
@@ -14,7 +14,7 @@
 
   <main class="py-4">
     <p>
-      Hola {username}!
+      Hola {firstname}!
     </p>
     <p>
       Te enviamos los datos de contacto del proveedor que solicitaste, <b

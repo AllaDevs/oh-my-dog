@@ -38,7 +38,6 @@
     {/if}
   </div>
   <div class=" flex flex-col gap-2">
-    {$value}
     <input
       type="number"
       id={field}

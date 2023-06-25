@@ -3,14 +3,14 @@
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import WorkingHourRegisterCard from '$cmp/vet/WorkingHourRegisterCard.svelte';
+  import WorkingHourRegisterCard from '$cmp/subsidiary/WorkingHourRegisterCard.svelte';
   import { fieldValueCloner } from '$lib/utils/functions.js';
   import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
+
   export let data;
 
-  // enhanced
   const registerSForm = superForm(data.form, {
     dataType: 'json',
     onError: (error) => {
@@ -113,12 +113,7 @@
   </div>
 
   <main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
-    <form
-      method="POST"
-      class=" mt-2 py-4"
-      enctype="multipart/form-data"
-      use:registerSForm.enhance
-    >
+    <form method="POST" class=" mt-2 py-4" use:registerSForm.enhance>
       <div class="mt-6">
         <h3 class="text-xl font-semibold text-gray-900">
           Seleccione la ubicación de la sucursal
@@ -128,22 +123,14 @@
       <div class=" pb-4 flex flex-col gap-4">
         <FieldGroup cols="2">
           <svelte:fragment slot="title">
-            <h3 class=" text-xl font-semibold text-gray-900">
-              {'Nueva sucursal'}
-            </h3>
+            <h3 class=" text-xl font-semibold text-gray-900">Nueva sucursal</h3>
           </svelte:fragment>
           <svelte:fragment slot="fields">
-            <TextInput
-              label="Nombre"
-              field="name"
-              unselectedLabel="Ingrese la calle"
-              form={registerSForm}
-            />
+            <TextInput label="Nombre" field="name" form={registerSForm} />
             <TextInput
               label="Dirección detallada"
               field="address"
               hint="Descripción breve"
-              unselectedLabel="Ingrese la dirección"
               form={registerSForm}
             />
             <input
@@ -152,6 +139,7 @@
               id="pac-input"
               name="pac-input"
               placeholder="Dirección en el mapa"
+              required
               class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
             />
             <div class="hidden">

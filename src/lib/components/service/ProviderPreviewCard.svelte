@@ -3,8 +3,6 @@
   export let firstname: string;
   export let lastname: string;
   export let email: string;
-  // export let workingHour: WorkingHour[];
-  // turn areas to string and map them with days
 </script>
 
 <a href="provider/{id}" class="w-full h-full">
@@ -16,8 +14,5 @@
       {lastname}
     </h5>
     <p class="text-black break-words"><b>Mail:</b> {email}</p>
-    <!-- {#each weekdayHours as day}
-    <p><b>{day.name}:</b> {each day.hours as hour}{hour}{/each}</p>
-  {/each} -->
   </div>
 </a>

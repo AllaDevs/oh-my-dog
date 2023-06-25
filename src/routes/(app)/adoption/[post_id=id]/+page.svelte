@@ -99,9 +99,11 @@
         />
       </svelte:fragment>
       <svelte:fragment slot="actions">
-        <Button type="submit" disabled={postIsResolved} color="success">
-          Resolver
-        </Button>
+        {#if !postIsResolved}
+          <Button type="submit" disabled={postIsResolved} color="success">
+            Resolver
+          </Button>
+        {/if}
       </svelte:fragment>
     </FieldGroup>
   </form>

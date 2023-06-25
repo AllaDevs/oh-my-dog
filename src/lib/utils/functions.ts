@@ -107,6 +107,51 @@ export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData
 }
 
 
+type FormWorkingHour = {
+    day: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY',
+    start: string,
+    end: string,
+};
+
+export function validateWorkingHours<T extends UnwrapEffects<z.AnyZodObject>>(formWorkingHours: FormWorkingHour[], form: SuperValidated<T, unknown>, fieldAccesor: (i: number) => string) {
+    const workingHours = [];
+    for (let i = 0; i < formWorkingHours.length; i++) {
+        const workingHour = formWorkingHours[i];
+        const fieldPath = fieldAccesor(i);
+        let startHour = new Date("2000-1-1"); startHour.setHours(Number(workingHour.start.split(":")[0]), Number(workingHour.start.split(":")[1]));
+        let endHour = new Date("2000-1-1"); endHour.setHours(Number(workingHour.end.split(":")[0]), Number(workingHour.end.split(":")[1]));
+        if (startHour >= endHour) {
+            setError(form, `${fieldPath}.end` as any, 'La hora de fin debe ser mayor a la hora de inicio');
+            continue;
+        }
+
+        let invalid = false;
+        for (let vi = 0; vi < workingHours.length; vi++) {
+            const vwh = workingHours[vi];
+            if (vwh.day !== workingHour.day) {
+                continue;
+            }
+            if (vwh.start < startHour && vwh.end > startHour) {
+                setError(form, `${fieldPath}.start` as any, 'La hora de inicio se cruza con otro horario');
+                invalid = true;
+                continue;
+            }
+        }
+        if (invalid) {
+            continue;
+        }
+
+        workingHours.push({
+            day: workingHour.day,
+            start: startHour,
+            end: endHour
+        });
+    };
+
+    return workingHours;
+}
+
+
 export function objectInfo(obj: Record<string, unknown>, reference?: string): void {
     console.info(
         `Object info${reference ? ' for ' + reference : ''}:
@@ -158,6 +203,18 @@ export function prettyDate(date: Date): string {
         .split('T')[0]
         .split('-')
         .join('/');
+}
+
+
+const timeFormatterAR = new Intl.DateTimeFormat('es-AR', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric'
+});
+
+export function getYMDAR(date: Date) {
+    const [day, month, year] = timeFormatterAR.format(date).split('/');
+    return `${year}-${month}-${day}` as `${number}-${number}-${number}`;
 }
 
 

@@ -1,4 +1,5 @@
 <script>
+  import { dev } from '$app/environment';
   import { page } from '$app/stores';
 
   $: pageNotFound = $page.status === 404;
@@ -39,4 +40,10 @@
       <b>ohmydogvet.lp@gmail.com</b>
     </p>
   </div>
+  {#if dev}
+    <pre><code
+        class="block whitespace-pre overflow-x-scroll scrollbar max-w-[75vw]"
+        >{JSON.stringify($page.error, null, 2)}</code
+      ></pre>
+  {/if}
 </main>

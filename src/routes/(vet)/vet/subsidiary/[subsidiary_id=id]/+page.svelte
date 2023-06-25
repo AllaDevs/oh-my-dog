@@ -4,14 +4,14 @@
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import WorkingHourRegisterCard from '$cmp/vet/WorkingHourRegisterCard.svelte';
+  import WorkingHourRegisterCard from '$cmp/subsidiary/WorkingHourRegisterCard.svelte';
   import { fieldValueCloner } from '$lib/utils/functions.js';
   import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
+
   export let data;
 
-  // enhanced
   const registerSForm = superForm(data.form, {
     dataType: 'json',
     onError: (error) => {
@@ -77,8 +77,8 @@
     let originLocation = map.getCenter();
 
     let oldLatLng = new google.maps.LatLng({
-      lat: data.oldSubsidiary.location.latitude,
-      lng: data.oldSubsidiary.location.longitude,
+      lat: data.subsidiary.location.latitude,
+      lng: data.subsidiary.location.longitude,
     });
     map.setCenter(oldLatLng);
     lastLoc = oldLatLng.toString();
@@ -124,7 +124,7 @@
 
 <Page>
   <div class="mt-10 mb-3 ml-12">
-    <h3 class="text-3xl font-semibold text-gray-900">Registro de Sucursal</h3>
+    <h3 class="text-3xl font-semibold text-gray-900">Edicion de Sucursal</h3>
   </div>
 
   <main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
@@ -144,7 +144,7 @@
         <FieldGroup cols="2">
           <svelte:fragment slot="title">
             <h3 class=" text-xl font-semibold text-gray-900">
-              {'Nueva sucursal'}
+              Informacion de la sucursal
             </h3>
           </svelte:fragment>
           <svelte:fragment slot="fields">
@@ -183,7 +183,7 @@
           <WorkingHourRegisterCard
             sForm={registerSForm}
             index={i}
-            title="Nueva franja {$registerData.workingHour.length > 1
+            title="Franja horaria {$registerData.workingHour.length > 1
               ? i + 1
               : ''}"
             allowRemoval={i > 0}

@@ -1,87 +1,53 @@
-import { providerCompleteRegisterSchema } from '$lib/schemas/providerSchema';
-import { workingHourSchema } from '$lib/schemas/workingHourSchema';
+import { providerUpdateSchema } from '$lib/schemas/providerSchema';
 import { prisma } from '$lib/server/prisma';
+import type { Replace } from '$lib/utils/types';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from './$types';
 
 
-const initialFormData = {
-    workingHour: [defaultValues(workingHourSchema)]
-};
-
-export const load = (async ({ params, url }) => {
-
-    const form = await superValidate(
-        initialFormData,
-        providerCompleteRegisterSchema,
-        { errors: false }
-    );
-
-    const oldProvider = await prisma.dogServiceProvider.findUnique({
+export const load = (async ({ params }) => {
+    const provider = await prisma.dogServiceProvider.findUnique({
         where: {
             id: params.provider_id
-        },
-        select: {
-            type: true,
-            email: true,
-            areas: true,
-            firstname: true,
-            lastname: true,
-            description: true
         }
     });
-
-    if (!oldProvider) {
+    if (!provider) {
         throw error(404, 'No se encontró el proveedor que buscabas');
     }
 
-    form.data.type = oldProvider.type;
-    form.data.email = oldProvider.email;
-    form.data.areas = oldProvider.areas;
-    form.data.firstname = oldProvider.firstname;
-    form.data.lastname = oldProvider.lastname;
-    form.data.description = oldProvider.description!;
+    provider.description ??= undefined as any;
+    const form = await superValidate(
+        provider as Replace<typeof provider, 'description', string | undefined>,
+        providerUpdateSchema,
+    );
 
     return { form };
 }) satisfies PageServerLoad;
 
-export const actions: Actions = {
-    update: async ({ request, locals, params, url }) => {
+
+export const actions = {
+    update: async ({ request, params }) => {
         const formData = await request.formData();
-        const form = await superValidate(formData, providerCompleteRegisterSchema);
+        const form = await superValidate(formData, providerUpdateSchema);
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
+
         try {
-
-            const workingHours = [];
-            for (const workingHour of form.data.workingHour) {
-                let startHour = new Date("2000-1-1"); startHour.setHours(Number(workingHour.start.split(":")[0]), Number(workingHour.start.split(":")[1]));
-                let endHour = new Date("2000-1-1"); endHour.setHours(Number(workingHour.end.split(":")[0]), Number(workingHour.end.split(":")[1]));
-                workingHours.push(
-                    {
-                        day: workingHour.day,
-                        start: startHour,
-                        end: endHour
-                    });
-            };
-
-            const newProvider = await prisma.dogServiceProvider.update({
+            const updatedProvider = await prisma.dogServiceProvider.update({
                 where: {
                     id: params.provider_id
                 },
                 data: {
                     type: form.data.type,
                     email: form.data.email,
-                    areas: form.data.areas,
                     firstname: form.data.firstname,
                     lastname: form.data.lastname,
+                    workAreas: form.data.workAreas,
+                    workHours: form.data.workHours,
                     description: form.data.description,
-                    workingHour: {
-                        create: workingHours
-                    }
                 }
             });
         }
@@ -90,16 +56,13 @@ export const actions: Actions = {
             return message(form, "Creación fallida", { status: 400 });
         };
 
-
         throw redirect(300, "/vet/provider");
-
     },
-    delete: async ({ request, locals, params, url }) => {
-        const formData = await request.formData();
-        const form = await superValidate(formData, providerCompleteRegisterSchema);
-        try {
+    delete: async ({ request, params }) => {
+        const form = await superValidate(request, providerUpdateSchema);
 
-            const deleted = await prisma.dogServiceProvider.delete({
+        try {
+            await prisma.dogServiceProvider.delete({
                 where: {
                     id: params.provider_id
                 }
@@ -110,7 +73,7 @@ export const actions: Actions = {
             console.error(error);
             return message(form, { error: "Eliminación fallida" });
         }
+
         throw redirect(300, "/vet/provider");
     }
-
-};
+} satisfies Actions;

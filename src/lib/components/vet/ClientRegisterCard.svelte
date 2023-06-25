@@ -1,5 +1,6 @@
 <script lang="ts">
-  import DateInput from '$lib/components/form/DateInput.svelte';
+  import DniInput from '$cmp/form/DniInput.svelte';
+import DateInput from '$lib/components/form/DateInput.svelte';
   import EmailInput from '$lib/components/form/EmailInput.svelte';
   import FieldGroup from '$lib/components/form/FieldGroup.svelte';
   import TelInput from '$lib/components/form/TelInput.svelte';
@@ -50,7 +51,7 @@
       field="phone"
       hint="Formato: 123-456-7890"
     />
-    <TextInput label="DNI" autocomplete="off" form={sForm} field="dni" />
+    <DniInput form={sForm} field="dni" />
   </svelte:fragment>
   <svelte:fragment slot="actions" />
 </FieldGroup>

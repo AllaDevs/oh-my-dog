@@ -13,7 +13,12 @@
     { href: '/donation', text: 'Donacion' },
     { href: '/provider', text: 'Paseadores y cuidadores' },
     { href: '/subsidiary', text: 'Sucursales' },
-    { href: '/subsidiary/urgency', text: 'URGENCIAS', warning: true },
+    {
+      href: '/subsidiary/urgency',
+      text: 'URGENCIAS',
+      className:
+        'rounded-lg font-semibold !text-gray-100 hover:!text-white bg-red-600/75 hover:bg-red-500 outline-black',
+    },
   ];
 </script>
 

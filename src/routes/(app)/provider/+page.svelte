@@ -31,8 +31,8 @@
             id={walker.id}
             firstname={walker.firstname}
             lastname={walker.lastname}
-            areas={walker.areas}
-            workingHours={walker.workingHour}
+            workAreas={walker.workAreas}
+            workHours={walker.workHours}
             description={walker.description
               ? walker.description
               : 'Sin descripción'}
@@ -48,8 +48,8 @@
             id={sitter.id}
             firstname={sitter.firstname}
             lastname={sitter.lastname}
-            areas={sitter.areas}
-            workingHours={sitter.workingHour}
+            workAreas={sitter.workAreas}
+            workHours={sitter.workHours}
             description={sitter.description
               ? sitter.description
               : 'Sin descripción'}

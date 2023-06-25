@@ -1,65 +1,86 @@
 import { subsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
-import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
+import { validateWorkingHours } from '$lib/utils/functions';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
-const initialFormData = {
-    workingHour: [defaultValues(workingHourSchema)]
-};
 
-export const load = (async ({ params, url }) => {
+export const load = (async ({ params }) => {
 
-    const form = await superValidate(
-        initialFormData,
-        subsidiaryCompleteRegisterSchema,
-        { errors: false }
-    );
-
-    const oldSubsidiary = await prisma.subsidiary.findUnique({
+    const subsidiary = await prisma.subsidiary.findUnique({
         where: {
             id: params.subsidiary_id
         },
-        select: {
-            name: true,
-            address: true,
-            location: true,
+        include: {
+            workingHour: true
         }
     });
-
-    if (!oldSubsidiary) {
+    if (!subsidiary) {
         throw error(404, 'No se encontró el proveedor que buscabas');
     }
 
-    form.data.name = oldSubsidiary.name;
-    form.data.address = oldSubsidiary.address;
+    // subsidiary.location = `(${subsidiary.location.latitude}, ${subsidiary.location.longitude})` as any;
+    for (const workingHour of subsidiary.workingHour) {
+        workingHour.start = `${workingHour.start.getHours().toString().padStart(2, '0')}:${workingHour.start.getMinutes().toString().padStart(2, '0')}` as unknown as Date;
+        workingHour.end = `${workingHour.end.getHours().toString().padStart(2, '0')}:${workingHour.end.getMinutes().toString().padStart(2, '0')}` as unknown as Date;
+    }
 
-    return { form, oldSubsidiary };
+    const form = await superValidate(
+        subsidiary as any,
+        subsidiaryCompleteRegisterSchema
+    );
+
+    return {
+        form,
+        subsidiary
+    };
 }) satisfies PageServerLoad;
 
-export const actions: Actions = {
-    update: async ({ request, locals, params, url }) => {
-        const formData = await request.formData();
-        const form = await superValidate(formData, subsidiaryCompleteRegisterSchema);
+
+export const actions = {
+    update: async ({ request, params }) => {
+        const form = await superValidate(request, subsidiaryCompleteRegisterSchema);
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
+
+        // const workingHours = [];
+        // for (let i = 0; i < form.data.workingHour.length; i++) {
+        //     const workingHour = form.data.workingHour[i];
+        //     let startHour = new Date("2000-1-1"); startHour.setHours(Number(workingHour.start.split(":")[0]), Number(workingHour.start.split(":")[1]));
+        //     let endHour = new Date("2000-1-1"); endHour.setHours(Number(workingHour.end.split(":")[0]), Number(workingHour.end.split(":")[1]));
+        //     if (startHour >= endHour) {
+        //         setError(form, `workingHour[${i}].end`, 'La hora de fin debe ser mayor a la hora de inicio');
+        //         continue;
+        //     }
+
+        //     let invalid = false;
+        //     for (let vi = 0; vi < workingHours.length; vi++) {
+        //         const vwh = workingHours[vi];
+        //         if (vwh.start < startHour && vwh.end > startHour) {
+        //             setError(form, `workingHour[${i}].start`, 'La hora de inicio se cruza con otro horario');
+        //             continue;
+        //         }
+        //     }
+        //     if (invalid) {
+        //         continue;
+        //     }
+
+        //     workingHours.push(
+        //         {
+        //             day: workingHour.day,
+        //             start: startHour,
+        //             end: endHour
+        //         });
+        // };
+        const workingHours = validateWorkingHours(form.data.workingHour, form, (i) => `workingHour[${i}]`);
+        if (!form.valid) {
+            return fail(400, { form });
+        }
+
         try {
-
-            const workingHours = [];
-            for (const workingHour of form.data.workingHour) {
-                let startHour = new Date("2000-1-1"); startHour.setHours(Number(workingHour.start.split(":")[0]), Number(workingHour.start.split(":")[1]));
-                let endHour = new Date("2000-1-1"); endHour.setHours(Number(workingHour.end.split(":")[0]), Number(workingHour.end.split(":")[1]));
-                workingHours.push(
-                    {
-                        day: workingHour.day,
-                        start: startHour,
-                        end: endHour
-                    });
-            };
-
             const newProvider = await prisma.subsidiary.update({
                 where: {
                     id: params.subsidiary_id
@@ -78,14 +99,13 @@ export const actions: Actions = {
             console.error(error);
             return message(form, "Creación fallida", { status: 400 });
         };
+
         throw redirect(300, "/vet/subsidiary");
-
     },
-    delete: async ({ request, locals, params, url }) => {
-        const formData = await request.formData();
-        const form = await superValidate(formData, subsidiaryCompleteRegisterSchema);
-        try {
+    delete: async ({ request, params }) => {
+        const form = await superValidate(request, subsidiaryCompleteRegisterSchema);
 
+        try {
             const deleted = await prisma.subsidiary.delete({
                 where: {
                     id: params.subsidiary_id
@@ -101,4 +121,4 @@ export const actions: Actions = {
         throw redirect(303, '/vet/subsidiary');;
     }
 
-};
+} satisfies Actions;

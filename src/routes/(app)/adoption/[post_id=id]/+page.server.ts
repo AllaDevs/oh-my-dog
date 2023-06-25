@@ -48,7 +48,7 @@ export const load = (async (event) => {
     const [updateForm, deleteForm, resolveForm] = await Promise.all([
         superValidate(mutateToShortString(dogInitialData, 'birthdate') as any, adoptionPostUpdateSchema, { id: 'update' }),
         superValidate(deletePostSchema, { id: 'delete' }),
-        superValidate(resolvePostSchema, { id: 'resolve' })
+        superValidate({ detail: post.resolutionDetail ?? undefined }, resolvePostSchema, { id: 'resolve' })
     ]);
 
     return {

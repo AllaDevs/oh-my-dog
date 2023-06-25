@@ -1,69 +1,58 @@
-import { providerCompleteRegisterSchema } from '$lib/schemas/providerSchema';
-import { workingHourSchema } from '$lib/schemas/workingHourSchema';
+import { DogServiceType } from '$lib/enums';
+import { providerRegisterSchema } from '$lib/schemas/providerSchema';
 import { prisma } from '$lib/server/prisma';
+import { Prisma } from '@prisma/client';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import type { PageServerLoad } from '../$types';
 
 
-const initialFormData = {
-    workingHour: [defaultValues(workingHourSchema)]
-};
-
-export const load: PageServerLoad = async (event) => {
-
-    const form = await superValidate(
-        initialFormData,
-        providerCompleteRegisterSchema,
-        { errors: false }
-    );
+export const load = (async (event) => {
+    const form = await superValidate(providerRegisterSchema);
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
-export const actions: Actions = {
-    provider: async ({ request, locals, url }) => {
+
+export const actions = {
+    provider: async ({ request }) => {
         const formData = await request.formData();
-        const form = await superValidate(formData, providerCompleteRegisterSchema);
+        const form = await superValidate(formData, providerRegisterSchema);
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
+
         try {
-
-            const workingHours = [];
-            for (const workingHour of form.data.workingHour) {
-                let startHour = new Date("2000-1-1"); startHour.setHours(Number(workingHour.start.split(":")[0]), Number(workingHour.start.split(":")[1]));
-                let endHour = new Date("2000-1-1"); endHour.setHours(Number(workingHour.end.split(":")[0]), Number(workingHour.end.split(":")[1]));
-                workingHours.push(
-                    {
-                        day: workingHour.day,
-                        start: startHour,
-                        end: endHour
-                    });
-            };
-
             const newProvider = await prisma.dogServiceProvider.create({
                 data: {
                     type: form.data.type,
                     email: form.data.email,
-                    areas: form.data.areas,
+                    workAreas: form.data.workAreas,
+                    workHours: form.data.workHours,
                     firstname: form.data.firstname,
                     lastname: form.data.lastname,
                     description: form.data.description,
-                    workingHour: {
-                        create: workingHours
-                    }
                 }
             });
         }
         catch (error) {
-            console.error(error);
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                if (error.code === "P2002") {
+                    if ((error.meta?.target as string[]).includes('email')) {
+                        return setError(
+                            form,
+                            'email',
+                            `Ya existe un ${form.data.type === DogServiceType.WALKING ? 'paseador' : 'cuidador'} con este email`
+                        );
+                    }
+                }
+                return setError(form, '', 'Error con la base de datos al crear el cliente');
+            }
+
             return message(form, "Creación fallida", { status: 400 });
         };
 
-
-        throw redirect(300, "/vet/provider");
-
+        throw redirect(303, "/vet/provider");
     }
-};
+} satisfies Actions;

@@ -6,9 +6,11 @@
   import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { DogSex, DogSize } from '$lib/enums.js';
+  import { getYMDAR } from '$lib/utils/functions.js';
   import type { SubmitFunction } from '@sveltejs/kit';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
+    import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
   export let data;
 
@@ -17,6 +19,7 @@
     breeds.push({ value: breed.id, text: breed.name });
   }
 
+  const today = getYMDAR(new Date());
   const sForm = superForm(data.form, {
     id: 'newDog',
     // onResult: ({ result }) => {
@@ -38,6 +41,7 @@
     },
   });
 
+  const form = sForm.form
   const enhanceMyDogForm = (() => {
     return async ({ result }) => {
       switch (result.type) {
@@ -115,7 +119,12 @@
     <h3 class="mt-4 text-xl font-semibold">Dar en adopcion un nuevo perro</h3>
     <form method="POST" action="?/newDog" class="mt-4" use:sForm.enhance>
       <TextInput label="Nombre" form={sForm} field="name" />
-      <DateInput label="Nacimiento estimado" form={sForm} field="birthdate" />
+      <DateInput
+        label="Nacimiento estimado"
+        form={sForm}
+        field="birthdate"
+        max={today}
+      />
       <SelectInput
         label="Tamaño"
         form={sForm}
@@ -142,6 +151,7 @@
         <Button type="submit" color="primary">Dar en adopcion</Button>
       </div>
     </form>
+    <SuperDebug data={$form} />
   </section>
 </Page>
 <!-- <main

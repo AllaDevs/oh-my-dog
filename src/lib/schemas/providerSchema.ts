@@ -1,12 +1,12 @@
 import { DogServiceType } from '@prisma/client';
 import { z } from 'zod';
-import { workingHourSchema } from './workingHourSchema';
 
 
 const providerBaseSchema = z.object({
     type: z.nativeEnum(DogServiceType),
     email: z.string().email(),
-    areas: z.string(),
+    workAreas: z.string(),
+    workHours: z.string(),
     firstname: z.string(),
     lastname: z.string(),
     description: z.string().max(280).optional()
@@ -16,10 +16,8 @@ const providerBaseSchema = z.object({
 export const providerRegisterSchema = providerBaseSchema;
 export type ProviderRegisterSchema = typeof providerRegisterSchema;
 
-export const providerUpdaterSchema = providerBaseSchema;
+export const providerUpdateSchema = providerBaseSchema;
 
 
-export const providerCompleteRegisterSchema = providerRegisterSchema.extend({
-    workingHour: workingHourSchema.array().min(1)
-});
+export const providerCompleteRegisterSchema = providerBaseSchema;
 export type ProviderCompleteRegisterSchema = typeof providerCompleteRegisterSchema;

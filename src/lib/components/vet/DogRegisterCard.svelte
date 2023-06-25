@@ -1,14 +1,14 @@
 <script lang="ts">
-  import DateInput from '$lib/components/form/DateInput.svelte';
-  import ImageInput from '$lib/components/form/ImageInput.svelte';
-  import SelectInput from '$lib/components/form/SelectInput.svelte';
-  import TextInput from '$lib/components/form/TextInput.svelte';
-
+  import DateInput from '$cmp/form/DateInput.svelte';
+  import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import ImageInput from '$cmp/form/ImageInput.svelte';
+  import SelectInput from '$cmp/form/SelectInput.svelte';
+  import TextInput from '$cmp/form/TextInput.svelte';
   import { DogSex, DogSize } from '$lib/enums';
   import type { ClientCompleteRegisterSchema } from '$lib/schemas';
+  import { getYMDAR } from '$lib/utils/functions';
   import { createEventDispatcher } from 'svelte';
   import type { SuperForm } from 'sveltekit-superforms/client';
-  import FieldGroup from '../form/FieldGroup.svelte';
 
   export let sForm: SuperForm<ClientCompleteRegisterSchema, unknown>;
   export let index: number;
@@ -18,9 +18,7 @@
 
   const dispatch = createEventDispatcher<{ remove: number }>();
 
-  const today = new Date()
-    .toISOString()
-    .split('T')[0] as `${number}-${number}-${number}`;
+  const today = getYMDAR(new Date());
 </script>
 
 <FieldGroup cols="2">

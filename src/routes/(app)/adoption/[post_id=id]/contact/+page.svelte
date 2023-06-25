@@ -4,11 +4,14 @@
   import AdoptionPostInfo from '$cmp/dog/AdoptionPostInfo.svelte';
   import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
+  import { PostState } from '$lib/enums.js';
   import type { SubmitFunction } from '@sveltejs/kit';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
+
+  let postIsResolved = data.post.state === PostState.RESOLVED;
 
   const contactSForm = superForm(data.form, {
     id: 'anonymous',
@@ -63,26 +66,34 @@
   </svelte:fragment>
 
   <section class="flex flex-col gap-4">
-    <h3 class="mt-4 text-xl font-bold">Informacion de la publicacion</h3>
+    <h3 class="mt-4 text-xl font-bold">
+      Informacion de la publicacion {postIsResolved ? '(Resuelta)' : ''}
+    </h3>
     <AdoptionPostInfo post={data.post} />
   </section>
 
-  <section class="flex flex-col gap-4">
-    <h3 class="mt-4 text-xl font-bold">¿Quieres contactarlo?</h3>
-    {#if data.user}
-      <form
-        method="POST"
-        action="?/clientContact"
-        use:enhance={enhanceClientContact}
-      >
-        <div class="grid place-items-center">
-          <Button type="submit" color="primary">Contactar</Button>
-        </div>
-      </form>
-    {:else}
-      <form method="POST" action="?/anonymousContact" use:contactSForm.enhance>
-        <ContactCard sForm={contactSForm} />
-      </form>
-    {/if}
-  </section>
+  {#if !postIsResolved}
+    <section class="flex flex-col gap-4">
+      <h3 class="mt-4 text-xl font-bold">¿Quieres contactarlo?</h3>
+      {#if data.user}
+        <form
+          method="POST"
+          action="?/clientContact"
+          use:enhance={enhanceClientContact}
+        >
+          <div class="grid place-items-center">
+            <Button type="submit" color="primary">Contactar</Button>
+          </div>
+        </form>
+      {:else}
+        <form
+          method="POST"
+          action="?/anonymousContact"
+          use:contactSForm.enhance
+        >
+          <ContactCard sForm={contactSForm} />
+        </form>
+      {/if}
+    </section>
+  {/if}
 </Page>

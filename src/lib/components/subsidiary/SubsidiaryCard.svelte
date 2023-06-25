@@ -11,12 +11,21 @@
   export let workingHour: WorkingHour[];
   export let id: string;
   export let vet: boolean;
-  // turn areas to string and map them with days
+
   function workingHourString(workingHour: WorkingHour) {
-    let string = '';
-    string += te.Day(workingHour.day) + ': ';
-    string += workingHour.start.getHours() + ' - ' + workingHour.end.getHours();
-    return string;
+    return `${te.Day(workingHour.day)}: ${workingHour.start
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${workingHour.start
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')} - ${workingHour.end
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${workingHour.end
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`;
   }
 
   const dispatch = createEventDispatcher<{ relocate: string }>();
@@ -36,10 +45,10 @@
   {/each}
   <div class="mt-3 gap-2 flex flex-row max-h-min">
     {#if vet}
-      <A href="./subsidiary/{id}" color="primary" button={true}>Editar</A>
+      <A href="./subsidiary/{id}" color="primary" button>Editar</A>
     {/if}
-    <Button color="primary" on:click={() => dispatch('relocate', id)}
-      >Ver en mapa</Button
-    >
+    <Button color="primary" on:click={() => dispatch('relocate', id)}>
+      Ver en mapa
+    </Button>
   </div>
 </div>

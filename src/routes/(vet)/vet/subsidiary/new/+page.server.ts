@@ -1,15 +1,18 @@
 import { subsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
 import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
+import { validateWorkingHours } from '$lib/utils/functions';
 import { fail, redirect } from '@sveltejs/kit';
 import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
+
 
 const initialFormData = {
     workingHour: [defaultValues(workingHourSchema)]
 };
 
-export const load: PageServerLoad = async (event) => {
+
+export const load = (async (event) => {
 
     const form = await superValidate(
         initialFormData,
@@ -18,32 +21,23 @@ export const load: PageServerLoad = async (event) => {
     );
 
     return { form };
-};
+}) satisfies PageServerLoad;
 
-export const actions: Actions = {
-    register: async ({ request, locals, url }) => {
-        const formData = await request.formData();
-        const form = await superValidate(formData, subsidiaryCompleteRegisterSchema);
+
+export const actions = {
+    register: async ({ request }) => {
+        const form = await superValidate(request, subsidiaryCompleteRegisterSchema);
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
+
+        const workingHours = validateWorkingHours(form.data.workingHour, form, (i) => `workingHour[${i}]`);
+        if (!form.valid) {
+            return fail(400, { form });
+        }
+
         try {
-
-            const workingHours = [];
-            for (const workingHour of form.data.workingHour) {
-                let startHour = new Date("2000-1-1"); startHour.setHours(Number(workingHour.start.split(":")[0]), Number(workingHour.start.split(":")[1]));
-                let endHour = new Date("2000-1-1"); endHour.setHours(Number(workingHour.end.split(":")[0]), Number(workingHour.end.split(":")[1]));
-                workingHours.push(
-                    {
-                        day: workingHour.day,
-                        start: startHour,
-                        end: endHour
-                    });
-            };
-
-            console.log(form.data);
-
             const newProvider = await prisma.subsidiary.create({
                 data: {
                     name: form.data.name,
@@ -60,8 +54,7 @@ export const actions: Actions = {
             return message(form, "Creación fallida", { status: 400 });
         };
 
-
         throw redirect(300, "/vet/subsidiary");
 
     }
-};
+} satisfies Actions;

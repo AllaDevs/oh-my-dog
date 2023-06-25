@@ -22,3 +22,5 @@ export type PathType<T, K extends any[]> = K extends [infer First, ...infer Rest
     : never;
 
 export type SuccessOf<T extends { success: boolean; } & Record<string, unknown>> = T extends { success: true; } & Record<string, unknown> ? T : never;
+
+export type Replace<T, K extends keyof T, NT> = Omit<T, K> & Record<K, NT>;

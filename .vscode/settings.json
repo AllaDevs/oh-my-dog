@@ -29,8 +29,11 @@
     "svelte.enable-ts-plugin": true,
     "svelte.plugin.svelte.format.config.singleQuote": true,
     "tailwindCSS.experimental.classRegex": [
-        "class\\w+=\"([^\"]*)",
-        "\\w+Class=\"([^\"]*)"
+        "class\\w+=\\s*\"([^\"]*)",
+        "\\w+Class=\"([^\"]*)",
+        "class\\w+:\\s*\"([^\"]*)",
+        "class\\w+:\\s*'([^']*)",
+        "\\w+Class:\"([^\"]*)"
     ],
     "typescript.format.semicolons": "insert",
     "typescript.preferences.quoteStyle": "single",

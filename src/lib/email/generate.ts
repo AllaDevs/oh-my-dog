@@ -63,13 +63,13 @@ export function adoptionContactConfirmHTML(firstname: string, lastname: string, 
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
-export function providerToClientHTML(username: string, providerName: string, providerLastName: string, email: string) {
-    const r = (EmailProviderToClient as unknown as Renderable<EmailProviderToClient>).render({ username, providerName, providerLastName, email });
+export function providerToClientHTML(firstname: string, providerName: string, providerLastName: string, email: string) {
+    const r = (EmailProviderToClient as unknown as Renderable<EmailProviderToClient>).render({ firstname, providerName, providerLastName, email });
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
-export function clientToProviderHTML(username: string, lastname: string, providerName: string, email: string) {
-    const r = (EmailClientToProvider as unknown as Renderable<EmailClientToProvider>).render({ username, lastname, providerName, email });
+export function clientToProviderHTML(firstname: string, lastname: string, providerName: string, email: string) {
+    const r = (EmailClientToProvider as unknown as Renderable<EmailClientToProvider>).render({ firstname, lastname, providerName, email });
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 

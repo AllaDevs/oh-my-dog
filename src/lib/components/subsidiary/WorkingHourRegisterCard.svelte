@@ -19,6 +19,8 @@
   const today = new Date()
     .toISOString()
     .split('T')[0] as `${number}-${number}-${number}`;
+    const form = sForm.form;
+    $: console.log($form.workingHour[0])
 </script>
 
 <FieldGroup cols="2">
@@ -59,14 +61,12 @@
     />
     <HourInput
       label="Hora de inicio"
-      unselectedLabel="Sin seleccionar"
       field="workingHour[{index}].start"
       form={sForm}
       required
     />
     <HourInput
       label="Hora de fin"
-      unselectedLabel="Sin seleccionar"
       field="workingHour[{index}].end"
       form={sForm}
       required

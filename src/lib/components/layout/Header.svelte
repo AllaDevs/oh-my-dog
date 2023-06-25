@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { clickOutside } from '$lib/action';
+  import type { HTMLAnchorAttributes } from 'svelte/elements';
   import { slide } from 'svelte/transition';
   import SiteLogo from './SiteLogo.svelte';
 
@@ -8,7 +9,8 @@
     href: string;
     text: string;
     requiresLogin?: boolean;
-    warning?: boolean;
+    className?: string;
+    props?: HTMLAnchorAttributes;
   };
 
   export let homePath: string;
@@ -61,14 +63,14 @@
       >
         <ul class=" flex items-center" class:hidden={!navLinksOnHome && onHome}>
           <slot name="navLinks">
-            {#each navLinks as { href, text, requiresLogin, warning }}
+            {#each navLinks as { href, text, requiresLogin, className }}
               {@const current = $page.url.pathname === href}
               {#if !requiresLogin || user}
                 <li class=" w-max p-1 sm:p-2 md:px-4">
                   <a
                     aria-current={current ? 'page' : false}
                     href={current ? '#main' : href}
-                    class="nav-link-text p-2"
+                    class="nav-link-text p-2 {className ?? ''}"
                   >
                     {text}
                   </a>
@@ -91,14 +93,15 @@
         >
           <ul class=" flex flex-col p-4 bg-teal-100/75">
             <slot name="navLinks">
-              {#each navLinks as { href, text, requiresLogin }}
+              {#each navLinks as { href, text, requiresLogin, className }}
                 {@const current = $page.url.pathname === href}
                 {#if !requiresLogin || user}
                   <li>
                     <a
                       aria-current={current ? 'page' : false}
                       href={current ? '#main' : href}
-                      class="nav-link-text block text-lg px-4 py-2"
+                      class="nav-link-text block text-lg px-4 py-2 {className ??
+                        ''}"
                     >
                       {text}
                     </a>

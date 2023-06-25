@@ -309,10 +309,9 @@ model WorkingHour {
     day                  Day
     start                DateTime
     end                  DateTime
-    subsidiary           Subsidiary?         @relation(fields: [subsidiaryId], references: [id])
-    subsidiaryId         String?             @db.ObjectId
-    dogServiceProvider   DogServiceProvider? @relation(fields: [dogServiceProviderId], references: [id])
-    dogServiceProviderId String?             @db.ObjectId
+    subsidiary           Subsidiary? @relation(fields: [subsidiaryId], references: [id])
+    subsidiaryId         String?     @db.ObjectId
+    dogServiceProviderId String?     @db.ObjectId
 
     @@map("working_hour")
 }
@@ -338,13 +337,14 @@ model DogServiceProvider {
 
     type        DogServiceType
     email       String
-    areas       String
     firstname   String
     lastname    String
+    workAreas   String
+    workHours   String
     description String?
     review      Review[]
-    workingHour WorkingHour[]
 
+    @@unique([type, email])
     @@map("dog_service_provider")
 }
 
