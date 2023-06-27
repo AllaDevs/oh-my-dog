@@ -1,13 +1,13 @@
 <script lang="ts">
+  import { DropdownMenu, DropdownMenuItem } from '$cmp/dropdown/index.js';
   import Page from '$cmp/layout/Page.svelte';
   import A from '$lib/components/element/A.svelte';
-  import { AppointmentState } from '$lib/enums';
+  import { AppointmentReason, AppointmentState } from '$lib/enums';
   import { prettyDate } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
   import type { SubmitFunction } from '@sveltejs/kit';
   import toast from 'svelte-french-toast';
 
-  let formModal = false;
   export let data;
 
   const tableHeaders = [
@@ -57,128 +57,169 @@
     };
   }) satisfies SubmitFunction;
 
-  // interface filters {
-  //   state: AppointmentState | undefined;
-  //   reason: AppointmentReason | undefined;
-  //   from: Date | undefined;
-  //   until: Date | undefined;
-  //   client: String | undefined;
-  // }
+  let clientOptions;
 
-  // let actualFilters: filters = {
-  //   state: undefined,
-  //   reason: undefined,
-  //   from: undefined,
-  //   until: undefined,
-  //   client: undefined,
-  // };
+  $: {
+    clientOptions = [];
+    for (const client of data.clients) {
+      clientOptions.push({
+        value: client.id,
+        text: client.email,
+      });
+    }
+  }
 
-  // const filterAppointments = () => {
-  //   let appointments = data.appointments;
-  //   if (actualFilters.state !== undefined) {
-  //     appointments = appointments.filter(
-  //       (appointment) => appointment.state === actualFilters.state
-  //     );
-  //   }
-  //   if (actualFilters.reason !== undefined) {
-  //     appointments = appointments.filter(
-  //       (appointment) => appointment.reason === actualFilters.reason
-  //     );
-  //   }
-  //   if (actualFilters.from !== undefined) {
-  //     appointments = appointments.filter(
-  //       (appointment) => appointment.date >= actualFilters.from
-  //     );
-  //   }
-  //   if (actualFilters.until !== undefined) {
-  //     appointments = appointments.filter(
-  //       (appointment) => appointment.date <= actualFilters.until
-  //     );
-  //   }
-  //   if (actualFilters.client !== undefined) {
-  //     appointments = appointments.filter(
-  //       (appointment) => appointment.client.email === actualFilters.client
-  //     );
-  //   }
-  //   return appointments;
-  // };
+  let filterState = '';
+  let filterReason = '';
 
-  // const clients = data.clients.map((client) => client.email);
+  let filterFrom = '';
+  $: filterFromDate = filterFrom ? new Date(filterFrom) : undefined;
 
-  // let untilAux: Date;
-  // let fromAux: Date;
+  let filterUntil = '';
+  $: filterUntilDate = filterUntil ? new Date(filterUntil) : undefined;
+
+  let filterClient = '';
+  let sortByEmail: 'desc' | 'asc' | '' = '';
+
+  function resetFilters() {
+    filterState = '';
+    filterReason = '';
+    filterFrom = '';
+    filterUntil = '';
+    filterClient = '';
+    sortByEmail = '';
+  }
+
+  const appointments = [...data.appointments];
+
+  let visibleAppointments: typeof appointments;
+  $: {
+    visibleAppointments = appointments.filter((a) => {
+      return (
+        (!filterState || a.state === filterState) &&
+        (!filterReason || a.reason === filterReason) &&
+        (!filterClient || a.client.email === filterClient) &&
+        (!filterFromDate || a.date >= filterFromDate) &&
+        (!filterUntilDate || a.date <= filterUntilDate)
+      );
+    });
+  }
+  $: {
+    switch (sortByEmail) {
+      case 'desc': {
+        visibleAppointments.sort((appA, appB) =>
+          appA.client.email.localeCompare(appB.client.email)
+        );
+        break;
+      }
+      case 'asc': {
+        visibleAppointments.sort((appA, appB) =>
+          appB.client.email.localeCompare(appA.client.email)
+        );
+        break;
+      }
+      default: {
+        visibleAppointments.sort(
+          (appA, appB) => appB.date.getTime() - appA.date.getTime()
+        );
+      }
+    }
+    visibleAppointments = visibleAppointments;
+  }
 </script>
 
 <svelte:head>
   <title>Turnos</title>
 </svelte:head>
-<!-- 
-<div class=" grid mt-2 gap-2 grid-cols-1 md:grid-cols-2 md:gap-x-8">
-  <DateInput
-    bind:value={actualFilters.from}
-    label="Desde"
-    field="from"
-    unsetLabel="Seleccione una fecha"
-    max={untilAux
-      ? `${untilAux.getFullYear()}-${untilAux.getMonth()}-${untilAux.getDate()}`
-      : undefined}
-  />
-  <DateInput
-    bind:value={actualFilters.until}
-    label="Hasta"
-    field="until"
-    unsetLabel="Seleccione una fecha"
-    min={fromAux
-      ? `${fromAux.getFullYear()}-${fromAux.getMonth()}-${fromAux.getDate()}`
-      : undefined}
-  />
-  <SelectInput
-    bind:value={actualFilters.state}
-    label="Horario"
-    field="daytime"
-    unselectedLabel="Seleccione un horario"
-    options={[
-      { value: Daytime.MORNING, label: 'Mañana' },
-      { value: Daytime.AFTERNOON, label: 'Tarde' },
-    ]}
-  />
-  <SelectInput
-    bind:value={actualFilters.reason}
-    label="Motivo"
-    field="reason"
-    unselectedLabel="Seleccione un motivo"
-    options={[
-      { value: AppointmentReason.VACCINE, label: 'Vacuna' },
-      { value: AppointmentReason.ANTIRABIC, label: 'Antirrábica' },
-      { value: AppointmentReason.DEWORMING, label: 'Desparasitación' },
-      { value: AppointmentReason.CASTRATION, label: 'Castración' },
-      {
-        value: AppointmentReason.GENERAL_CONSULTATION,
-        label: 'Consulta general',
-      },
-    ]}
-  />
-  <EmailInput
-    bind:value={actualFilters.client}
-    label="Cliente"
-    field="email"
-    unselectedLabel="Seleccione uno de sus perros"
-    options={clients}
-  />
-  <div class="mt-6 flex items-center justify-around gap-x-6">
-    <button on:click={() => filterAppointments()}>Filtrar</button>
-  </div>
-</div> -->
 
 <Page
   classContainer="container mx-auto px-6 py-4 text-gray-700"
   classContentSlot="py-2"
 >
-  <div class="flex flex-row justify-between mb-7 mt-7">
+  <div class="flex justify-between items-end mb-7 mt-7">
     <h2 class=" mt-4 text-2xl">Listado de turnos</h2>
-    <A href="/vet/appointment" color="primary" button={true}>Filtrar</A>
+    <DropdownMenu label="Filtrar">
+      <svelte:fragment slot="items">
+        <DropdownMenuItem class=" flex flex-col">
+          <label for="state">Estado</label>
+          <select
+            name=""
+            id="state"
+            bind:value={filterState}
+            class="w-max mt-2 block rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+          >
+            <option value="" />
+            {#each Object.values(AppointmentState) as state}
+              <option value={state}>{te.AppointmentState(state)}</option>
+            {/each}
+          </select>
+        </DropdownMenuItem>
+        <DropdownMenuItem class=" flex flex-col">
+          <label for="reason">Motivo</label>
+          <select
+            name=""
+            id="size"
+            bind:value={filterReason}
+            class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+          >
+            <option value="" />
+            {#each Object.values(AppointmentReason) as reason}
+              <option value={reason}>{te.AppointmentReason(reason)}</option>
+            {/each}
+          </select>
+        </DropdownMenuItem>
+
+        <span class="border-b my-2 border-gray-400" />
+
+        <DropdownMenuItem class=" flex flex-col">
+          <label for="from">Fecha inicio</label>
+          <input
+            type="date"
+            name=""
+            id="from"
+            autocomplete="off"
+            bind:value={filterFrom}
+            class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem class=" flex flex-col">
+          <label for="until">Fecha fin</label>
+          <input
+            type="date"
+            name=""
+            id="until"
+            autocomplete="off"
+            bind:value={filterUntil}
+            class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+          />
+        </DropdownMenuItem>
+        <DropdownMenuItem class=" flex flex-col">
+          <label for="email">Orden email</label>
+          <select
+            name=""
+            id="email"
+            bind:value={sortByEmail}
+            class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+          >
+            <option value="" />
+            <option value="desc">Descensente</option>
+            <option value="asc">Ascendente</option>
+          </select>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem class=" mt-4">
+          <button
+            on:click={resetFilters}
+            class="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+          >
+            Resetear los filtros
+          </button>
+        </DropdownMenuItem>
+      </svelte:fragment>
+    </DropdownMenu>
   </div>
-  {#if !data.appointments || data.appointments.length == 0}
+
+  {#if !data.appointments.length}
     <p class="text-2xl font-semibold text-gray-900 text-center">
       No hay turnos para mostrar
     </p>

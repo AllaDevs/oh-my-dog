@@ -21,14 +21,7 @@ const recordSchema = z.object({
 
 export const load: PageServerLoad = async (event) => {
     let appointments = await prisma.appointment.findMany({
-        select: {
-            id: true,
-            createdAt: true,
-            date: true,
-            daytime: true,
-            state: true,
-            reason: true,
-            dogId: true,
+        include: {
             dog: {
                 select: {
                     id: true,
