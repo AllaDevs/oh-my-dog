@@ -105,7 +105,6 @@
       lastLoc = originLocation.toString();
       map.setCenter(originLocation);
       map.setZoom(14);
-      console.log(place);
 
       originMarker.setPosition(originLocation);
       originMarker.setVisible(true);

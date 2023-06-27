@@ -43,7 +43,6 @@ export const actions = {
 
         const file = formData.get('file');
         if (!file || !(file instanceof File)) {
-            console.log('file', JSON.stringify(file, null, 2));
             return setError(form, 'file', 'Archivo no válido');
         }
         if (file.size > MAX_FILE_SIZE) {
@@ -63,7 +62,7 @@ export const actions = {
             resource_type: 'image',
             public_id: `test/pedro/${randomUUID()}`
         });
-        console.log(res);
+
         if (!res.success) {
             return setError(form, '', 'Error al subir el archivo');
         }

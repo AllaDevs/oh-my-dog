@@ -57,7 +57,7 @@ transporter.verify(function (error, success) {
     if (error) {
         logError('email', 'SMTP server is not ready to take system messages, application keeps running but emails will not be sent', error);
     } else {
-        console.log(`SMTP server is ready to take system messages at ${CONFIG.host}:${CONFIG.port}`);
+        console.info(`SMTP server is ready to take system messages at ${CONFIG.host}:${CONFIG.port}`);
     }
 });
 

@@ -69,30 +69,6 @@ export function validateImage<T extends UnwrapEffects<z.AnyZodObject>>(formData:
     return imageFile;
 }
 
-// export function validateImagesOld<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: SuperValidated<T, unknown>, pathToArray: string, pathToImage: string) {
-//     // let arrayField = form.data;
-//     // for (const key of pathToImageArray) {
-//     //     arrayField = arrayField[key];
-//     // }
-
-//     for (const [k, v] of formData.entries()) {
-//         console.log(k, v);
-//     }
-//     // console.log(`p: ${pathToImageArray} f: ${pathToImageField}\n${JSON.stringify(formData, null,2)}\n${JSON.stringify(form, null,2)}`);
-//     console.log(`p: ${pathToArray} f: ${pathToImage}`);
-
-//     const images: File[] = [];
-//     for (let i = 0; i < ([1] as any[]).length; i++) {
-//         const image = validateImage(formData, form, `${pathToArray}[${i}].${pathToImage}` as FormPathLeaves<z.infer<T>>);
-//         if (!image) {
-//             return [];
-//         }
-//         images.push(image);
-//     }
-
-//     return images;
-// }
-
 export function validateImages<T extends UnwrapEffects<z.AnyZodObject>>(formData: FormData, form: SuperValidated<T, unknown>, fieldAccesor: (i: number) => FormPathLeaves<z.infer<T>>, imageCount: number) {
     const images: File[] = [];
     for (let i = 0; i < imageCount; i++) {

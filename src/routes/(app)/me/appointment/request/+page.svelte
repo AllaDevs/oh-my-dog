@@ -20,7 +20,6 @@
   const today = new Date()
     .toISOString()
     .split('T')[0] as `${number}-${number}-${number}`;
-  $: if ($message) console.log($message);
 </script>
 
 <svelte:head>

@@ -134,7 +134,7 @@ export const actions = {
             });
         }
         catch (error) {
-            console.log(error);
+            logError('adoption', 'Unexpected error during new dog for adoption', error);
             // TODO: handle errors
             return setError(form, '', 'Error al registrar el perro');
         }

@@ -28,10 +28,14 @@ export const actions = {
             return fail(400, { form });
         }
 
-        console.log(form.data);
-        if (form.data.text.length < 5) return setError(form, 'text', 'Error during authentication');
-        if (!form.data.email.startsWith('test'))
+        if (form.data.text.length < 5) {
+            return setError(form, 'text', 'Error during authentication');
+        }
+
+        if (!form.data.email.startsWith('test')) {
             return setError(form, 'email', 'Nor registered email');
+        }
+
         return { form };
     }
 } satisfies Actions;

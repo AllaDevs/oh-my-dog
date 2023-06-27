@@ -1,6 +1,7 @@
 import { c } from '$lib/schemas';
 import { auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
+import { logError } from '$lib/server/utils';
 import type { AuthPasswordRecovery } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { error, fail, redirect } from '@sveltejs/kit';
@@ -77,7 +78,7 @@ export const actions = {
                 }
             });
         } catch (error) {
-            console.log(error);
+            logError('auth', 'Error while finding password recovery by id and token', error);
             return fail(400, { form });
         }
 
@@ -94,7 +95,7 @@ export const actions = {
             await auth.updateKeyPassword('email', passwordRecovery.email, form.data.password);
             await auth.invalidateAllUserSessions(passwordRecovery.authUserId);
         } catch (error) {
-            console.log(error);
+            logError('auth', 'Error while updating password by recovery', error);
             return setError(form, '', 'No se pudo actualizar la contraseña');
         }
 

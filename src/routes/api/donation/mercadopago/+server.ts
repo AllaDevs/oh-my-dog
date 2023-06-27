@@ -8,7 +8,7 @@ import type { RequestHandler } from './$types';
 
 
 export const POST = (async ({ request, url }) => {
-    console.log("API ENDPOINT\n", await request.json(), "\n", url.href);
+    console.info("API ENDPOINT\n", await request.json(), "\n", url.href);
 
     const type = url.searchParams.get('type');
     if (!type) {
@@ -60,7 +60,8 @@ export const POST = (async ({ request, url }) => {
                     }
                 });
             }
-            console.log(`Successfull donation:\n${JSON.stringify(payment.body, null, 2)}\n${JSON.stringify(donation, null, 2)}`);
+            console.info(`Successfull donation:\n${JSON.stringify(donation, null, 2)}`);
+            // console.info(`Successfull donation:\n${JSON.stringify(payment.body, null, 2)}\n${JSON.stringify(donation, null, 2)}`);
         }
         catch (err) {
             console.error(err, "\nError during donation notification handling");

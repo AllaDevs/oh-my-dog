@@ -19,8 +19,6 @@
   const today = new Date()
     .toISOString()
     .split('T')[0] as `${number}-${number}-${number}`;
-    const form = sForm.form;
-    $: console.log($form.workingHour[0])
 </script>
 
 <FieldGroup cols="2">

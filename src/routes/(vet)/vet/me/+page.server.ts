@@ -101,10 +101,10 @@ export const actions = {
                     if (error.message === "AUTH_INVALID_PASSWORD") {
                         return setError(accountAuthForm, 'currentPassword', 'Contraseña incorrecta');
                     }
-                    console.log("lucia error", error);
+                    console.error("lucia error", error);
                     return setError(accountAuthForm, '', 'Ocurrio un error durante la validacion de las credenciales');
                 }
-                console.log("error", error);
+                console.error("error", error);
                 return setError(accountAuthForm, '', 'Ocurrio un error inesperado durante la validacion de las credenciales');
             }
             if (newEmail) {
@@ -149,7 +149,7 @@ export const actions = {
                     accountAuthForm.data.newPasswordConfirm = undefined;
                 }
                 catch (error) {
-                    console.log("error during auuth", error);
+                    console.error("error during auth", error);
                 }
             }
             else if (newPassword) {
@@ -164,7 +164,7 @@ export const actions = {
                     accountAuthForm.data.newPasswordConfirm = undefined;
                 }
                 catch (error) {
-                    console.log("error during PASSWORD update only", error);
+                    console.error("error during PASSWORD update only", error);
                     return setError(accountAuthForm, '', 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
                 }
             }

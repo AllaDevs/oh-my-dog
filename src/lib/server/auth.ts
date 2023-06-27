@@ -4,6 +4,7 @@ import { Lucia, auth } from '$lib/server/lucia';
 import type { Validation } from 'sveltekit-superforms';
 import { setError } from 'sveltekit-superforms/server';
 import { prisma } from './prisma';
+import { logError } from './utils';
 
 
 export function redirectToLogin(
@@ -88,11 +89,11 @@ export async function validateAuthUpdateForm<T extends Validation<typeof account
                 setError(sForm, 'currentPassword', 'Contraseña incorrecta');
                 return false;
             }
-            console.log("lucia error", error);
+            console.error("lucia error", error);
             setError(sForm, '', 'Ocurrio un error durante la validacion de las credenciales');
             return false;
         }
-        console.log("error", error);
+        console.error("error", error);
         setError(sForm, '', 'Ocurrio un error inesperado durante la validacion de las credenciales');
         return false;
     }
@@ -156,7 +157,7 @@ export async function updateAccountAuth<T extends Validation<typeof accountAuthU
             sForm.data.newPasswordConfirm = undefined;
         }
         catch (error) {
-            console.log("error during auth EMAIL update", error);
+            logError('auth', 'Error during auth EMAIL update', error);
             setError(sForm, '', 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
             return false;
         }
@@ -173,7 +174,7 @@ export async function updateAccountAuth<T extends Validation<typeof accountAuthU
             sForm.data.newPasswordConfirm = undefined;
         }
         catch (error) {
-            console.log("error during auth PASSWORD update only", error);
+            logError('auth', 'Error during auth PASSWORD update', error);
             setError(sForm, '', 'Ocurrio un error inesperado durante la actualizacion de la contraseña');
             return false;
         }
