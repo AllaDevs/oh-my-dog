@@ -18,6 +18,10 @@
     .scrollbar::-webkit-scrollbar-thumb { 
         @apply bg-teal-600 rounded;
     }
+
+    .border-dev {
+        @apply border border-[#ff00ff]
+    }
 }
 
 
