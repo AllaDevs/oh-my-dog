@@ -19,6 +19,13 @@
         @apply bg-teal-600 rounded;
     }
 
+    .scrollbar-hidden {
+        scrollbar-width: none;
+    }
+    .scrollbar-hidden::-webkit-scrollbar {
+        @apply hidden;
+    }
+
     .border-dev {
         @apply border border-[#ff00ff]
     }
