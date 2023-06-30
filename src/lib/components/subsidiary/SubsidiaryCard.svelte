@@ -8,7 +8,7 @@
   // export let workingHour: WorkingHour[];
   export let name: string;
   export let address: string;
-  export let workingHour: WorkingHour[];
+  export let workHours: string;
   export let id: string;
   export let vet: boolean;
 
@@ -39,10 +39,10 @@
   </h5>
   <!-- <p><b>Telefono:</b> {subsidiary.phone}</p> -->
   <p><b>Dirección:</b> {address}</p>
-  <p><b>Horarios:</b></p>
-  {#each workingHour as hour}
+  <p><b>Horarios:</b> {workHours}</p>
+  <!-- {#each workingHour as hour}
     <p>{workingHourString(hour)}</p>
-  {/each}
+  {/each} -->
   <div class="mt-3 gap-2 flex flex-row max-h-min">
     {#if vet}
       <A href="./subsidiary/{id}" color="primary" button>Editar</A>

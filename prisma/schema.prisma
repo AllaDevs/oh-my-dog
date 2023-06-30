@@ -291,27 +291,27 @@ model Subsidiary {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    location Location
-    address  String
-    name     String
-
-    workingHour WorkingHour[]
+    location  Location
+    address   String
+    name      String
+    workHours String
 
     @@map("subsidiary")
 }
 
 // NOTE: refactor for not repeating day?
+// Temporarily unused for client requirements
 model WorkingHour {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    day                  Day
-    start                DateTime
-    end                  DateTime
-    subsidiary           Subsidiary? @relation(fields: [subsidiaryId], references: [id])
-    subsidiaryId         String?     @db.ObjectId
-    dogServiceProviderId String?     @db.ObjectId
+    day   Day
+    start DateTime
+    end   DateTime
+    // subsidiary           Subsidiary? @relation(fields: [subsidiaryId], references: [id])
+    // subsidiaryId         String?     @db.ObjectId
+    // dogServiceProviderId String?     @db.ObjectId
 
     @@map("working_hour")
 }

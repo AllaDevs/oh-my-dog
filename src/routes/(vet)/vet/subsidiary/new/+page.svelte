@@ -1,10 +1,9 @@
 <script lang="ts">
   import Button from '$cmp/element/Button.svelte';
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import TextAreaInput from '$cmp/form/TextAreaInput.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import WorkingHourRegisterCard from '$cmp/subsidiary/WorkingHourRegisterCard.svelte';
-  import { fieldValueCloner } from '$lib/utils/functions.js';
   import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -25,18 +24,6 @@
     },
   });
   const { form: registerData, errors } = registerSForm;
-
-  const cloneHourDefault = fieldValueCloner($registerData, ['workingHour', 0]);
-
-  function addWorkingHour() {
-    $registerData.workingHour.push(cloneHourDefault());
-    $registerData.workingHour = $registerData.workingHour;
-  }
-
-  function removeWorkingHour(index: number) {
-    $registerData.workingHour.splice(index, 1);
-    $registerData.workingHour = $registerData.workingHour;
-  }
 
   let actualInput: HTMLInputElement;
   let card: HTMLDivElement;
@@ -141,6 +128,11 @@
               required
               class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
             />
+            <TextAreaInput
+              label="Horarios"
+              field="workHours"
+              form={registerSForm}
+            />
             <div class="hidden">
               <TextInput
                 label="Ubicación"
@@ -151,22 +143,8 @@
           </svelte:fragment>
           <svelte:fragment slot="actions" />
         </FieldGroup>
-        {#each $registerData.workingHour as _, i}
-          <WorkingHourRegisterCard
-            sForm={registerSForm}
-            index={i}
-            title="Nueva franja {$registerData.workingHour.length > 1
-              ? i + 1
-              : ''}"
-            allowRemoval={i > 0}
-            on:remove={() => removeWorkingHour(i)}
-          />
-        {/each}
       </div>
       <div class="mt-6 flex items-center justify-around">
-        <Button on:click={addWorkingHour} color="primary">
-          Agregar otra franja horaria
-        </Button>
         <Button type="submit" formaction="?/register" color="primary">
           Registrar sucursal
         </Button>

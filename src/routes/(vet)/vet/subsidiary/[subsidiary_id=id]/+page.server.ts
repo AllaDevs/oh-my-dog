@@ -1,6 +1,5 @@
 import { subsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
 import { prisma } from '$lib/server/prisma';
-import { validateWorkingHours } from '$lib/utils/functions';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
@@ -12,24 +11,31 @@ export const load = (async ({ params }) => {
         where: {
             id: params.subsidiary_id
         },
-        include: {
-            workingHour: true
+        select: {
+            workHours: true,
+            location: true,
+            name: true,
+            address: true,
         }
     });
     if (!subsidiary) {
-        throw error(404, 'No se encontró el proveedor que buscabas');
+        throw error(404, 'No se encontró la sucursal que buscabas');
     }
 
-    // subsidiary.location = `(${subsidiary.location.latitude}, ${subsidiary.location.longitude})` as any;
-    for (const workingHour of subsidiary.workingHour) {
-        workingHour.start = `${workingHour.start.getHours().toString().padStart(2, '0')}:${workingHour.start.getMinutes().toString().padStart(2, '0')}` as unknown as Date;
-        workingHour.end = `${workingHour.end.getHours().toString().padStart(2, '0')}:${workingHour.end.getMinutes().toString().padStart(2, '0')}` as unknown as Date;
-    }
+    // for (const workingHour of subsidiary.workingHour) {
+    //     workingHour.start = `${workingHour.start.getHours().toString().padStart(2, '0')}:${workingHour.start.getMinutes().toString().padStart(2, '0')}` as unknown as Date;
+    //     workingHour.end = `${workingHour.end.getHours().toString().padStart(2, '0')}:${workingHour.end.getMinutes().toString().padStart(2, '0')}` as unknown as Date;
+    // }
 
     const form = await superValidate(
         subsidiary as any,
         subsidiaryCompleteRegisterSchema
     );
+
+    form.data.location = `(${subsidiary.location.latitude}, ${subsidiary.location.longitude})` as string;
+    form.data.workHours = subsidiary.workHours;
+    form.data.name = subsidiary.name;
+    form.data.address = subsidiary.address;
 
     return {
         form,
@@ -75,7 +81,7 @@ export const actions = {
         //             end: endHour
         //         });
         // };
-        const workingHours = validateWorkingHours(form.data.workingHour, form, (i) => `workingHour[${i}]`);
+        // const workingHours = validateWorkingHours(form.data.workingHour, form, (i) => `workingHour[${i}]`);
         if (!form.valid) {
             return fail(400, { form });
         }
@@ -89,9 +95,7 @@ export const actions = {
                     name: form.data.name,
                     address: form.data.address,
                     location: { latitude: parseFloat(form.data.location.split(", ")[0]), longitude: parseFloat(form.data.location.split(", ")[1]) },
-                    workingHour: {
-                        create: workingHours
-                    }
+                    workHours: form.data.workHours
                 }
             });
         }

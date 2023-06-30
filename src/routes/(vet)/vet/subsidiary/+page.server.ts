@@ -10,7 +10,7 @@ export const load = (async ({ params, url }) => {
             location: true,
             address: true,
             name: true,
-            workingHour: true,
+            workHours: true,
             // phone: true
         }
     });

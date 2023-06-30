@@ -1,7 +1,10 @@
 import { Role } from '$lib/enums';
 import { auth } from '$lib/server/lucia';
+import { registerAdmin } from '$lib/server/utils';
 import { handleLoginRedirect } from '$lib/utils/functions';
 import { redirect, type Handle } from '@sveltejs/kit';
+
+registerAdmin();
 
 export const handle = (async ({ event, resolve }) => {
     event.locals.auth = auth.handleRequest(event);

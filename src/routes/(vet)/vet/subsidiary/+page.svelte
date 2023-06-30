@@ -65,7 +65,7 @@
         id={subsidiary.id}
         name={subsidiary.name}
         address={subsidiary.address}
-        workingHour={subsidiary.workingHour}
+        workHours={subsidiary.workHours}
         on:relocate={(e) => relocateCenter(e.detail)}
       />
     {/each}

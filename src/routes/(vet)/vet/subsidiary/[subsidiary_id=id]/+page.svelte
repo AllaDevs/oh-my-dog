@@ -2,10 +2,9 @@
   import Button from '$cmp/element/Button.svelte';
   import ActionButton from '$cmp/form/ActionButton.svelte';
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import TextAreaInput from '$cmp/form/TextAreaInput.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import WorkingHourRegisterCard from '$cmp/subsidiary/WorkingHourRegisterCard.svelte';
-  import { fieldValueCloner } from '$lib/utils/functions.js';
   import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -27,17 +26,17 @@
   });
   const { form: registerData, errors } = registerSForm;
 
-  const cloneHourDefault = fieldValueCloner($registerData, ['workingHour', 0]);
+  // const cloneHourDefault = fieldValueCloner($registerData, ['workingHour', 0]);
 
-  function addWorkingHour() {
-    $registerData.workingHour.push(cloneHourDefault());
-    $registerData.workingHour = $registerData.workingHour;
-  }
+  // function addWorkingHour() {
+  //   $registerData.workingHour.push(cloneHourDefault());
+  //   $registerData.workingHour = $registerData.workingHour;
+  // }
 
-  function removeWorkingHour(index: number) {
-    $registerData.workingHour.splice(index, 1);
-    $registerData.workingHour = $registerData.workingHour;
-  }
+  // function removeWorkingHour(index: number) {
+  //   $registerData.workingHour.splice(index, 1);
+  //   $registerData.workingHour = $registerData.workingHour;
+  // }
 
   let actualInput: HTMLInputElement;
   let card: HTMLDivElement;
@@ -156,7 +155,6 @@
             <TextInput
               label="Dirección detallada"
               field="address"
-              hint="Descripción breve"
               unselectedLabel="Ingrese la dirección"
               form={registerSForm}
             />
@@ -175,10 +173,16 @@
                 form={registerSForm}
               />
             </div>
+            <TextAreaInput
+              label="Horarios de atención"
+              field="workHours"
+              unselectedLabel="Ingrese los horarios"
+              form={registerSForm}
+            />
           </svelte:fragment>
           <svelte:fragment slot="actions" />
         </FieldGroup>
-        {#each $registerData.workingHour as _, i}
+        <!-- {#each $registerData.workingHour as _, i}
           <WorkingHourRegisterCard
             sForm={registerSForm}
             index={i}
@@ -188,12 +192,12 @@
             allowRemoval={i > 0}
             on:remove={() => removeWorkingHour(i)}
           />
-        {/each}
+        {/each} -->
       </div>
       <div class="mt-6 flex items-center justify-around">
-        <Button on:click={addWorkingHour} color="primary">
+        <!-- <Button on:click={addWorkingHour} color="primary">
           Agregar otra franja horaria
-        </Button>
+        </Button> -->
         <ActionButton class="p-0 md:p-0" color="error" action="?/delete"
           >Eliminar</ActionButton
         >
