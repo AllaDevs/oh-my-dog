@@ -20,7 +20,7 @@
     id: 'start',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se resolvio la acción con exito', { duration: 3000 });
+        toast.success('Se comenzo la campaña con exito', { duration: 3000 });
         campaignState = DonationCampaignState.ACTIVE;
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
@@ -32,7 +32,7 @@
     id: 'pause',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se resolvio la acción con exito', { duration: 3000 });
+        toast.success('Se pauso la campaña con exito', { duration: 3000 });
         campaignState = DonationCampaignState.PAUSED;
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
@@ -44,7 +44,7 @@
     id: 'end',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se resolvio la acción con exito', { duration: 3000 });
+        toast.success('Se termino la campaña con exito', { duration: 3000 });
         campaignState = DonationCampaignState.ENDED;
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
@@ -54,11 +54,34 @@
 
   const updateSForm = superForm(data.updateForm, {
     id: 'update',
+    onSubmit: (input) => {
+      // NETLIFY: temporary fix because of size limit in request body ~6MB
+      let file = (input.formElement[2] as HTMLInputElement | null)?.files?.item(
+        0
+      );
+      if (file && file.size > 4000000) {
+        alert(
+          'La imagen seleccionada es demasiado grande, por favor seleccione una imagen de menos de 4MB (4 Megabytes)'
+        );
+        input.cancel();
+      }
+    },
+    onError: (error) => {
+      toast.error(
+        `Ocurrio un error inesperado durante la creacion de la campaña, intenta cambiando de imagen o mas tarde`,
+        { duration: 5000 }
+      );
+      console.error(
+        `Error during form submission at vet/donation/campaign/new/+page.svelte, result:\n${error.result}`
+      );
+    },
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se actualizo el post exitosamente', { duration: 3000 });
+        toast.success('Se actualizo la campaña exitosamente', {
+          duration: 3000,
+        });
       } else if (form.errors._errors) {
-        toast.error(String(form.errors._errors));
+        toast.error(String(form.errors._errors), { duration: 5000 });
       }
     },
   });

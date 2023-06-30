@@ -10,7 +10,7 @@
 </svelte:head>
 
 <Page
-  classContainer="container mx-auto max-w-screen-lg p-4 scrollbar"
+  classContainer="container mx-auto max-w-screen-lg p-4 scrollbar-hidden"
   classContentSlot="mt-2 px-4 text-gray-900 mb-8"
 >
   {#if data.campaigns.length}
