@@ -2,8 +2,8 @@ import { EmailError, adoptionContactConfirmHTML, adoptionContactHTML, systemEmai
 import { PostState } from '$lib/enums';
 import { c } from '$lib/schemas';
 import { redirectToLogin } from '$lib/server/auth';
+import { logError } from '$lib/server/logging';
 import { prisma } from '$lib/server/prisma';
-import { logError } from '$lib/server/utils';
 import type { AdoptionPost, Client, RegisteredDog, TemporalDog } from '@prisma/client';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';

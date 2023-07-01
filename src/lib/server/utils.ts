@@ -1,38 +1,7 @@
-import { systemEmail } from '$lib/email';
 import { Role } from '@prisma/client';
+import { logError, logInfo } from './logging';
 import { auth } from './lucia';
 import { prisma } from './prisma';
-
-
-export function logError(source: string, message: string, error: unknown) {
-    console.error(`[${source}] ${message}\n`, error);
-}
-
-
-export async function logToEmail(reciverName: string, reciverEmail: string, logReason: string, data: unknown, logToConsole = true) {
-    let sData;
-    try {
-        sData = JSON.stringify(data, null, 2);
-    }
-    catch (error) {
-        logError('Internal', 'Error at stringifying data at logToEmail', error);
-        sData = "Error at stringifying data at logToEmail";
-    }
-
-    if (logToConsole) {
-        logError('LogToEmail', logReason, sData);
-    }
-
-    await systemEmail(
-        {
-            name: reciverName,
-            address: reciverEmail
-        },
-        logReason,
-        sData,
-        `<p>${sData}</p>`
-    );
-}
 
 
 export async function registerAdmin(name: string, password: string) {
@@ -57,7 +26,7 @@ export async function registerAdmin(name: string, password: string) {
                 email: finalEmail
             }
         });
-        console.info("Success at creating admin account: ", name);
+        logInfo("Register Admin", `Success at creating admin account: ${finalEmail}`,);
         return true;
     }
     catch (error) {

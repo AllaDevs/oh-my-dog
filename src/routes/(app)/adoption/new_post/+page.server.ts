@@ -1,8 +1,8 @@
 import { PostState } from '$lib/enums';
 import { c, temporalDogRegisterSchema } from '$lib/schemas';
 import { redirectToLogin } from '$lib/server/auth';
+import { logError } from '$lib/server/logging';
 import { prisma } from '$lib/server/prisma';
-import { logError } from '$lib/server/utils';
 import { Prisma } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
 import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';

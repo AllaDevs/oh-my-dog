@@ -14,10 +14,10 @@
     { href: '/provider', text: 'Paseadores y cuidadores' },
     { href: '/subsidiary', text: 'Sucursales' },
     {
-      href: '/subsidiary/urgency',
+      href: '/subsidiary?urgencyMessage=true',
       text: 'URGENCIAS',
       className:
-        'rounded-lg font-semibold !text-gray-100 hover:!text-white bg-red-600/75 hover:bg-red-500 outline-black',
+        'rounded-lg font-semibold !text-gray-100 hover:!text-white bg-red-600/75 hover:bg-red-500 outline-black border border-gray-700 hover:border-black',
     },
   ];
 </script>

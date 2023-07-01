@@ -32,3 +32,7 @@ export default defineConfig({
     }
 });
 ```
+
+## google maps notes
+
+[Errors list](https://developers.google.com/maps/documentation/javascript/error-messages)
