@@ -496,6 +496,7 @@ type Image {
 }
 
 type Location {
-    latitude  Float
-    longitude Float
+    autocompletedAddress String
+    latitude             Float
+    longitude            Float
 }

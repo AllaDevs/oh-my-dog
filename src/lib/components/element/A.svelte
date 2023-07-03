@@ -28,13 +28,16 @@
       'font-semibold text-gray-100 hover:text-white bg-red-700 hover:bg-red-600 outline-black',
   };
 
+  type Color = keyof typeof COLOR;
+
   interface $$Props {
     href: string;
-    color?: keyof typeof COLOR;
+    color?: Color;
     button?: true;
+    class?: string;
   }
 
-  export let color: keyof typeof COLOR = 'default';
+  export let color: Color = 'default';
   export let href: string;
   export let button = false;
 </script>
@@ -44,7 +47,7 @@
   on:click
   class=" rounded-md px-3 py-2 text-sm shadow-sm {(button
     ? BUTTON_COLOR
-    : COLOR)[color]}"
+    : COLOR)[color]} {$$restProps.class ?? ''}"
   class:text-center={button}
 >
   <slot>Link to somewhere</slot>

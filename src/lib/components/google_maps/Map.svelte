@@ -11,8 +11,14 @@
 
   let map: google.maps.Map;
   export { map as mapController };
-  export let initialCenter: google.maps.LatLngLiteral | undefined = undefined;
-  export let zoom = 12;
+
+  export let initialOpts:
+    | {
+        center?: google.maps.LatLngLiteral;
+        zoom?: number;
+      }
+    | undefined = undefined;
+
   export let marks: {
     title: string;
     label: string;
@@ -22,8 +28,8 @@
   let initialLoading = true;
 
   const mapOptions = {
-    center: initialCenter,
-    zoom,
+    center: initialOpts?.center,
+    zoom: initialOpts?.zoom ?? 12,
   } satisfies google.maps.MapOptions;
 
   const loader = new Loader({
@@ -64,7 +70,9 @@
 </script>
 
 {#if initialLoading}
-  <p class="flex h-full w-full items-center justify-center">Cargando mapa...</p>
+  <div class="grid h-full w-full place-items-center">
+    <p class="text-xl font-semibold text-gray-900">Cargando mapa...</p>
+  </div>
 {/if}
 
 <div class="flex h-full w-full" bind:this={container} />

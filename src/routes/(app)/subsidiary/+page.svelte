@@ -10,7 +10,10 @@
 
   export let data;
 
-  const initialCenter = { lat: -34.92945, lng: -57.93453 };
+  const mapInitialOpts = {
+    center: { lat: -34.92945, lng: -57.93453 },
+    zoom: 12,
+  };
 
   let marks = subsidiariesToMarks(data.subsidiaries);
 
@@ -77,7 +80,7 @@
   classContentSlot="mt-2 px-4 relative text-gray-900 flex flex-col md:mb-8 overflow-y-hidden"
 >
   <svelte:fragment slot="pageHeader">
-    <h2 class=" mt-[1em] text-2xl md:text-3xl text-gray-900 font-bold">
+    <h2 class=" mt-[1em] text-2xl md:text-3xl text-gray-900 font-semibold">
       Nuestras sucursales
     </h2>
   </svelte:fragment>
@@ -88,7 +91,7 @@
     <div
       class="col-span-1 row-span-2 md:row-span-1 md:col-span-2 relative flex flex-col"
     >
-      <Map bind:mapController {initialCenter} {marks} />
+      <Map bind:mapController initialOpts={mapInitialOpts} {marks} />
     </div>
 
     <div class="flex-1 flex flex-col overflow-y-hidden scrollbar">

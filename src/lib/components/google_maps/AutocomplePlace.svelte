@@ -19,6 +19,7 @@
 
   type T = $$Generic<boolean>;
 
+  export let initialLatLng: google.maps.LatLngLiteral | undefined = undefined;
   export let enableMarker: T = false as T;
   export let centerOnInput = false;
 
@@ -32,6 +33,7 @@
       };
 
   let error: string | undefined = undefined;
+  let valid = false;
   let input: HTMLInputElement;
   let mapController: google.maps.Map;
   let inputMarker: google.maps.Marker;
@@ -77,19 +79,24 @@
 
     autocomplete.addListener('place_changed', async () => {
       const place = autocomplete.getPlace();
+      value = input.value;
+
       dispatch('place_change', { place });
 
       // If place doesn't have geometry means it's not a valid place
       // User entered the name of a Place that was not suggested and
       // pressed the Enter key, or the Place Details request failed.
+
       if (!place.geometry) {
         if (inputMarker) {
           inputMarker.setVisible(false);
         }
         error = `No existe la ubicación '${place.name}'`;
+        valid = false;
         return;
       }
       error = undefined;
+      valid = true;
 
       let inputLocation = place.geometry.location!;
 
@@ -98,7 +105,7 @@
         inputMarker.setVisible(true);
       }
       if (centerOnInput) {
-        mapController.setCenter(place.geometry.location!);
+        mapController.setCenter(inputLocation);
         mapController.setZoom(15);
       }
 
@@ -119,8 +126,19 @@
 
       inputMarker = new googleLibs.marker.Marker({
         map: map,
+        position: initialLatLng,
       });
-      inputMarker.setVisible(false);
+
+      if (initialLatLng) {
+        inputMarker.setVisible(true);
+        autocomplete.set('place', {
+          geometry: {
+            location: initialLatLng,
+          },
+        });
+      } else {
+        inputMarker.setVisible(false);
+      }
     }
   }
 </script>
@@ -144,9 +162,9 @@
       name={field}
       {required}
       {readonly}
-      {value}
+      bind:value
       {placeholder}
-      aria-invalid={!!error || undefined}
+      aria-invalid={!!error || !valid || undefined}
       class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
     />
     {#if error}

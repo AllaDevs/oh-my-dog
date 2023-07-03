@@ -29,9 +29,9 @@
     </p>
   </div>
 
-  <div class="px-6 py-4 mb-2">
+  <div class="px-6 py-4 mb-2 flex gap-2 lg:gap-4">
     {#if editable}
-      <A href="./subsidiary/{subsidiary.id}" color="primary" button>Editar</A>
+      <A href="./subsidiary/{subsidiary.id}" color="primary" button class="inline-block">Editar</A>
     {/if}
     <Button
       color="primary"

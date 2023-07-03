@@ -90,7 +90,8 @@ const commonSchema = {
     dogSexSchema,
     moongoIdSchema,
     contactBaseSchema,
-    locationSchema
+    locationSchema,
+    onlyWordSequenceSchema,
 };
 
 export { commonSchema as c };

@@ -21,14 +21,17 @@ export const actions = {
             console.error(form);
             return fail(400, { form });
         }
-
+        
         try {
+            const [latitude, longitude] = form.data.location.replaceAll(/[()]/g, '').split(", ");
+
             const newSubsidiary = await prisma.subsidiary.create({
                 data: {
                     name: form.data.name,
                     location: {
-                        latitude: parseFloat(form.data.location.split(", ")[0]),
-                        longitude: parseFloat(form.data.location.split(", ")[1])
+                        autocompletedAddress: form.data.autocompletedAddress,
+                        latitude: Number(latitude),
+                        longitude: Number(longitude),
                     },
                     address: form.data.address,
                     workHours: form.data.workHours
