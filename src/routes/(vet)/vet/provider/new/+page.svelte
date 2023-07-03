@@ -1,5 +1,6 @@
 <script lang="ts">
   import Button from '$cmp/element/Button.svelte';
+  import EmailInput from '$cmp/form/EmailInput.svelte';
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
   import SelectInput from '$cmp/form/SelectInput.svelte';
   import TextAreaInput from '$cmp/form/TextAreaInput.svelte';
@@ -49,7 +50,7 @@
           <svelte:fragment slot="fields">
             <TextInput label="Nombre" field="firstname" form={registerSForm} />
             <TextInput label="Apellido" field="lastname" form={registerSForm} />
-            <TextInput label="Email" field="email" form={registerSForm} />
+            <EmailInput label="Email" field="email" form={registerSForm} />
             <SelectInput
               label="Tipo"
               field="type"
