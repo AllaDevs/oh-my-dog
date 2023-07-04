@@ -6,6 +6,7 @@
   import { te } from '$lib/utils/translateEnums.js';
 
   export let data;
+
   const tableHeaders = [
     'Última modificación',
     'Día del turno',
@@ -15,11 +16,19 @@
     'Perro',
     'Acción',
   ];
+
+  function openConfirmation(e: Event, action: string) {
+    let conf = window.confirm(`Está seguro que desea ${action} el turno?`);
+    if (!conf) {
+      e.preventDefault();
+    }
+  }
 </script>
 
 <svelte:head>
   <title>Mis Turnos</title>
 </svelte:head>
+
 <Page
   classContainer="container mx-auto px-6 py-4 text-gray-700"
   classContentSlot="py-2"
@@ -93,6 +102,25 @@
                           class=" opacity-80 hover:underline underline-offset-2 rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
                           >Rechazar</button
                         >
+                      </form>
+                    {:else if appointment.state === AppointmentState.CONFIRMED}
+                      <form
+                        action="?/cancel"
+                        method="post"
+                        on:submit={(e) => openConfirmation(e, 'cancelar')}
+                      >
+                        <input
+                          type="text"
+                          name="appointmentId"
+                          value={appointment.id}
+                          class="hidden"
+                        />
+                        <button
+                          type="submit"
+                          class=" opacity-80 hover:underline underline-offset-2 rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+                        >
+                          Cancelar
+                        </button>
                       </form>
                     {:else}
                       <p>Sin acciones</p>

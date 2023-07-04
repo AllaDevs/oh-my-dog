@@ -101,5 +101,21 @@ export const actions: Actions = {
                 }
             }
         });
+    },
+    cancel: async ({ request }) => {
+        const form = await superValidate(request, schema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
+        }
+
+        await prisma.appointment.update({
+            where: {
+                id: form.data.appointmentId
+            },
+            data: {
+                state: AppointmentState.CANCELLED
+            },
+        });
     }
 };
