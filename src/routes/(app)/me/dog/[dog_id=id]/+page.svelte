@@ -1,5 +1,6 @@
 <script lang="ts">
   import DogInfo from '$cmp/client/DogInfo.svelte';
+  import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { te } from '$lib/utils/translateEnums.js';
 
@@ -20,10 +21,21 @@
   </section>
 
   <section>
-    <header>
+    <header class="flex justify-between">
       <h3 class=" text-xl mt-4 lg:mt-10">
         Historial medico de {data.dog.name}
       </h3>
+      <div class="self-end mb-1">
+        <A
+          href="/api/pdf/dog/{data.dog.id}"
+          type="application/pdf"
+          target="_blank"
+          color="primary"
+          button
+        >
+          Descargar PDF
+        </A>
+      </div>
     </header>
     <ul
       class=" mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:mt-10 lg:grid-cols-3"

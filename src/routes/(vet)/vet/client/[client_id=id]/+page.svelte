@@ -4,7 +4,7 @@
   import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { DonationReason } from '$lib/enums';
-    import { friendlyDate } from '$lib/utils/functions';
+  import { friendlyDate } from '$lib/utils/functions';
   import { te } from '$lib/utils/translateEnums.js';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -102,6 +102,19 @@
           <p class=" text-gray-700">El cliente no tiene perros registrados</p>
         </li>
       {/each}
+      {#if data.client.dog.length}
+        <li class="flex justify-around mt-4">
+          <A
+            href="/api/pdf/client/{data.client.id}"
+            type="application/pdf"
+            target="_blank"
+            color="primary"
+            button
+          >
+            Historiales medicos en PDF
+          </A>
+        </li>
+      {/if}
     </ul>
   </section>
 

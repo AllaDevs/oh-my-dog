@@ -198,6 +198,10 @@ export function friendlyDate(date: Date): string {
     return date.toLocaleString();
 }
 
+export function friendlyDateARG(date: Date): string {
+    return date.toLocaleString('es-AR');
+}
+
 
 export function subsidiariesToMarks(subsidiaries: Subsidiary[]) {
     let marks = [];
