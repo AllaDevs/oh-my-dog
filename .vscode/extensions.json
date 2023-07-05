@@ -6,6 +6,7 @@
         "yoavbls.pretty-ts-errors",
         "svelte.svelte-vscode",
         "pkief.material-icon-theme",
-        "pomdtr.excalidraw-editor"
+        "pomdtr.excalidraw-editor",
+        "csstools.postcss"
     ]
 }
