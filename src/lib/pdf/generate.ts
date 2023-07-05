@@ -190,6 +190,9 @@ export async function genDogMedicalRecordPDF(dog: DogData): Promise<Blob> {
             const chunks: Uint8Array[] = [];
             const pdf = printer.createPdfKitDocument(file);
 
+
+            console.log(process.version);
+
             pdf.on('data', (chunk: Uint8Array) => {
                 chunks.push(chunk);
             });
@@ -298,6 +301,9 @@ export async function genDogsMedicalRecordPDF(client: ClientData): Promise<Blob>
         new Promise<Blob>((resolve, reject) => {
             const chunks: Uint8Array[] = [];
             const pdf = printer.createPdfKitDocument(file);
+
+
+            console.log(process.version);
 
             pdf.on('data', (chunk: Uint8Array) => {
                 chunks.push(chunk);
