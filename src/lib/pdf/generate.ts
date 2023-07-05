@@ -14,12 +14,12 @@ const fonts: TFontDictionary = {
         normal: (
             dev
                 ? 'static/fonts/Inter-Regular.ttf'
-                : './fonts/Inter-Regular.ttf'
+                : 'fonts/Inter-Regular.ttf'
         ),
         bold: (
             dev
                 ? 'static/fonts/Inter-Bold.ttf'
-                : './fonts/Inter-Bold.ttf'
+                : 'fonts/Inter-Bold.ttf'
         ),
     },
 };
