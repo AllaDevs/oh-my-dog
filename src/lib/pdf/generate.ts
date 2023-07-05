@@ -2,7 +2,6 @@ import { dev } from '$app/environment';
 import { friendlyDate, friendlyDateARG } from '$lib/utils/functions';
 import { te } from '$lib/utils/translateEnums';
 import type { Breed, Client, MedicalRecord, RegisteredDog } from '@prisma/client';
-// import blobStream, { type IBlobStream } from 'blob-stream';
 import PdfPrinter from 'pdfmake';
 import type { Content, ContentColumns, Style, StyleDictionary, TDocumentDefinitions, TFontDictionary } from 'pdfmake/interfaces';
 import { logoBase64 } from './logo';
@@ -142,74 +141,26 @@ export async function genDogMedicalRecordPDF(dog: DogData): Promise<Blob> {
         }
     };
 
-    // return new Promise((resolve, reject) => {
-    //     const pdf = printer.createPdfKitDocument(file);
+    return new Promise<Blob>((resolve, reject) => {
+        const chunks: Uint8Array[] = [];
+        const pdf = printer.createPdfKitDocument(file);
 
-    //     pdf.pipe(blobStream())
-    //         .on(
-    //             'finish',
-    //             function (this: IBlobStream) {
-    //                 resolve(this.toBlob('application/pdf'));
-    //             }
-    //         )
-    //         .on(
-    //             'error',
-    //             function (this: IBlobStream, err: Error) {
-    //                 console.error('PDF generation error', err);
-    //                 reject(err);
-    //             }
-    //         );
+        pdf.on('data', (chunk: Uint8Array) => {
+            chunks.push(chunk);
+        });
 
-    //     pdf.end();
-    // });
-    
-    return (
-        //     new Promise((resolve, reject) => {
-        //     const pdf = printer.createPdfKitDocument(file);
+        pdf.on('end', () => {
+            const pdfData = new Blob(chunks, { type: 'application/pdf' });
+            resolve(pdfData);
+        });
 
-        //     console.log(process.version);
+        pdf.on('error', (err: Error) => {
+            console.error('PDF generation error', err);
+            reject(err);
+        });
 
-        //     pdf.pipe(blobStream())
-        //         .on(
-        //             'finish',
-        //             function (this: IBlobStream) {
-        //                 resolve(this.toBlob('application/pdf'));
-        //             }
-        //         )
-        //         .on(
-        //             'error',
-        //             function (this: IBlobStream, err: Error) {
-        //                 console.error('PDF generation error', err);
-        //                 reject(err);
-        //             }
-        //         );
-
-        //     pdf.end();
-        // })
-        new Promise<Blob>((resolve, reject) => {
-            const chunks: Uint8Array[] = [];
-            const pdf = printer.createPdfKitDocument(file);
-
-
-            console.log(process.version);
-
-            pdf.on('data', (chunk: Uint8Array) => {
-                chunks.push(chunk);
-            });
-
-            pdf.on('end', () => {
-                const pdfData = new Blob(chunks, { type: 'application/pdf' });
-                resolve(pdfData);
-            });
-
-            pdf.on('error', (err: Error) => {
-                console.error('PDF generation error', err);
-                reject(err);
-            });
-
-            pdf.end();
-        })
-    );
+        pdf.end();
+    });
 }
 
 
@@ -275,51 +226,24 @@ export async function genDogsMedicalRecordPDF(client: ClientData): Promise<Blob>
         }
     };
 
-    return (
-        //     new Promise((resolve, reject) => {
-        //     const pdf = printer.createPdfKitDocument(file);
+    return new Promise<Blob>((resolve, reject) => {
+        const chunks: Uint8Array[] = [];
+        const pdf = printer.createPdfKitDocument(file);
 
-        //     console.log(process.version);
+        pdf.on('data', (chunk: Uint8Array) => {
+            chunks.push(chunk);
+        });
 
-        //     pdf.pipe(blobStream())
-        //         .on(
-        //             'finish',
-        //             function (this: IBlobStream) {
-        //                 resolve(this.toBlob('application/pdf'));
-        //             }
-        //         )
-        //         .on(
-        //             'error',
-        //             function (this: IBlobStream, err: Error) {
-        //                 console.error('PDF generation error', err);
-        //                 reject(err);
-        //             }
-        //         );
+        pdf.on('end', () => {
+            const pdfData = new Blob(chunks, { type: 'application/pdf' });
+            resolve(pdfData);
+        });
 
-        //     pdf.end();
-        // })
-        new Promise<Blob>((resolve, reject) => {
-            const chunks: Uint8Array[] = [];
-            const pdf = printer.createPdfKitDocument(file);
+        pdf.on('error', (err: Error) => {
+            console.error('PDF generation error', err);
+            reject(err);
+        });
 
-
-            console.log(process.version);
-
-            pdf.on('data', (chunk: Uint8Array) => {
-                chunks.push(chunk);
-            });
-
-            pdf.on('end', () => {
-                const pdfData = new Blob(chunks, { type: 'application/pdf' });
-                resolve(pdfData);
-            });
-
-            pdf.on('error', (err: Error) => {
-                console.error('PDF generation error', err);
-                reject(err);
-            });
-
-            pdf.end();
-        })
-    );
+        pdf.end();
+    });
 }
