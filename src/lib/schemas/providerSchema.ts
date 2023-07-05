@@ -1,4 +1,4 @@
-import { DogServiceType } from '@prisma/client';
+import { DogServiceType } from '$lib/enums';
 import { z } from 'zod';
 
 
