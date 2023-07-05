@@ -3,6 +3,7 @@ import { auth } from '$lib/server/lucia';
 import { handleLoginRedirect } from '$lib/utils/functions';
 import { redirect, type Handle } from '@sveltejs/kit';
 
+
 export const handle = (async ({ event, resolve }) => {
     event.locals.auth = auth.handleRequest(event);
     const { session, user } = await event.locals.auth.validateUser();
@@ -29,7 +30,7 @@ export const handle = (async ({ event, resolve }) => {
                 break;
             }
             case Role.VET: {
-                if (!pathname.startsWith('/vet')) {
+                if (!pathname.startsWith('/vet') && !pathname.startsWith('/api')) {
                     throw redirect(303, '/vet');
                 }
                 break;

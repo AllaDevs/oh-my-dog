@@ -1,12 +1,11 @@
-import { clientUpdateSchema } from '$lib/schemas/clientSchema';
+import { dogUpdateSchema } from '$lib/schemas';
+import { redirectToLogin } from '$lib/server/auth';
 import { prisma } from '$lib/server/prisma';
 import { mutateToShortString } from '$lib/utils/functions';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
-import type { Actions, PageServerLoad } from './$types';
-import { redirectToLogin } from '$lib/server/auth';
-import { dogUpdateSchema } from '$lib/schemas';
 import { z } from 'zod';
+import type { Actions, PageServerLoad } from './$types';
 
 
 const archiveDogSchema = z.object({});
@@ -18,7 +17,7 @@ export const load = (async (event) => {
         throw redirect(303, redirectToLogin(event.url));
     }
 
-    const [dog, breeds] = await prisma.$transaction([
+    const [dog, breeds] = await Promise.all([
         prisma.registeredDog.findUnique({
             where: {
                 id: event.params.dog_id,
@@ -26,6 +25,7 @@ export const load = (async (event) => {
             include: {
                 breed: true,
                 medicalRecord: true,
+                owner: true,
             }
         }),
         prisma.breed.findMany()
@@ -40,9 +40,9 @@ export const load = (async (event) => {
     }
 
     const [updateForm, archiveForm] = await Promise.all([
-        superValidate(mutateToShortString(dog, 'birthdate') as any, dogUpdateSchema , { id: 'update' }),
+        superValidate(mutateToShortString(dog, 'birthdate') as any, dogUpdateSchema, { id: 'update' }),
         superValidate(archiveDogSchema, { id: 'archive' })
-    ])
+    ]);
 
     return {
         dog,
@@ -80,7 +80,7 @@ export const actions = {
                     breedId: form.data.breedId,
                     observation: form.data.observation,
                 }
-            })
+            });
             if (!dog) {
                 throw error(404, 'No se encontro el perro que quieres actualizar');
             }

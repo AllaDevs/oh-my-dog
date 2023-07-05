@@ -12,19 +12,37 @@
   export let data;
 
   const registerSForm = superForm(data.form, {
+    onSubmit: (input) => {
+      // NETLIFY: temporary fix because of size limit in request body ~6MB
+      let file = (input.formElement[2] as HTMLInputElement | null)?.files?.item(
+        0
+      );
+      if (file && file.size > 4000000) {
+        alert(
+          'La imagen seleccionada es demasiado grande, por favor seleccione una imagen de menos de 4MB (4 Megabytes)'
+        );
+        input.cancel();
+      }
+    },
     onResult: ({ result }) => {
       if (result.type === 'redirect') {
         toast.success('Campaña registrada con exito', { duration: 3000 });
       }
     },
     onError: (error) => {
-      toast.error(String(error.message), { duration: 10000 });
+      toast.error(
+        `Ocurrio un error inesperado durante la creacion de la campaña, intenta cambiando de imagen o mas tarde`,
+        { duration: 5000 }
+      );
+      console.error(
+        `Error during form submission at vet/donation/campaign/new/+page.svelte, result:\n${error.result}`
+      );
     },
     onUpdated: ({ form }) => {
       if (form.valid) {
         toast.success('Campaña registrada con exito', { duration: 3000 });
       } else if (form.errors._errors) {
-        toast.error(String(form.errors._errors), { duration: 10000 });
+        toast.error(String(form.errors._errors), { duration: 5000 });
       }
     },
   });

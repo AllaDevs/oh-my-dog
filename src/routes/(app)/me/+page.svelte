@@ -67,6 +67,19 @@
           </p>
         </li>
       {/each}
+      {#if data.dogs.length}
+        <li class="flex justify-around mt-4">
+          <A
+            href="/api/pdf/client/{data.me.id}"
+            type="application/pdf"
+            target="_blank"
+            color="primary"
+            button
+          >
+            Historiales medicos en PDF
+          </A>
+        </li>
+      {/if}
     </ul>
   </section>
 

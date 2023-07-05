@@ -16,6 +16,7 @@
         "dev:ngrok": "ngrok http --domain=8e54b21f7d3d-59178990996674649.ngrok-free.app 5173"
     },
     "devDependencies": {
+        "@googlemaps/js-api-loader": "^1.16.2",
         "@sveltejs/adapter-auto": "^2.0.0",
         "@sveltejs/kit": "^1.5.0",
         "@tailwindcss/forms": "^0.5.3",
@@ -38,12 +39,16 @@
     "dependencies": {
         "@lucia-auth/adapter-prisma": "^2.0.0",
         "@prisma/client": "^4.14.0",
+        "@types/blob-stream": "^0.1.30",
         "@types/mercadopago": "^1.5.8",
+        "@types/pdfmake": "^0.2.2",
+        "blob-stream": "^0.1.3",
         "cloudinary": "^1.36.4",
         "flowbite": "^1.6.5",
         "flowbite-svelte": "^0.37.2",
         "lucia-auth": "^1.5.0",
         "mercadopago": "^1.5.16",
-        "nodemailer": "^6.9.1"
+        "nodemailer": "^6.9.1",
+        "pdfmake": "^0.2.7"
     }
 }

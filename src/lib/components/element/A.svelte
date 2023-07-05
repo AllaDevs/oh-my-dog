@@ -28,23 +28,34 @@
       'font-semibold text-gray-100 hover:text-white bg-red-700 hover:bg-red-600 outline-black',
   };
 
+  type Color = keyof typeof COLOR;
+
+  type Target = '_blank' | '_self' | '_parent' | '_top';
+
   interface $$Props {
     href: string;
-    color?: keyof typeof COLOR;
+    color?: Color;
     button?: true;
+    class?: string;
+    type?: string;
+    target?: Target;
   }
 
-  export let color: keyof typeof COLOR = 'default';
+  export let color: Color = 'default';
   export let href: string;
   export let button = false;
+  export let type: string | undefined = undefined;
+  export let target: Target | undefined = undefined;
 </script>
 
 <a
   {href}
+  {type}
+  {target}
   on:click
   class=" rounded-md px-3 py-2 text-sm shadow-sm {(button
     ? BUTTON_COLOR
-    : COLOR)[color]}"
+    : COLOR)[color]} {$$restProps.class ?? ''}"
   class:text-center={button}
 >
   <slot>Link to somewhere</slot>

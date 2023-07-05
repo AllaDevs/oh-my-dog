@@ -2,18 +2,10 @@ import { prisma } from '$lib/server/prisma';
 import type { PageServerLoad } from './$types';
 
 
-export const load = (async ({ params, url }) => {
+export const load = (async (event) => {
+    const subsidiaries = await prisma.subsidiary.findMany();
 
-    const subsidiaries = await prisma.subsidiary.findMany({
-        select: {
-            id: true,
-            location: true,
-            address: true,
-            name: true,
-            workingHour: true,
-            // phone: true
-        }
-    });
-
-    return { subsidiaries };
+    return {
+        subsidiaries
+    };
 }) satisfies PageServerLoad;

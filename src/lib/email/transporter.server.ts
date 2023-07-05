@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { logError } from '$lib/server/utils';
+import { logError } from '$lib/server/logging';
 import { createTransport } from 'nodemailer';
 import type SMTPConnection from 'nodemailer/lib/smtp-connection';
 
@@ -81,4 +81,30 @@ export async function systemEmail(to: EmailAddress, subject: string, text: strin
         logError('email', 'Unhandled error while sending email', error);
         throw new EmailError(EmailError.OTHER_ERROR, 'A problem occurred while sending the email');
     }
+}
+
+
+export async function logToEmail(reciverName: string, reciverEmail: string, logReason: string, data: unknown, logToConsole = true) {
+    let sData;
+    try {
+        sData = JSON.stringify(data, null, 2);
+    }
+    catch (error) {
+        logError('Internal', 'Error at stringifying data at logToEmail', error);
+        sData = "Error at stringifying data at logToEmail";
+    }
+
+    if (logToConsole) {
+        logError('LogToEmail', logReason, sData);
+    }
+
+    await systemEmail(
+        {
+            name: reciverName,
+            address: reciverEmail
+        },
+        logReason,
+        sData,
+        `<p>${sData}</p>`
+    );
 }

@@ -1,10 +1,38 @@
 import { Role } from '@prisma/client';
+import { logError, logInfo } from './logging';
 import { auth } from './lucia';
 import { prisma } from './prisma';
 
 
-export function logError(source: string, message: string, error: unknown) {
-    console.error(`[${source}] ${message}\n`, error);
+export async function registerAdmin(name: string, password: string) {
+    try {
+        const finalEmail = `${name}@a.com`;
+        const admin = await prisma.admin.create({
+            data: {
+                firstname: name,
+                lastname: name + ' lastname',
+                email: finalEmail
+            }
+        });
+        const user = await auth.createUser({
+            primaryKey: {
+                providerId: 'email',
+                providerUserId: finalEmail,
+                password: password
+            },
+            attributes: {
+                userId: admin.id,
+                role: Role.ADMIN,
+                email: finalEmail
+            }
+        });
+        logInfo("Register Admin", `Success at creating admin account: ${finalEmail}`,);
+        return true;
+    }
+    catch (error) {
+        logError('Register Admin', 'Error at creating an admin account', error);
+        return false;
+    }
 }
 
 
@@ -44,38 +72,4 @@ export async function clearDB() {
         clearedModels,
         errors: errors.length ? errors : undefined
     } as ClearDBResult;
-}
-
-
-export async function registerAdmin(name?: string, password?: string) {
-    try {
-        const finalEmail = `${name ?? 'a'}@a.com`;
-        const finalPassword = password ?? 'adminadmin';
-        const finalName = name ?? 'default firstname';
-        const admin = await prisma.admin.create({
-            data: {
-                firstname: finalName,
-                lastname: name ?? 'default lastname',
-                email: finalEmail
-            }
-        });
-        const user = await auth.createUser({
-            primaryKey: {
-                providerId: 'email',
-                providerUserId: finalEmail,
-                password: finalPassword
-            },
-            attributes: {
-                userId: admin.id,
-                role: Role.ADMIN,
-                email: finalEmail
-            }
-        });
-        console.info("Success at creating admin account: ", finalName);
-        return true;
-    }
-    catch (error) {
-        logError('Register Admin', 'Error at creating an admin account', error);
-        return false;
-    }
 }

@@ -1,3 +1,4 @@
+import { CAMPAIGN_IMAGE_MAX_SIZE } from '$lib/config';
 import { DonationCampaignState } from '$lib/enums';
 import { donationCampaignRegisterSchema } from '$lib/schemas';
 import { uploadImage } from '$lib/server/cloudinary';
@@ -5,12 +6,9 @@ import { prisma } from '$lib/server/prisma';
 import { validateImage } from '$lib/utils/functions';
 import { Prisma, type DonationCampaign } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
-import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
-import { CAMPAIGN_IMAGE_MAX_SIZE } from '$lib/config';
 
-
-const initialFormData = defaultValues(donationCampaignRegisterSchema);
 
 export const load = (async (event) => {
     const form = await superValidate(donationCampaignRegisterSchema);
@@ -20,7 +18,7 @@ export const load = (async (event) => {
 
 
 export const actions = {
-    register: async ({ request, params }) => {
+    register: async ({ request }) => {
         const formData = await request.formData();
         const form = await superValidate(formData, donationCampaignRegisterSchema);
 
@@ -46,7 +44,7 @@ export const actions = {
                 if (error.code === "P2002") {
                     // TODO: check if the error is because of unique constraint?
                 }
-                return setError(form, '', 'Error con la base de datos al registrar el perro, intente mas tarde');
+                return setError(form, '', 'Error con la base de datos al registrar la campaña de donacion, intente mas tarde');
             }
             throw error;
         }
@@ -79,16 +77,12 @@ export const actions = {
         }
         catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                return setError(form, '', 'Ocurrio un error con la base de datos al subir las imagenes, carguelas mas tarde');
+                return setError(form, '', 'Ocurrio un error con la base de datos al subir la imagen, carguela mas tarde');
             }
 
             throw error;
         }
 
         throw redirect(303, `/vet/donation/campaign/${campaign.id}`);
-        // form.data = initialFormData;
-        // form.data.banner = undefined;
-
-        // return { form };
     }
 } satisfies Actions;

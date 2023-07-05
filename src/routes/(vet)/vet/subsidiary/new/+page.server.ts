@@ -1,23 +1,13 @@
 import { subsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
-import { workingHourSchema } from '$lib/schemas/workingHourSchema';
 import { prisma } from '$lib/server/prisma';
-import { validateWorkingHours } from '$lib/utils/functions';
 import { fail, redirect } from '@sveltejs/kit';
-import { defaultValues, message, superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 
-const initialFormData = {
-    workingHour: [defaultValues(workingHourSchema)]
-};
-
-
 export const load = (async (event) => {
-
     const form = await superValidate(
-        initialFormData,
-        subsidiaryCompleteRegisterSchema,
-        { errors: false }
+        subsidiaryCompleteRegisterSchema
     );
 
     return { form };
@@ -31,30 +21,28 @@ export const actions = {
             console.error(form);
             return fail(400, { form });
         }
-
-        const workingHours = validateWorkingHours(form.data.workingHour, form, (i) => `workingHour[${i}]`);
-        if (!form.valid) {
-            return fail(400, { form });
-        }
-
+        
         try {
-            const newProvider = await prisma.subsidiary.create({
+            const [latitude, longitude] = form.data.location.replaceAll(/[()]/g, '').split(", ");
+
+            const newSubsidiary = await prisma.subsidiary.create({
                 data: {
                     name: form.data.name,
-                    location: { latitude: parseFloat(form.data.location.split(", ")[0]), longitude: parseFloat(form.data.location.split(", ")[1]) },
+                    location: {
+                        autocompletedAddress: form.data.autocompletedAddress,
+                        latitude: Number(latitude),
+                        longitude: Number(longitude),
+                    },
                     address: form.data.address,
-                    workingHour: {
-                        create: workingHours
-                    }
+                    workHours: form.data.workHours
                 }
             });
         }
         catch (error) {
             console.error(error);
-            return message(form, "Creación fallida", { status: 400 });
+            return setError(form, '', 'Error al crear la sucursal');
         };
 
-        throw redirect(300, "/vet/subsidiary");
-
+        throw redirect(303, "/vet/subsidiary");
     }
 } satisfies Actions;

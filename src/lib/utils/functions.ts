@@ -1,4 +1,4 @@
-import type { Breed } from '@prisma/client';
+import type { Breed, Subsidiary } from '@prisma/client';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { FieldPath, FormPathLeaves, SuperValidated, UnwrapEffects } from 'sveltekit-superforms/index';
 import { setError } from 'sveltekit-superforms/server';
@@ -196,4 +196,24 @@ export function getYMDAR(date: Date) {
 
 export function friendlyDate(date: Date): string {
     return date.toLocaleString();
+}
+
+export function friendlyDateARG(date: Date): string {
+    return date.toLocaleString('es-AR');
+}
+
+
+export function subsidiariesToMarks(subsidiaries: Subsidiary[]) {
+    let marks = [];
+    for (const subsidiary of subsidiaries) {
+        marks.push({
+            position: {
+                lat: subsidiary.location.latitude,
+                lng: subsidiary.location.longitude,
+            },
+            title: subsidiary.name,
+            label: subsidiary.name,
+        });
+    }
+    return marks satisfies google.maps.MarkerOptions[];
 }

@@ -3,8 +3,8 @@ import type { accountAuthUpdateSchema } from '$lib/schemas';
 import { Lucia, auth } from '$lib/server/lucia';
 import type { Validation } from 'sveltekit-superforms';
 import { setError } from 'sveltekit-superforms/server';
+import { logError } from './logging';
 import { prisma } from './prisma';
-import { logError } from './utils';
 
 
 export function redirectToLogin(

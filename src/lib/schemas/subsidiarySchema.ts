@@ -1,22 +1,26 @@
 import { z } from 'zod';
-import { workingHourSchema } from './workingHourSchema';
+import { c } from './commonSchema';
 
 
 const subsidiaryBaseSchema = z.object({
-    name: z.string(),
-    location: z.string(),
-    address: z.string()
+    name: c.onlyWordSequenceSchema,
+    address: z.string().nonempty(),
+    workHours: z.string().nonempty(),
 });
 
-
-export const subsidiaryRegisterSchema = subsidiaryBaseSchema;
+export const subsidiaryRegisterSchema = subsidiaryBaseSchema.extend({
+    location: z.string(),
+});
 export type SubsidiaryRegisterSchema = typeof subsidiaryRegisterSchema;
 
-export const subsidiaryUpdateSchema = subsidiaryBaseSchema.extend({
-    workingHour: z.array(workingHourSchema).min(1),
-});
-
-export const subsidiaryCompleteRegisterSchema = subsidiaryRegisterSchema.extend({
-    workingHour: workingHourSchema.array().min(1)
+export const subsidiaryCompleteRegisterSchema = subsidiaryBaseSchema.extend({
+    autocompletedAddress: z.string().nonempty(),
+    location: z.string(),
 });
 export type SubsidiaryCompleteRegisterSchema = typeof subsidiaryCompleteRegisterSchema;
+
+export const subsidiaryUpdateSchema = subsidiaryBaseSchema.extend({
+    autocompletedAddress: z.string().nonempty(),
+    location: z.string(),
+});
+export type SubsidiaryUpdateSchema = typeof subsidiaryUpdateSchema;

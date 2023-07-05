@@ -1,18 +1,32 @@
 <script lang="ts">
+  import A from '$cmp/element/A.svelte';
   import Button from '$cmp/element/Button.svelte';
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
+  import TextAreaInput from '$cmp/form/TextAreaInput.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
+  import AutocomplePlace from '$cmp/google_maps/AutocomplePlace.svelte';
+  import Map from '$cmp/google_maps/Map.svelte';
   import Page from '$cmp/layout/Page.svelte';
-  import WorkingHourRegisterCard from '$cmp/subsidiary/WorkingHourRegisterCard.svelte';
-  import { fieldValueCloner } from '$lib/utils/functions.js';
-  import { onMount } from 'svelte';
+  import type { ComponentEvents } from 'svelte';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
 
+  const mapInitialOpts = {
+    center: { lat: -34.92945, lng: -57.93453 },
+    zoom: 12,
+  };
+
   const registerSForm = superForm(data.form, {
-    dataType: 'json',
+    onSubmit(input) {
+      if (!$form.location) {
+        toast.error('La ubicacion ingresada es invalida, prueba con otra', {
+          duration: 5000,
+        });
+        input.cancel();
+      }
+    },
     onError: (error) => {
       toast.error(String(error.message));
     },
@@ -24,153 +38,102 @@
       }
     },
   });
-  const { form: registerData, errors } = registerSForm;
-
-  const cloneHourDefault = fieldValueCloner($registerData, ['workingHour', 0]);
-
-  function addWorkingHour() {
-    $registerData.workingHour.push(cloneHourDefault());
-    $registerData.workingHour = $registerData.workingHour;
-  }
-
-  function removeWorkingHour(index: number) {
-    $registerData.workingHour.splice(index, 1);
-    $registerData.workingHour = $registerData.workingHour;
-  }
-
-  let actualInput: HTMLInputElement;
-  let card: HTMLDivElement;
-  let container: HTMLDivElement;
-  let map: google.maps.Map;
-  let zoom = 13;
-  let center = { lat: -34.92945, lng: -57.93453 };
-  let lastLoc: string;
-  let mounted = false;
-
-  onMount(() => {
-    mounted = true;
-  });
-
-  $: if (mounted && google) initMap();
-
-  function initMap() {
-    map = new google.maps.Map(container, {
-      zoom,
-      center,
-    });
-    // Make the search bar into a Places Autocomplete search bar and select
-    // which detail fields should be returned about the place that
-    // the user selects from the suggestions.
-    const autocomplete = new google.maps.places.Autocomplete(actualInput, {
-      types: ['address'],
-      componentRestrictions: { country: 'ar' },
-    });
-
-    autocomplete.setFields(['address_components', 'geometry', 'name']);
-
-    // Set the origin point when the user selects an address
-    const originMarker = new google.maps.Marker({ map: map });
-    originMarker.setVisible(false);
-    let originLocation = map.getCenter();
-
-    autocomplete.addListener('place_changed', async () => {
-      originMarker.setVisible(false);
-      originLocation = map.getCenter();
-      const place = autocomplete.getPlace();
-
-      if (!place.geometry) {
-        // User entered the name of a Place that was not suggested and
-        // pressed the Enter key, or the Place Details request failed.
-        window.alert("No existe la ubicación: '" + place.name + "'");
-        return;
-      }
-
-      // Recenter the map to the selected address
-      originLocation = place.geometry.location!;
-      lastLoc = originLocation.toString();
-      map.setCenter(originLocation);
-      map.setZoom(14);
-
-      originMarker.setPosition(originLocation);
-      originMarker.setVisible(true);
-
-      return;
-    });
-  }
 
   let form = registerSForm.form;
-  $: $form.location = lastLoc?.replace('(', '').replace(')', '');
+  let mapController: google.maps.Map;
+  let initAutocomple: (map?: google.maps.Map) => Promise<void>;
+
+  function onPlaceChange(
+    e: ComponentEvents<AutocomplePlace<boolean>>['place_change']
+  ) {
+    const place = e.detail.place;
+    // If place doesn't have geometry means it's not a valid place
+    if (!place.geometry) {
+      $form.location = '';
+      return;
+    }
+
+    let newLocation = place.geometry.location!.toString();
+    // map google map location to `${lat}, ${lng}` format
+    $form.location = newLocation.replace('(', '').replace(')', '');
+  }
 </script>
 
 <svelte:head>
   <title>Nueva sucursal</title>
 </svelte:head>
 
-<Page>
-  <div class="mt-10 mb-3 ml-12">
-    <h3 class="text-3xl font-semibold text-gray-900">Registro de Sucursal</h3>
-  </div>
+<Page
+  classContainer="container mx-auto max-w-screen-xl p-4 scrollbar"
+  classHeaderSlot="flex flex-col w-full justify-between md:flex-row"
+  classContentSlot="mt-2 px-4 relative text-gray-900 flex flex-col mb-8"
+>
+  <svelte:fragment slot="pageHeader">
+    <h2 class=" mt-[1em] text-2xl md:text-3xl text-gray-900 font-semibold">
+      Registro de sucursal
+    </h2>
+    <div class="mt-2 mb-1 md:mt-0 md:self-end">
+      <A href="/vet/subsidiary" color="default" button>
+        Volver a las sucursales
+      </A>
+    </div>
+  </svelte:fragment>
 
-  <main class=" container flex flex-col gap-4 p-4 lg:max-w-screen-lg mx-auto">
-    <form method="POST" class=" mt-2 py-4" use:registerSForm.enhance>
-      <div class="mt-6">
-        <h3 class="text-xl font-semibold text-gray-900">
-          Seleccione la ubicación de la sucursal
-        </h3>
-        <div class="h-[50vh] w-[52.7vw] mt-7 mb-7" bind:this={container} />
-      </div>
-      <div class=" pb-4 flex flex-col gap-4">
-        <FieldGroup cols="2">
-          <svelte:fragment slot="title">
-            <h3 class=" text-xl font-semibold text-gray-900">Nueva sucursal</h3>
-          </svelte:fragment>
-          <svelte:fragment slot="fields">
-            <TextInput label="Nombre" field="name" form={registerSForm} />
-            <TextInput
-              label="Dirección detallada"
-              field="address"
-              hint="Descripción breve"
-              form={registerSForm}
-            />
-            <input
-              bind:this={actualInput}
-              type="text"
-              id="pac-input"
-              name="pac-input"
-              placeholder="Dirección en el mapa"
-              required
-              class=" mt-2 block w-full rounded-md border-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-            />
-            <div class="hidden">
-              <TextInput
-                label="Ubicación"
-                field="location"
-                form={registerSForm}
-              />
-            </div>
-          </svelte:fragment>
-          <svelte:fragment slot="actions" />
-        </FieldGroup>
-        {#each $registerData.workingHour as _, i}
-          <WorkingHourRegisterCard
-            sForm={registerSForm}
-            index={i}
-            title="Nueva franja {$registerData.workingHour.length > 1
-              ? i + 1
-              : ''}"
-            allowRemoval={i > 0}
-            on:remove={() => removeWorkingHour(i)}
+  <section
+    class="mt-4 grid grid-rows-2 md:grid-rows-1 md:grid-cols-3 gap-4 md:gap-2 lg:gap-4 xl:gap-8 flex-1"
+  >
+    <form method="POST" action="?/register" use:registerSForm.enhance>
+      <FieldGroup cols="1">
+        <svelte:fragment slot="title">
+          <h3 class=" text-xl font-semibold text-gray-900">
+            Informacion de la sucursal
+          </h3>
+        </svelte:fragment>
+        <svelte:fragment slot="fields">
+          <TextInput label="Nombre" field="name" form={registerSForm} />
+          <AutocomplePlace
+            field="autocompletedAddress"
+            label="Ubicacion"
+            bind:value={$form.autocompletedAddress}
+            required
+            enableMarker
+            centerOnInput
+            bind:initAutocomple
+            on:place_change={onPlaceChange}
           />
-        {/each}
-      </div>
-      <div class="mt-6 flex items-center justify-around">
-        <Button on:click={addWorkingHour} color="primary">
-          Agregar otra franja horaria
-        </Button>
-        <Button type="submit" formaction="?/register" color="primary">
-          Registrar sucursal
-        </Button>
-      </div>
+          <TextInput
+            label="Descripcion sobre la ubicacion (breve)"
+            field="address"
+            form={registerSForm}
+          />
+          <TextAreaInput
+            label="Horarios"
+            field="workHours"
+            form={registerSForm}
+          />
+          <div class="hidden">
+            <TextInput
+              label="Ubicación"
+              field="location"
+              form={registerSForm}
+              required={false}
+            />
+          </div>
+        </svelte:fragment>
+        <svelte:fragment slot="actions">
+          <Button type="submit" color="primary">Registrar sucursal</Button>
+        </svelte:fragment>
+      </FieldGroup>
     </form>
-  </main>
+
+    <div
+      class="col-span-1 row-span-1 md:row-span-1 md:col-span-2 relative flex flex-col"
+    >
+      <Map
+        initialOpts={mapInitialOpts}
+        bind:mapController
+        on:initialized={(e) => initAutocomple(e.detail.mapController)}
+      />
+    </div>
+  </section>
 </Page>

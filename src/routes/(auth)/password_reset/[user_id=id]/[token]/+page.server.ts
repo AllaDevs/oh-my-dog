@@ -1,7 +1,7 @@
 import { c } from '$lib/schemas';
+import { logError } from '$lib/server/logging';
 import { auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
-import { logError } from '$lib/server/utils';
 import type { AuthPasswordRecovery } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { error, fail, redirect } from '@sveltejs/kit';
