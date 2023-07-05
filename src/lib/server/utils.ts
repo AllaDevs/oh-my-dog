@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from '$lib/enums';
 import { logError, logInfo } from './logging';
 import { auth } from './lucia';
 import { prisma } from './prisma';

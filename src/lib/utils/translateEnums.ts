@@ -1,5 +1,4 @@
-import { AppointmentReason, AppointmentState, Day, Daytime, DogSex, DogSize, DonationReason } from '$lib/enums';
-import { DogServiceType } from '@prisma/client';
+import { AppointmentReason, AppointmentState, Day, Daytime, DogServiceType, DogSex, DogSize, DonationReason } from '$lib/enums';
 
 
 class EnumTranslationError extends Error {
