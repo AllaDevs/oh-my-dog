@@ -1,16 +1,26 @@
+import { dev } from '$app/environment';
 import { friendlyDate, friendlyDateARG } from '$lib/utils/functions';
 import { te } from '$lib/utils/translateEnums';
 import type { Breed, Client, MedicalRecord, RegisteredDog } from '@prisma/client';
 import blobStream, { type IBlobStream } from 'blob-stream';
 import PdfPrinter from 'pdfmake';
 import type { Content, ContentColumns, Style, StyleDictionary, TDocumentDefinitions, TFontDictionary } from 'pdfmake/interfaces';
+import { logoBase64 } from './logo';
 import { reusableContent } from './utils';
 
 
 const fonts: TFontDictionary = {
     Inter: {
-        normal: 'src/lib/pdf/assets/Inter-Regular.ttf',
-        bold: 'src/lib/pdf/assets/Inter-Bold.ttf',
+        normal: (
+            dev
+                ? 'static/fonts/Inter-Regular.ttf'
+                : './fonts/Inter-Regular.ttf'
+        ),
+        bold: (
+            dev
+                ? 'static/fonts/Inter-Bold.ttf'
+                : './fonts/Inter-Bold.ttf'
+        ),
     },
 };
 
@@ -59,7 +69,7 @@ function vetPDFHeader(title = 'Historial medico canino') {
         columns: [
             {
                 width: 64,
-                image: 'src/lib/pdf/assets/logo.png',
+                image: dev ? 'static/ohmydog_logo.png' : logoBase64,
             },
             {
                 width: '*',
