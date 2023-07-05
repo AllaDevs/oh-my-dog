@@ -54,6 +54,7 @@ const pdfStyles = {
 
 
 function vetPDFHeader(title = 'Historial medico canino') {
+    const [date, time] = friendlyDateARG(new Date()).split(', ');
     return {
         columns: [
             {
@@ -66,8 +67,8 @@ function vetPDFHeader(title = 'Historial medico canino') {
             },
             {
                 width: 64,
-                text: `Emitido ${friendlyDateARG(new Date()).split(',')[0]}`,
-                marginTop: 16,
+                text: `Emitido ${time} ${date}`,
+                marginTop: 8,
                 fontSize: 10,
                 alignment: 'right',
             }
@@ -208,8 +209,8 @@ export async function genDogsMedicalRecordPDF(client: ClientData): Promise<Blob>
         styles: pdfStyles,
         defaultStyle: pdfDefaultStyle,
         info: {
-            title: `Historiales medicos de los perros del ${client.firstname} ${client.lastname}`,
-            subject: `Este documento contiene la informacion medica de los perros del ${client.firstname} ${client.lastname} tanto asi como sus historiales medicos y la informacion de contacto del dueño.`,
+            title: `Historiales medicos de los perros de ${client.firstname} ${client.lastname}`,
+            subject: `Este documento contiene la informacion medica de los perros de ${client.firstname} ${client.lastname} tanto asi como sus historiales medicos y la informacion de contacto del dueño.`,
             author: `Veterinaria ¡Oh my dog!`,
             creator: `Veterinaria ¡Oh my dog!`,
             producer: `Veterinaria ¡Oh my dog!`,

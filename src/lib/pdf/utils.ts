@@ -3,7 +3,6 @@ import type { Content } from 'pdfmake/interfaces';
 
 export const reusableContent = {
     'hLine': {
-        decorationColor: 'red',
         table: {
             headerRows: 1,
             widths: '*',

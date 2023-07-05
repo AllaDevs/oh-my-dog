@@ -19,7 +19,7 @@ export const mp = mercadopago as MercadoPago;
 
 
 async function listPaymentMethods() {
-    console.log((await mp.payment_methods.listAll()).body.map(p => ({
+    console.info((await mp.payment_methods.listAll()).body.map(p => ({
         id: p.id,
         payment_type_id: p.payment_type_id,
         status: p.status

@@ -1,9 +1,9 @@
+import { dev } from '$app/environment';
 import { Role } from '$lib/enums';
 import { genDogMedicalRecordPDF } from '$lib/pdf';
+import { prisma } from '$lib/server/prisma';
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { dev } from '$app/environment';
-import { prisma } from '$lib/server/prisma';
 
 
 export const GET = (async ({ locals, params, setHeaders }) => {
@@ -32,11 +32,14 @@ export const GET = (async ({ locals, params, setHeaders }) => {
 
     const pdf = await genDogMedicalRecordPDF(dog);
 
+    const filename = `${dog.owner.lastname.toUpperCase()}_omd_hm_${Date.now()}.pdf`;
+
     setHeaders({
         'Content-Type': 'application/pdf',
         'Content-Length': pdf.size.toString(),
         'Last-Modified': new Date().toUTCString(),
-        'Cache-Control': `public, max-age=${dev ? 500 : 30_000}`,
+        'Cache-Control': `private, max-age=${dev ? 2 : 60}`,
+        'Content-Disposition': `attachment; filename="${filename}"`
     });
 
     return new Response(pdf);
