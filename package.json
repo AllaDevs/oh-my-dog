@@ -45,6 +45,7 @@
         "@types/mercadopago": "^1.5.8",
         "@types/pdfmake": "^0.2.2",
         "cloudinary": "^1.36.4",
+        "date-fns": "^2.30.0",
         "flowbite": "^1.6.5",
         "flowbite-svelte": "^0.37.2",
         "lucia-auth": "^1.5.0",

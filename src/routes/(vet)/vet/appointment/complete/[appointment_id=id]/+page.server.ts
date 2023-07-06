@@ -1,7 +1,9 @@
-import { AppointmentState } from '$lib/enums';
+import { autoProgramedAppointmentHTML, systemEmail } from '$lib/email';
+import { AppointmentReason, AppointmentState } from '$lib/enums';
 import { prisma } from '$lib/server/prisma';
-import { AppointmentReason } from '@prisma/client';
+import { friendlyDateARG } from '$lib/utils/functions';
 import { error, fail, redirect } from '@sveltejs/kit';
+import { addDays, addYears, isAfter, subMonths } from 'date-fns';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
@@ -13,17 +15,12 @@ const schema = z.object({
 });
 
 
-export const load = (async ({ locals, params, url }) => {
+export const load = (async ({ params }) => {
     const appointment = await prisma.appointment.findUnique({
         where: {
             id: params.appointment_id
         },
-        select: {
-            id: true,
-            date: true,
-            daytime: true,
-            state: true,
-            reason: true,
+        include: {
             client: {
                 select: {
                     id: true,
@@ -32,11 +29,10 @@ export const load = (async ({ locals, params, url }) => {
             }
         }
     });
-
     if (!appointment) {
         throw error(404, 'Appointment not found');
     }
-    if (appointment.state != AppointmentState.CONFIRMED) {
+    if (appointment.state !== AppointmentState.CONFIRMED) {
         throw error(404, 'Appointment not valid');
     }
 
@@ -46,15 +42,14 @@ export const load = (async ({ locals, params, url }) => {
 }) satisfies PageServerLoad;
 
 
-export const actions: Actions = {
-    default: async ({ request, locals, params, url }) => {
+export const actions = {
+    default: async ({ request, locals, params }) => {
         const form = await superValidate(request, schema);
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
-        // Si el turno es para vacuna y tiene menos de cuatro meses, se da un turno dentro de 21 días exacto, creandolo y mandando mail al cliente
-        // Si el turno es para vacuna y el perro tiene mas de cuatro meses, se da un turno dentro de un año exacto, creandolo y mandando mail al cliente
+
         const appointment = await prisma.appointment.update({
             where: {
                 id: params.appointment_id
@@ -62,16 +57,18 @@ export const actions: Actions = {
             data: {
                 state: AppointmentState.DONE
             },
-            select: {
-                date: true,
-                daytime: true,
-                reason: true,
-                dogId: true,
-                clientId: true,
+            include: {
                 dog: {
                     select: {
                         id: true,
-                        birthdate: true
+                        name: true,
+                        birthdate: true,
+                    }
+                },
+                client: {
+                    select: {
+                        firstname: true,
+                        email: true,
                     }
                 }
             }
@@ -86,30 +83,41 @@ export const actions: Actions = {
             }
         });
 
-        if (appointment.reason == AppointmentReason.VACCINE) {
-            // Si el turno es para vacuna y el perro tiene mas de cuatro meses, se da un turno dentro de un año exacto, creandolo y mandando mail al cliente
+        // Si el turno es para vacuna:
+        // - Si tiene menos de cuatro meses, se da un turno dentro de 21 días exacto
+        // - Sino se da un turno dentro de un año exacto
+        // Se notifica al cliente por mail
+        if (appointment.reason === AppointmentReason.VACCINE) {
             const today = new Date();
-            today.setMonth(today.getMonth() - 4);
-            let newAppointmentDate: Date;
-            if (appointment.dog.birthdate.getTime() > today.getTime()) {
-                newAppointmentDate = new Date(appointment.date.getFullYear() + 1, appointment.date.getMonth(), appointment.date.getDate());
-            } else {
-                newAppointmentDate = new Date(appointment.date.getFullYear(), appointment.date.getMonth(), appointment.date.getDate());
-                newAppointmentDate.setDate(newAppointmentDate.getDate() + 21);
-            }
+            const fourMonthsAgo = subMonths(today, 4);
+            const newAppointmentDate = (
+                isAfter(appointment.dog.birthdate, fourMonthsAgo)
+                    ? addDays(today, 21)
+                    : addYears(today, 1)
+            );
+
             const newAppointment = await prisma.appointment.create({
                 data: {
                     date: newAppointmentDate,
                     daytime: appointment.daytime,
-                    reason: AppointmentReason.GENERAL_CONSULTATION,
+                    reason: AppointmentReason.VACCINE,
                     state: AppointmentState.CONFIRMED,
                     dogId: appointment.dogId,
                     clientId: appointment.clientId
                 }
             });
+
+            await systemEmail(
+                {
+                    name: appointment.client.firstname,
+                    address: appointment.client.email
+                },
+                'Turno auto programado',
+                `Se ha programado un turno de vacuna para ${appointment.dog.name} el día ${friendlyDateARG(newAppointment.date)} a la ${newAppointment.daytime}.`,
+                autoProgramedAppointmentHTML(appointment.client.firstname, appointment.dog.name, appointment.reason, friendlyDateARG(newAppointment.date).split(',')[0], newAppointment.daytime)
+            );
         }
 
         throw redirect(303, '/vet/appointment');
-
     }
-};
+} satisfies Actions;

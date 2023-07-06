@@ -36,3 +36,10 @@ export default defineConfig({
 ## google maps notes
 
 [Errors list](https://developers.google.com/maps/documentation/javascript/error-messages)
+
+
+## pdf generation
+
+[https://github.com/bpampuch/pdfmake/issues/2460](https://github.com/bpampuch/pdfmake/issues/2460)
+
+In order to use the Blob for the pdf generation must be running on node 18.0.0 or higher if using the global `Blob` object, if using node 16.0.0 or higher must use the `Blob` object from the `node:buffer` (idk if works i didnt tested it). Check the running enviroment with `node -v` command or process.version.
