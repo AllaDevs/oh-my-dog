@@ -1,6 +1,8 @@
+import type { AppointmentReason, Daytime } from '$lib/enums';
 import type { ComponentProps, SvelteComponent } from 'svelte';
 import EmailAdoptionContact from './templates/EmailAdoptionContact.svelte';
 import EmailAdoptionContactConfirmation from './templates/EmailAdoptionContactConfirmation.svelte';
+import EmailAutoProgramedAppointment from './templates/EmailAutoProgramedAppointment.svelte';
 import EmailCancelledAppointment from './templates/EmailCancelledAppointment.svelte';
 import EmailChangedAppointment from './templates/EmailChangedAppointment.svelte';
 import EmailClientToProvider from './templates/EmailClientToProvider.svelte';
@@ -73,6 +75,11 @@ export function clientToProviderHTML(firstname: string, lastname: string, provid
     return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
 }
 
+export function autoProgramedAppointmentHTML(firstname: string, dogname: string, reason: AppointmentReason, date: string, daytime: Daytime) {
+    const r = (EmailAutoProgramedAppointment as unknown as Renderable<EmailAutoProgramedAppointment>).render({ firstname, dogname, reason, date, daytime });
+    return r.html.replace('</head>', `<style>${r.css.code}</style></head>`);
+}
+
 export default {
     newAccountHTML,
     resetPasswordHTML,
@@ -82,4 +89,5 @@ export default {
     rejectedAppoinmentHTML,
     changedAppoinmentHTML,
     adoptionContactConfirmHTML,
+    autoProgramedAppointmentHTML,
 };

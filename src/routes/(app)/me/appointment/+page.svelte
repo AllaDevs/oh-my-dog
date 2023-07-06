@@ -35,8 +35,9 @@
 >
   <div class="flex flex-row justify-between mb-7 mt-7">
     <h2 class=" mt-4 text-2xl">Mis turnos</h2>
-    <A href="./appointment/request" color="primary" button={true}>Pedir turno</A
-    >
+    <div class="self-end">
+      <A href="./appointment/request" color="primary" button>Pedir turno</A>
+    </div>
   </div>
   {#if !data.clientAppointments || data.clientAppointments.length == 0}
     <p class="text-2xl font-semibold text-gray-900 text-center">

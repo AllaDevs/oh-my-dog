@@ -68,7 +68,7 @@
         </li>
       {/each}
       {#if data.dogs.length}
-        <li class="flex justify-around mt-4">
+        <li class=" mx-auto mt-4">
           <A
             href="/api/pdf/client/{data.me.id}"
             type="application/pdf"
@@ -76,7 +76,7 @@
             color="primary"
             button
           >
-            Historiales medicos en PDF
+            Descargar historiales medicos
           </A>
         </li>
       {/if}

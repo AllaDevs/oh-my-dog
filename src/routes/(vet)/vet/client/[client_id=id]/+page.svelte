@@ -111,7 +111,7 @@
             color="primary"
             button
           >
-            Historiales medicos en PDF
+            Descargar historiales medicos
           </A>
         </li>
       {/if}
