@@ -142,7 +142,7 @@
               </p>
               {#if donation.reason === DonationReason.CAMPAIGN}
                 <A
-                  href="/vet/campaign/{donation.campaingId}"
+                  href="/vet/donation/campaign/{donation.campaingId}"
                   color="primary"
                   button
                 >
