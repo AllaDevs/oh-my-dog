@@ -3,6 +3,7 @@
   import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { DonationReason } from '$lib/enums.js';
+  import { friendlyDateARG } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
 
   export let data;
@@ -31,31 +32,44 @@
   <section>
     <h3 class=" text-xl mt-4">Mis perros</h3>
     <ul
-      class=" mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-1 xl:grid-cols-2"
+      class=" mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
     >
       {#each data.dogs as dog}
-        <li
-          class=" flex min-h-full transition-transform hover:scale-105 justify-around rounded border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50"
-        >
-          <div class=" flex flex-col">
-            {#if dog.image}
-              <img
-                src={dog.image.url}
-                alt="Foto de {dog.name}"
-                class="rounded-full w-24 h-24 mx-auto"
-              />
-            {/if}
-            <p class="text-center text-lg font-semibold">{dog.name}</p>
-          </div>
-          <div class=" flex flex-col justify-around">
-            <A href="/me/dog/{dog.id}" color="primary" button>Ver perfil</A>
-            <A
-              href="/me/appointment/request?dog_id={dog.id}"
-              color="primary"
-              button
-            >
-              Solicitar turno
-            </A>
+        <li>
+          <div
+            class="max-w-[24rem] flex gap-4 min-h-full transition-transform border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50 bg-teal-100 rounded-lg"
+          >
+            <img
+              class="rounded-full object-cover w-24 h-24 min-w-[6rem] min-h-[6rem] my-auto"
+              src={dog.image?.url ?? '/dog_silhouette.png'}
+              alt="dog"
+            />
+            <div class=" flex w-full flex-col gap-2">
+              <h4 class="font-bold">
+                {dog.name}
+              </h4>
+              <p class="break-all line-clamp-2">
+                Nacido el {friendlyDateARG(dog.birthdate).split(',')[0]}
+              </p>
+              <div class=" flex flex-col gap-2 justify-between">
+                <A
+                  href="/me/dog/{dog.id}"
+                  color={dog.archived ? 'default' : 'primary'}
+                  button
+                >
+                  Ver perfil
+                </A>
+                {#if !dog.archived}
+                  <A
+                    href="/me/appointment/request?dog_id={dog.id}"
+                    color="primary"
+                    button
+                  >
+                    Solicitar turno
+                  </A>
+                {/if}
+              </div>
+            </div>
           </div>
         </li>
       {:else}
