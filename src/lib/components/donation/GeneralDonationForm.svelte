@@ -1,7 +1,7 @@
 <script lang="ts">
   import Button from '$cmp/element/Button.svelte';
   import FieldGroup from '$cmp/form/FieldGroup.svelte';
-  import TextInput from '$cmp/form/TextInput.svelte';
+  import IntegerInput from '$cmp/form/IntegerInput.svelte';
   import type { GeneralDonationSchema } from '$lib/schemas';
   import type { SuperForm } from 'sveltekit-superforms/client';
 
@@ -23,7 +23,7 @@
 
     <svelte:fragment slot="fields">
       <div class="flex gap-4">
-        <TextInput form={sForm} field="amount" label="Monto" />
+        <IntegerInput form={sForm} field="amount" label="Monto" />
         <div class=" mt-[2.25rem]">
           <Button type="submit" color="primary">Donar</Button>
         </div>
