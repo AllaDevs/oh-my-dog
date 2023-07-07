@@ -1,7 +1,7 @@
 import { subsidiaryCompleteRegisterSchema } from '$lib/schemas/subsidiarySchema';
 import { prisma } from '$lib/server/prisma';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { message, superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 
@@ -40,7 +40,7 @@ export const actions = {
         }
 
         try {
-            const [latitude, longitude] = form.data.location.replaceAll(/[()]/g, '').split(", ");
+            const [latitude, longitude] = form.data.location.replaceAll(/[()]/g, '').split(",");
 
             const subsidiary = await prisma.subsidiary.update({
                 where: {
@@ -50,9 +50,11 @@ export const actions = {
                     name: form.data.name,
                     address: form.data.address,
                     location: {
-                        autocompletedAddress: form.data.autocompletedAddress,
-                        latitude: Number(latitude),
-                        longitude: Number(longitude),
+                        update: {
+                            autocompletedAddress: form.data.autocompletedAddress,
+                            latitude: Number(latitude.trim()),
+                            longitude: Number(longitude.trim()),
+                        }
                     },
                     workHours: form.data.workHours
                 }
@@ -60,7 +62,7 @@ export const actions = {
         }
         catch (error) {
             console.error(error);
-            return message(form, "Actualizacion fallida", { status: 400 });
+            return setError(form, '', 'Error al actualizar la sucursal');
         };
 
         throw redirect(300, "/vet/subsidiary");
@@ -78,7 +80,7 @@ export const actions = {
         }
         catch (error) {
             console.error(error);
-            return fail(400, { form });
+            return fail(400);
         }
 
         throw redirect(303, '/vet/subsidiary');;

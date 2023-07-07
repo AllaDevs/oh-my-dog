@@ -102,7 +102,7 @@
             on:place_change={onPlaceChange}
           />
           <TextInput
-            label="Descripcion sobre la ubicacion (breve)"
+            label="Descripcion de la ubicacion (breve)"
             field="address"
             form={registerSForm}
           />

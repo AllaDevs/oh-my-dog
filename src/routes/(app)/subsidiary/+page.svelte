@@ -99,7 +99,7 @@
         class="flex md:grid gap-4 mb-auto overflow-y-auto scrollbar py-4 md:py-0 px-4"
       >
         {#each data.subsidiaries as subsidiary}
-          <li class=" min-w-max h-max">
+          <li class=" w-full h-max">
             <SubsidiaryCardPreview {subsidiary} on:relocate={relocate} />
           </li>
         {:else}
