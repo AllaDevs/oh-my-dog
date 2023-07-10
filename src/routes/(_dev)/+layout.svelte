@@ -1,16 +1,15 @@
 <script lang="ts">
   import Header from '$cmp/layout/Header.svelte';
   import Layout from '$cmp/layout/Layout.svelte';
-  import Page from '$cmp/layout/Page.svelte';
 
   const BASEPATH = '/dev';
 
   const navLinks = [
     { href: `/`, text: 'Site home' },
-    { href: `/dev`, text: 'Home' },
+    { href: `/dev`, text: 'Admin home' },
     { href: `/dev/vet`, text: 'Vets' },
+    { href: `/dev/client`, text: 'Clients' },
     { href: `/dev/breed`, text: 'Breeds' },
-    // { href: `/dev/client`, text: 'Clients' },
     // { href: `/dev/dog`, text: 'Dogs' },
     // { href: `/dev/services`, text: 'Services' },
   ];
@@ -31,14 +30,8 @@
     </Header>
   </svelte:fragment>
 
-  <Page classContainer="overflow-y-auto scrollbar">
-    <slot />
-  </Page>
-
   <svelte:fragment slot="main">
-    <Page classContainer="overflow-y-auto scrollbar">
-      <slot />
-    </Page>
+    <slot />
   </svelte:fragment>
 
   <!-- <svelte:fragment slot="footer">

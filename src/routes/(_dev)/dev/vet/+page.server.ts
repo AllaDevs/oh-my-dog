@@ -8,33 +8,43 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
 
-const schema = z.object({
+const registerSchema = z.object({
     firstname: c.firstnameSchema,
     lastname: c.lastnameSchema,
     email: c.emailSchema,
     password: c.passwordMin8chSchema
 });
 
+const deleteSchema = z.object({
+    id: c.moongoIdSchema
+});
+
 
 export const load = (async (event) => {
-    const form = await superValidate(schema);
-    const vets = await prisma.vet.findMany();
+    const [registerForm, deleteForm, vets] = await Promise.all([
+        superValidate(registerSchema),
+        superValidate(deleteSchema),
+        prisma.vet.findMany(),
+    ]);
 
-    return { form, vets };
+    return {
+        registerForm,
+        deleteForm,
+        vets,
+    };
 }) satisfies PageServerLoad;
 
 
 export const actions = {
-    default: async ({ request }) => {
-        const form = await superValidate(request, schema);
+    register: async ({ request }) => {
+        const form = await superValidate(request, registerSchema);
         if (!form.valid) {
             console.error(form);
             return fail(400, { form });
         }
 
-        let success = false;
         try {
-            success = await prisma.$transaction(async (prisma) => {
+            await prisma.$transaction(async (prisma) => {
                 const vet = await prisma.vet.create({
                     data: {
                         firstname: form.data.firstname,
@@ -55,9 +65,6 @@ export const actions = {
                         email: vet.email
                     }
                 });
-
-
-                return true;
             });
         } catch (error) {
             console.error("Error creating a vet user:\n", error);
@@ -70,6 +77,43 @@ export const actions = {
             return setError(form, '', 'Unknown error occured while creating the vet');
         }
 
-        return { form };
-    }
+        return { registerForm: form };
+    },
+    delete: async ({ request }) => {
+        const form = await superValidate(request, deleteSchema);
+        if (!form.valid) {
+            console.error(form);
+            return fail(400, { form });
+        }
+
+        try {
+            const authId = await prisma.authUser.findUnique({
+                where: {
+                    userId: form.data.id
+                }
+            });
+            if (!authId) {
+                return setError(form, '', 'No auth user found for vet with id: ' + form.data.id);
+            }
+
+            await auth.deleteUser(authId.id);
+
+            await prisma.vet.delete({
+                where: {
+                    id: form.data.id
+                }
+            });
+        } catch (error) {
+            console.error("Error creating a vet user:\n", error);
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError ||
+                error instanceof Lucia.LuciaError
+            ) {
+                return setError(form, '', 'Authentication/db error occured while deleting the vet');
+            }
+            return setError(form, '', 'Unknown error occured while deleting the vet');
+        }
+
+        return { deleteForm: form };
+    },
 } satisfies Actions;
