@@ -51,15 +51,7 @@ const CONFIG = (
         } as const
 ) satisfies SMTPConnection.Options;
 
-const transporter = createTransport(CONFIG);
-
-transporter.verify(function (error, success) {
-    if (error) {
-        logError('email', 'SMTP server is not ready to take system messages, application keeps running but emails will not be sent', error);
-    } else {
-        console.info(`SMTP server is ready to take system messages at ${CONFIG.host}:${CONFIG.port}`);
-    }
-});
+export const transporter = createTransport(CONFIG);
 
 
 export async function systemEmail(to: EmailAddress, subject: string, text: string, html: string) {

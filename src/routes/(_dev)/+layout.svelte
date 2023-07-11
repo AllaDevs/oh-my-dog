@@ -10,8 +10,7 @@
     { href: `/dev/vet`, text: 'Vets' },
     { href: `/dev/client`, text: 'Clients' },
     { href: `/dev/breed`, text: 'Breeds' },
-    // { href: `/dev/dog`, text: 'Dogs' },
-    // { href: `/dev/services`, text: 'Services' },
+    { href: `/dev/app_services`, text: 'Services' },
   ];
 
   export let data;
