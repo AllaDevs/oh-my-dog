@@ -20,6 +20,8 @@ export const load = (async (event) => {
                 id: true,
                 name: true,
                 image: true,
+                birthdate: true,
+                archived: true,
             }
         }),
         prisma.appointment.findMany({
@@ -41,7 +43,7 @@ export const load = (async (event) => {
         }),
         prisma.donation.findMany({
             where: {
-                clientId : user.userId,
+                clientId: user.userId,
             }
         })
     ]);

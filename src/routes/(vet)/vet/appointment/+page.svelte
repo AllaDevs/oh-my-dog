@@ -239,7 +239,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each data.appointments as appointment}
+            {#each visibleAppointments as appointment}
               <tr class="border-b bg-teal-100/75 hover:bg-teal-200">
                 <td class="px-4 py-3">{prettyDate(appointment.createdAt)}</td>
                 <td class="px-4 py-3">{appointment.client.email}</td>

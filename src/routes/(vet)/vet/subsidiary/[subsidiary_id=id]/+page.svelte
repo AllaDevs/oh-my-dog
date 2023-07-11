@@ -30,14 +30,19 @@
         input.cancel();
       }
     },
+    onResult: ({ result }) => {
+      if (result.type === 'redirect') {
+        toast.success('Sucursal actulizada con exito', { duration: 3000 });
+      }
+    },
     onError: (error) => {
       toast.error(String(error.message));
     },
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Sucursal registrada con exito', { duration: 5000 });
+        toast.success('Sucursal actulizada con exito', { duration: 3000 });
       } else if (form.errors._errors) {
-        toast.error(String(form.errors._errors), { duration: 10000 });
+        toast.error(String(form.errors._errors), { duration: 5000 });
       }
     },
   });
@@ -51,14 +56,25 @@
   ) {
     const place = e.detail.place;
     // If place doesn't have geometry means it's not a valid place
-    if (!place.geometry) {
+    if (!place.geometry || !place.geometry.location) {
       $form.location = '';
       return;
     }
 
-    let newLocation = place.geometry.location!.toString();
+    // WARNING: This is a hack, but it works or kinda works can break at any time thanks googlemaps
+    const { lat, lng } = place.geometry.location;
+    const latString = typeof lat === 'function' ? lat() : lat;
+    const lngString = typeof lng === 'function' ? lng() : lng;
+
     // map google map location to `${lat}, ${lng}` format
-    $form.location = newLocation.replace('(', '').replace(')', '');
+    $form.location = `${latString}, ${lngString}`;
+  }
+
+  function confirmDeletion(e: Event) {
+    let conf = window.confirm(`Está seguro que desea eliminar la sucursal?`);
+    if (!conf) {
+      e.preventDefault();
+    }
   }
 </script>
 
@@ -112,7 +128,7 @@
               on:place_change={onPlaceChange}
             />
             <TextInput
-              label="Descripcion sobre la ubicacion (breve)"
+              label="Descripcion de la ubicacion (breve)"
               field="address"
               form={updateSForm}
             />
@@ -135,7 +151,12 @@
           </svelte:fragment>
         </FieldGroup>
       </form>
-      <ActionButton class="p-0 md:p-0" color="error" action="?/delete">
+      <ActionButton
+        action="?/delete"
+        on:submit={confirmDeletion}
+        color="error"
+        class="p-0 md:p-0"
+      >
         Eliminar sucursal
       </ActionButton>
     </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import A from '$cmp/element/A.svelte';
   import Button from '$cmp/element/Button.svelte';
-  import TextInput from '$cmp/form/TextInput.svelte';
+  import IntegerInput from '$cmp/form/IntegerInput.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { onMount } from 'svelte';
   import { superForm } from 'sveltekit-superforms/client';
@@ -60,7 +60,7 @@
           <form method="POST" action="?/donate" use:donationSForm.enhance>
             <h4 class="text-lg font-semibold">Donar a la campaña</h4>
             <div class="px-2 flex justify-between gap-4">
-              <TextInput form={donationSForm} field="amount" label="Monto" />
+              <IntegerInput form={donationSForm} field="amount" label="Monto" />
               <div class=" mt-[2.25rem]">
                 <Button type="submit" color="primary">Donar</Button>
               </div>

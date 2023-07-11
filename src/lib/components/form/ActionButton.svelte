@@ -21,6 +21,7 @@
 <form
   method="POST"
   {action}
+  on:submit
   use:enhance
   class="p-2 md:p-4 {$$restProps.class ?? ''}"
 >

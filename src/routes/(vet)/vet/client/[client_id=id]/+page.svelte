@@ -4,7 +4,7 @@
   import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { DonationReason } from '$lib/enums';
-  import { friendlyDate } from '$lib/utils/functions';
+  import { friendlyDate, friendlyDateARG } from '$lib/utils/functions';
   import { te } from '$lib/utils/translateEnums';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -71,26 +71,25 @@
       {#each data.client.dog as dog (dog.id)}
         <li>
           <div
-            class=" flex justify-around min-h-full transition-transform hover:scale-105 border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50 flex-grow bg-teal-100 rounded-lg w-96"
+            class=" max-w-[24rem] flex gap-4 min-h-full transition-transform hover:scale-105 border border-teal-500/50 bg-teal-100/25 p-4 hover:border-teal-500 hover:bg-teal-100/50 flex-grow bg-teal-100 rounded-lg w-96"
           >
             <img
-              class="rounded-full w-24 h-24"
+              class="rounded-full object-cover w-24 h-24 min-w-[6rem] min-h-[6rem] my-auto"
               src={dog.image?.url ?? '/dog_silhouette.png'}
               alt="dog"
             />
-            <div class=" flex flex-col justify-around">
+            <div class=" flex flex-col justify-around gap-2">
               <h4 class="font-bold">
                 {dog.name}
               </h4>
-              {#if dog.observation}
-                <p>
-                  {dog.observation}
-                </p>
-              {/if}
+              <p class="break-all line-clamp-2">
+                Nacido el {friendlyDateARG(dog.birthdate).split(',')[0]}
+              </p>
               <A
                 href="/vet/client/{data.client.id}/dog/{dog.id}"
                 color="primary"
                 button
+                class=" w-max"
               >
                 Ver perfil
               </A>
@@ -142,7 +141,7 @@
               </p>
               {#if donation.reason === DonationReason.CAMPAIGN}
                 <A
-                  href="/vet/campaign/{donation.campaingId}"
+                  href="/vet/donation/campaign/{donation.campaingId}"
                   color="primary"
                   button
                 >

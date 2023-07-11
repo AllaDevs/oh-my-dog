@@ -41,13 +41,12 @@
   </section>
 
   <section>
-    <h2 class=" mt-4 text-xl font-medium">Listado de campañas</h2>
-    <!-- <h3 class="mt-4 text-xl font-semibold">Listado de campañas</h3> -->
+    <h3 class=" mt-4 text-xl font-medium">Listado de campañas</h3>
     <ul
       class="grid gap-8 grid-cols my-4 lg:grid-cols-2 lg:gap-16 lg:mt-8 lg:mb-16"
     >
       {#each data.campaigns as campaign (campaign.id)}
-        <li class="max-w-[28rem] mx-auto lg:max-w-[52rem]">
+        <li class="max-w-[28rem] mx-auto lg:max-w-[52rem] w-full">
           <CampaignCard {campaign}>
             <svelte:fragment slot="actions">
               <A href="/donation/campaign/{campaign.id}" color="primary" button>
