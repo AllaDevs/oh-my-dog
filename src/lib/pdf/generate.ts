@@ -122,7 +122,7 @@ export async function genDogMedicalRecordPDF(dog: DogData): Promise<Blob> {
                             ? [{ text: `No tiene visitas registradas`, style: 'p' }]
                             : dog.medicalRecord.map((record) => [
                                 { text: `Fecha: ${prettyDate(record.date)}`, style: 'p' },
-                                { text: `Motivo: ${record.reason}`, style: 'p' },
+                                { text: `Motivo: ${te.AppointmentReason(record.reason)}`, style: 'p' },
                                 { text: `Observacion: ${record.observation}`, style: 'p' },
                             ])
                     )
@@ -195,7 +195,7 @@ function dogContent(dog: ClientData['dog'][0]): Content {
                         ? [{ text: `No tiene visitas registradas`, style: 'p' }]
                         : dog.medicalRecord.map((record) => [
                             { text: `Fecha: ${prettyDate(record.date)}`, style: 'p' },
-                            { text: `Motivo: ${record.reason}`, style: 'p' },
+                            { text: `Motivo: ${te.AppointmentReason(record.reason)}`, style: 'p' },
                             { text: `Observacion: ${record.observation}`, style: 'p' },
                         ])
                 )
