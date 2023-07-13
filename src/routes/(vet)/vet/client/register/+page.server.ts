@@ -2,6 +2,7 @@ import { EmailError, newAccountHTML, systemEmail } from '$lib/email';
 import { Role } from '$lib/enums';
 import { clientCompleteRegisterSchema, dogRegisterSchema } from '$lib/schemas';
 import { uploadImage } from '$lib/server/cloudinary';
+import { logError } from '$lib/server/logging';
 import { Lucia, auth } from '$lib/server/lucia';
 import { prisma } from '$lib/server/prisma';
 import { validateImages } from '$lib/utils/functions';
@@ -63,17 +64,33 @@ export const actions = {
         let client: Client & { dog: RegisteredDog[]; };
         try {
             const dogsData = [];
-            for (const dog of form.data.dogs) {
+            for (let i = 0; i < form.data.dogs.length; i++) {
+                const dog = form.data.dogs[i];
+                for (const safeDog of dogsData) {
+                    if (
+                        safeDog.name === dog.name &&
+                        safeDog.birthdate === dog.birthdate
+                    ) {
+                        return setError(
+                            form,
+                            `dogs[${i}].birthdate`,
+                            `La fecha de nacimiento y el nombre de este perro ya existe en el formulario, revise los datos ingresados`
+                        );
+                    }
+                }
                 dogsData.push({
                     name: dog.name,
                     size: dog.size,
-                    birthdate: new Date(dog.birthdate),
+                    birthdate: dog.birthdate,
                     sex: dog.sex,
                     color: dog.color,
                     observation: dog.observation,
                     breedId: dog.breedId,
                     image: null
                 });
+            }
+            for (const dog of dogsData) {
+                dog.birthdate = new Date(dog.birthdate) as unknown as string;
             }
 
             client = await prisma.client.create({
@@ -104,9 +121,17 @@ export const actions = {
                     if ((error.meta?.target as string[]).includes('dni')) {
                         return setError(form, 'dni', 'Ya existe un usuario con este dni');
                     }
+                    if ((error.meta?.target as string[]).includes('birthdate')) {
+                        return setError(
+                            form,
+                            '',
+                            `Uno de los perros a registrar tiene nombre y fecha igual a uno ya registrado, revise los datos ingresados`
+                        );
+                    }
                 }
                 return setError(form, '', 'Error con la base de datos al crear el cliente');
             }
+
             throw error;
         }
 
@@ -164,7 +189,6 @@ export const actions = {
 
             for (let index = 0; index < imagesResult.length; index++) {
                 if (!imagesResult[index].success) {
-
                     setError(form, `dogs[${index}].image`, 'Error al subir la imagen, carguela mas tarde');
                 }
             }
@@ -208,10 +232,11 @@ export const actions = {
             );
         }
         catch (error) {
-            console.error(error);
             if (error instanceof EmailError) {
                 return setError(form, '', 'Ocurrio un error con el servicio de emails al enviar la contraseña, el usuario puede iniciar sesion mediante la opcion de recuperar contraseña');
             }
+
+            logError('email', 'uknown error message when sending password to new client', error);
             return setError(form, '', 'Ocurrio un error inesperado al enviar la contraseña, el usuario puede iniciar sesion mediante la opcion de recuperar contraseña');
         }
 

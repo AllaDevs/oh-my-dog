@@ -1,7 +1,7 @@
 import { dogRegisterSchema } from '$lib/schemas';
 import { uploadImage } from '$lib/server/cloudinary';
 import { prisma } from '$lib/server/prisma';
-import { validateImage } from '$lib/utils/functions';
+import { validateImage, yymmddTommddyy } from '$lib/utils/functions';
 import { Prisma, type RegisteredDog } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
 import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';
@@ -56,7 +56,13 @@ export const actions = {
         catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 if (error.code === "P2002") {
-                    // TODO: check if the error is because of unique constraint?
+                    if ((error.meta?.target as string[]).includes('birthdate')) {
+                        return setError(
+                            form,
+                            'birthdate',
+                            `Ya existe un perro registrado con el nombre ${form.data.name} y la fecha de nacimiento ${yymmddTommddyy(form.data.birthdate)}`
+                        );
+                    }
                 }
                 return setError(form, '', 'Error con la base de datos al registrar el perro, intente mas tarde');
             }
@@ -96,7 +102,7 @@ export const actions = {
             throw error;
         }
 
-        throw redirect(303, `/vet/client/${params.client_id}/dog/${dog.id}`)
+        throw redirect(303, `/vet/client/${params.client_id}/dog/${dog.id}`);
         // form.data = initialFormData;
         // form.data.image = undefined;
 

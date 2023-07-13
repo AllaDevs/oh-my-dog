@@ -1,8 +1,8 @@
 import { adoptionPostUpdateSchema } from '$lib/schemas';
 import { redirectToLogin } from '$lib/server/auth';
 import { prisma } from '$lib/server/prisma';
-import { handleLoginRedirect, mutateToShortString } from '$lib/utils/functions';
-import { PostState } from '@prisma/client';
+import { handleLoginRedirect, mutateToShortString, yymmddTommddyy } from '$lib/utils/functions';
+import { PostState, Prisma } from '@prisma/client';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
@@ -151,8 +151,19 @@ export const actions = {
             });
         }
         catch (err) {
-            console.error(err);
-            //TODO: handle update errors
+            if (err instanceof Prisma.PrismaClientKnownRequestError) {
+                if (err.code === "P2002") {
+                    if ((err.meta?.target as string[]).includes('birthdate')) {
+                        return setError(
+                            form,
+                            'birthdate',
+                            `Ya existe un perro registrado con el nombre ${form.data.name} y la fecha de nacimiento ${yymmddTommddyy(form.data.birthdate)}`
+                        );
+                    }
+                }
+                return setError(form, '', 'Error con la base de datos al registrar el perro, intente mas tarde');
+            }
+
             throw error(500, 'Ocurrio un error al eliminar el post');
         }
 

@@ -202,6 +202,11 @@ export function friendlyDateARG(date: Date): string {
     return date.toLocaleString('es-AR');
 }
 
+export function yymmddTommddyy(date: string): string {
+    const [year, month, day] = date.split('-');
+    return `${month}/${day}/${year}`;
+}
+
 
 export function subsidiariesToMarks(subsidiaries: Subsidiary[]) {
     let marks = [];
