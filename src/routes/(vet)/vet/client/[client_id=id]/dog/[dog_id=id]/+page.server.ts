@@ -1,9 +1,10 @@
 import { dogUpdateSchema } from '$lib/schemas';
 import { redirectToLogin } from '$lib/server/auth';
 import { prisma } from '$lib/server/prisma';
-import { mutateToShortString } from '$lib/utils/functions';
+import { mutateToShortString, yymmddTommddyy } from '$lib/utils/functions';
+import { Prisma } from '@prisma/client';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -86,8 +87,19 @@ export const actions = {
             }
         }
         catch (err) {
-            console.error(err);
-            //TODO: handle update errors
+            if (err instanceof Prisma.PrismaClientKnownRequestError) {
+                if (err.code === "P2002") {
+                    if ((err.meta?.target as string[]).includes('birthdate')) {
+                        return setError(
+                            form,
+                            'birthdate',
+                            `Ya existe un perro registrado con el nombre ${form.data.name} y la fecha de nacimiento ${yymmddTommddyy(form.data.birthdate)}`
+                        );
+                    }
+                }
+                return setError(form, '', 'Error con la base de datos al registrar el perro, intente mas tarde');
+            }
+
             throw error(500, 'Ocurrio un error al actualizar el perro');
         }
 

@@ -3,6 +3,7 @@ import { c, temporalDogRegisterSchema } from '$lib/schemas';
 import { redirectToLogin } from '$lib/server/auth';
 import { logError } from '$lib/server/logging';
 import { prisma } from '$lib/server/prisma';
+import { yymmddTommddyy } from '$lib/utils/functions';
 import { Prisma } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
 import { defaultValues, setError, superValidate } from 'sveltekit-superforms/server';
@@ -134,8 +135,21 @@ export const actions = {
             });
         }
         catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                if (error.code === "P2002") {
+                    if ((error.meta?.target as string[]).includes('birthdate')) {
+                        return setError(
+                            form,
+                            'birthdate',
+                            `Ya existe un perro registrado con el nombre ${form.data.name} y la fecha de nacimiento ${yymmddTommddyy(form.data.birthdate)}`
+                        );
+                    }
+                }
+                logError('adoption', 'Unexpected error during new dog for adoption', error);
+                return setError(form, '', 'Error con la base de datos al registrar el perro, intente mas tarde');
+            }
+
             logError('adoption', 'Unexpected error during new dog for adoption', error);
-            // TODO: handle errors
             return setError(form, '', 'Error al registrar el perro');
         }
 

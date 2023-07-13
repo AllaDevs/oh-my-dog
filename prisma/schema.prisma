@@ -219,6 +219,7 @@ model RegisteredDog {
     tracingPost    TracingPost[]
     medicalRecord  MedicalRecord[]
 
+    @@unique([ownerId, name, birthdate])
     @@map("registered_dog")
 }
 
@@ -258,6 +259,7 @@ model TemporalDog {
     adoptionPost AdoptionPost?
     tracingPost  TracingPost?
 
+    @@unique([ownerId, name, birthdate])
     @@map("temporal_dog")
 }
 
@@ -299,8 +301,7 @@ model Subsidiary {
     @@map("subsidiary")
 }
 
-// NOTE: refactor for not repeating day?
-// Temporarily unused for client requirements
+// Unused due to client requirements
 model WorkingHour {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())

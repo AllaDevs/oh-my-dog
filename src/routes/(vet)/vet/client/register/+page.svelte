@@ -21,13 +21,13 @@
       }
     },
     onError: (error) => {
-      toast.error(String(error.message));
+      toast.error(String(error.message), { duration: 5000 });
     },
     onUpdated: ({ form }) => {
       if (form.valid) {
         toast.success('Cliente registrado con exito', { duration: 5000 });
       } else if (form.errors._errors) {
-        toast.error(String(form.errors._errors), { duration: 10000 });
+        toast.error(String(form.errors._errors), { duration: 5000 });
       }
     },
   });

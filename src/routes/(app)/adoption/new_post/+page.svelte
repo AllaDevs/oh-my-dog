@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { dev } from '$app/environment';
   import { enhance } from '$app/forms';
   import Button from '$cmp/element/Button.svelte';
   import DateInput from '$cmp/form/DateInput.svelte';
@@ -10,7 +11,7 @@
   import type { SubmitFunction } from '@sveltejs/kit';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
-    import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+  import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
   export let data;
 
@@ -41,7 +42,7 @@
     },
   });
 
-  const form = sForm.form
+  const form = sForm.form;
   const enhanceMyDogForm = (() => {
     return async ({ result }) => {
       switch (result.type) {
@@ -151,79 +152,9 @@
         <Button type="submit" color="primary">Dar en adopcion</Button>
       </div>
     </form>
-    <SuperDebug data={$form} />
+
+    {#if dev}
+      <SuperDebug data={$form} />
+    {/if}
   </section>
 </Page>
-<!-- <main
-  id="main"
-  class="container mx-auto flex max-w-screen-lg flex-col px-6 py-4"
->
-  <header class="flex w-full items-end justify-between py-2">
-    <h2 class=" mt-4 text-2xl">Dar en adopcion</h2>
-  </header>
-
-  <article class="flex flex-col gap-8 px-4 justify-around lg:flex-row">
-    <section class="">
-      <h3 class="mt-4 text-xl font-bold">Poner en adopcion perro registrado</h3>
-      <ul class="flex flex-col justify-center">
-        {#each data.clientDogs as dog (dog.id)}
-          <li>
-            <form
-              method="POST"
-              action="?/existingDog"
-              use:enhance={enhanceMyDogForm}
-            >
-              <input type="text" name="dogId" value={dog.id} hidden />
-              <input type="text" value={dog.name} />
-              <SubmitButton>Dar en adopcion</SubmitButton>
-            </form>
-          </li>
-        {:else}
-          <li>
-            <p class=" text-gray-700">
-              No tienes perros para dar en adopcion en este momento
-            </p>
-          </li>
-        {/each}
-      </ul>
-    </section>
-
-    <section class="">
-      <h3 class="mt-4 text-xl font-bold">Poner en adopcion nuevo perro</h3>
-      <form method="POST" action="?/newDog" class="mt-4" use:sForm.enhance>
-        <TextInput label="Nombre" form={sForm} field="name" />
-        <DateInput label="Nacimiento estimado" form={sForm} field="birthdate" />
-        <SelectInput
-          label="Tamaño"
-          form={sForm}
-          field="size"
-          options={[
-            { value: DogSize.SMALL, text: 'Pequeño' },
-            { value: DogSize.MEDIUM, text: 'Mediano' },
-            { value: DogSize.BIG, text: 'Grande' },
-          ]}
-        />
-        <SelectInput
-          label="Sexo"
-          form={sForm}
-          field="sex"
-          options={[
-            { value: DogSex.FEMALE, text: 'Hembra' },
-            { value: DogSex.MALE, text: 'Macho' },
-          ]}
-        />
-        <TextInput label="Color" form={sForm} field="color" />
-        <TextInput label="Observación" form={sForm} field="observation" />
-        <SelectInput
-          label="Raza"
-          form={sForm}
-          field="breedId"
-          options={breeds}
-        />
-        <div class=" flex justify-around mt-4">
-          <SubmitButton>Dar en adopcion</SubmitButton>
-        </div>
-      </form>
-    </section>
-  </article>
-</main> -->
