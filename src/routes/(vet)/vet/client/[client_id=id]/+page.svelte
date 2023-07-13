@@ -4,7 +4,7 @@
   import Button from '$cmp/element/Button.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { DonationReason } from '$lib/enums';
-  import { friendlyDate, friendlyDateARG } from '$lib/utils/functions';
+  import { friendlyDate, prettyDate } from '$lib/utils/functions';
   import { te } from '$lib/utils/translateEnums';
   import toast from 'svelte-french-toast';
   import { superForm } from 'sveltekit-superforms/client';
@@ -83,7 +83,7 @@
                 {dog.name}
               </h4>
               <p class="break-all line-clamp-2">
-                Nacido el {friendlyDateARG(dog.birthdate).split(',')[0]}
+                Nacido el {prettyDate(dog.birthdate)}
               </p>
               <A
                 href="/vet/client/{data.client.id}/dog/{dog.id}"

@@ -3,7 +3,6 @@ import { auth } from '$lib/server/lucia';
 import { handleLoginRedirect } from '$lib/utils/functions';
 import { redirect, type Handle } from '@sveltejs/kit';
 
-
 export const handle = (async ({ event, resolve }) => {
     event.locals.auth = auth.handleRequest(event);
     const { session, user } = await event.locals.auth.validateUser();

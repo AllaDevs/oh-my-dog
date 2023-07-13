@@ -4,6 +4,7 @@
   import SelectInput from '$lib/components/form/SelectInput.svelte';
   import TextInput from '$lib/components/form/TextInput.svelte';
   import type { TemporalDogRegisterSchema } from '$lib/schemas';
+  import { getYMDAR } from '$lib/utils/functions';
   import type { SuperForm } from 'sveltekit-superforms/client';
   import DogSexInput from './DogSexInput.svelte';
   import DogSizeInput from './DogSizeInput.svelte';
@@ -11,6 +12,8 @@
   export let sForm: SuperForm<TemporalDogRegisterSchema, unknown>;
   export let breeds: { value: string; text: string }[] = [];
   export let readonly = false;
+
+  const today = getYMDAR(new Date());
 </script>
 
 <FieldGroup cols="3">
@@ -28,6 +31,7 @@
       label="Nacimiento estimado"
       form={sForm}
       field="birthdate"
+      max={today}
       {readonly}
     />
     <DogSizeInput form={sForm} field="size" {readonly} />

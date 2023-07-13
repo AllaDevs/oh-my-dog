@@ -10,6 +10,15 @@ export const load = (async ({ params }) => {
     const provider = await prisma.dogServiceProvider.findUnique({
         where: {
             id: params.provider_id
+        },
+        select: {
+            type: true,
+            email: true,
+            firstname: true,
+            lastname: true,
+            workAreas: true,
+            workHours: true,
+            description: true,
         }
     });
     if (!provider) {

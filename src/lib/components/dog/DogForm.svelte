@@ -6,6 +6,7 @@
   import SelectInput from '$cmp/form/SelectInput.svelte';
   import TextInput from '$cmp/form/TextInput.svelte';
   import type { DogRegisterSchema } from '$lib/schemas';
+  import { getYMDAR } from '$lib/utils/functions';
   import type { SuperForm } from 'sveltekit-superforms/client';
   import type { z } from 'zod';
 
@@ -14,6 +15,7 @@
   export let readonlyFields: {
     [key in keyof z.infer<DogRegisterSchema>]?: true;
   } = {};
+  const today = getYMDAR(new Date());
 </script>
 
 <FieldGroup cols="2">
@@ -36,6 +38,7 @@
       form={sForm}
       field="birthdate"
       readonly={readonlyFields.birthdate ?? false}
+      max={today}
     />
     <DogSizeInput
       form={sForm}

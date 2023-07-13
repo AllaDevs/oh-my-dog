@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { friendlyDate, friendlyDateARG } from '$lib/utils/functions';
+import { friendlyDateARG, prettyDate } from '$lib/utils/functions';
 import { te } from '$lib/utils/translateEnums';
 import type { Breed, Client, MedicalRecord, RegisteredDog } from '@prisma/client';
 import PdfPrinter from 'pdfmake';
@@ -109,7 +109,7 @@ export async function genDogMedicalRecordPDF(dog: DogData): Promise<Blob> {
             { text: `Informacion del perro`, style: 'h2' },
             { text: `Nombre: ${dog.name}`, style: 'p' },
             { text: `Raza: ${dog.breed.name}`, style: 'p' },
-            { text: `Fecha de nacimiento: ${friendlyDateARG(dog.birthdate).split(',')[0]}`, style: 'p' },
+            { text: `Fecha de nacimiento: ${prettyDate(dog.birthdate)}`, style: 'p' },
             { text: `Sexo: ${te.DogSex(dog.sex)}`, style: 'p' },
             { text: `Color: ${dog.color}`, style: 'p' },
             { text: `Observaciones: ${dog.observation ?? 'Sin observaciones'}`, style: 'p' },
@@ -121,7 +121,7 @@ export async function genDogMedicalRecordPDF(dog: DogData): Promise<Blob> {
                         dog.medicalRecord.length === 0
                             ? [{ text: `No tiene visitas registradas`, style: 'p' }]
                             : dog.medicalRecord.map((record) => [
-                                { text: `Fecha: ${friendlyDate(record.date)}`, style: 'p' },
+                                { text: `Fecha: ${prettyDate(record.date)}`, style: 'p' },
                                 { text: `Motivo: ${record.reason}`, style: 'p' },
                                 { text: `Observacion: ${record.observation}`, style: 'p' },
                             ])
@@ -182,7 +182,7 @@ function dogContent(dog: ClientData['dog'][0]): Content {
         { text: `Informacion del perro`, style: 'h2' },
         { text: `Nombre: ${dog.name}`, style: 'p' },
         { text: `Raza: ${dog.breed.name}`, style: 'p' },
-        { text: `Fecha de nacimiento: ${friendlyDateARG(dog.birthdate).split(',')[0]}`, style: 'p' },
+        { text: `Fecha de nacimiento: ${prettyDate(dog.birthdate)}`, style: 'p' },
         { text: `Sexo: ${te.DogSex(dog.sex)}`, style: 'p' },
         { text: `Color: ${dog.color}`, style: 'p' },
         { text: `Observaciones: ${dog.observation ?? 'Sin observaciones'}`, style: 'p' },
@@ -194,7 +194,7 @@ function dogContent(dog: ClientData['dog'][0]): Content {
                     dog.medicalRecord.length === 0
                         ? [{ text: `No tiene visitas registradas`, style: 'p' }]
                         : dog.medicalRecord.map((record) => [
-                            { text: `Fecha: ${friendlyDate(record.date)}`, style: 'p' },
+                            { text: `Fecha: ${prettyDate(record.date)}`, style: 'p' },
                             { text: `Motivo: ${record.reason}`, style: 'p' },
                             { text: `Observacion: ${record.observation}`, style: 'p' },
                         ])

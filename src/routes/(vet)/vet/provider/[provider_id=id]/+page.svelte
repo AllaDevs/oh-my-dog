@@ -59,11 +59,17 @@
             />
             <StyledTextInput
               label="Tipo"
-              field="type"
+              field="type-copy"
               value={$serviceType === DogServiceType.SITTING
                 ? 'Cuidador'
                 : 'Paseador'}
               readonly
+            />
+            <input
+              type="text"
+              class="hidden"
+              name="type"
+              value={$serviceType}
             />
             <TextAreaInput
               label="Areas"

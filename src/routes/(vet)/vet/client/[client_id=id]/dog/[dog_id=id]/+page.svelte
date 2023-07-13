@@ -20,7 +20,7 @@
     id: 'update',
     onUpdated: ({ form }) => {
       if (form.valid) {
-        toast.success('Se actualizo el perro exitosamente', { duration: 3000 });
+        toast.success('Se actualizó el perro exitosamente', { duration: 3000 });
       } else if (form.errors._errors) {
         toast.error(String(form.errors._errors));
       }

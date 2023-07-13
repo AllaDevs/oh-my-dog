@@ -3,7 +3,7 @@
   import A from '$cmp/element/A.svelte';
   import Page from '$cmp/layout/Page.svelte';
   import { DonationReason } from '$lib/enums.js';
-  import { friendlyDateARG } from '$lib/utils/functions.js';
+  import { prettyDate } from '$lib/utils/functions.js';
   import { te } from '$lib/utils/translateEnums.js';
 
   export let data;
@@ -49,7 +49,7 @@
                 {dog.name}
               </h4>
               <p class="break-all line-clamp-2">
-                Nacido el {friendlyDateARG(dog.birthdate).split(',')[0]}
+                Nacido el {prettyDate(dog.birthdate).split(',')[0]}
               </p>
               <div class=" flex flex-col gap-2 justify-between">
                 <A
