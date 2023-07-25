@@ -9,7 +9,6 @@
   export let data;
 
   const sForm = superForm(data.form, { taintedMessage: false });
-  const { form, errors, enhance } = sForm;
 </script>
 
 <svelte:head>
@@ -26,16 +25,12 @@
     </h2>
   </svelte:fragment>
 
-  {#if $errors._errors}
-    {$errors._errors}
-  {/if}
-
   <section class="grid md:grid-cols-2 gap-4 overflow-y-hidden">
     <div class="pb-8 md:pb-0 md:pr-8">
       <form
         method="POST"
         action="?/registerBreed"
-        use:enhance
+        use:sForm.enhance
         class="flex flex-col gap-4"
       >
         <h3 class=" mt-[1em] text-lg md:text-xl text-gray-900 font-semibold">
@@ -45,7 +40,7 @@
           <TextInput label="Breed name" field="name" form={sForm} />
           <Button type="submit" color="primary">Register</Button>
         </div>
-        <SuperDebug data={$form} />
+        <SuperDebug data={sForm.form} />
       </form>
     </div>
 
