@@ -3,56 +3,54 @@
 @tailwind utilities;
 
 @layer utilities {
-    /* Scrollbar For Firefox */
-    .scrollbar {
-        scrollbar-width: thin;
-        scrollbar-color: rgb(13 148 136) rgb(240 253 250);
-    }
-    /* Scrollbar For Chrome, EDGE, Opera, Others */
-    .scrollbar::-webkit-scrollbar {
-        @apply w-[4px] h-[4px] md:w-[6px] md:h-[6px] rounded;
-    }
-    .scrollbar::-webkit-scrollbar-track { 
-        @apply bg-teal-50 bg-inherit;
-    }
-    .scrollbar::-webkit-scrollbar-thumb { 
-        @apply bg-teal-600 rounded;
-    }
+  /* Scrollbar For Firefox */
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(13 148 136) rgb(240 253 250);
+  }
+  /* Scrollbar For Chrome, EDGE, Opera, Others */
+  .scrollbar::-webkit-scrollbar {
+    @apply w-[4px] h-[4px] md:w-[6px] md:h-[6px] rounded;
+  }
+  .scrollbar::-webkit-scrollbar-track {
+    @apply bg-teal-50 bg-inherit;
+  }
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-teal-600 rounded;
+  }
 
-    .scrollbar-hidden {
-        scrollbar-width: none;
-    }
-    .scrollbar-hidden::-webkit-scrollbar {
-        @apply hidden;
-    }
+  .scrollbar-hidden {
+    scrollbar-width: none;
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    @apply hidden;
+  }
 
-    .border-dev {
-        @apply border border-[#ff00ff]
-    }
+  .border-dev {
+    @apply border border-[#ff00ff];
+  }
 }
-
 
 @font-face {
-    font-family: 'Inter';
-    /* For multiple files use commas, ex: url(), url(), ... */
-    src: url('/fonts/Inter-VariableFont_slnt,wght.ttf');
+  font-family: "Inter";
+  /* For multiple files use commas, ex: url(), url(), ... */
+  src: url("/fonts/Inter-VariableFont_slnt,wght.ttf");
 }
 
-
 :root {
-    font-family: 'Inter', sans-serif;
-    --theme-font-family-heading: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+  --theme-font-family-heading: "Inter", sans-serif;
 }
 
 html,
 body {
-    @apply h-full overflow-hidden;
+  @apply h-full overflow-hidden;
 }
 
 body {
-    @apply bg-teal-50;
+  @apply bg-gradient-to-r from-teal-200 to-teal-50;
 }
 
 body > div {
-    @apply h-full overflow-hidden;
+  @apply h-full overflow-hidden;
 }

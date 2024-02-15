@@ -1,14 +1,14 @@
 <script lang="ts">
-  import type { DonationCampaign } from '@prisma/client';
+  import type { DonationCampaign } from "@prisma/client";
 
   export let campaign: DonationCampaign;
 </script>
 
 <div
-  class="max-w-lg rounded shadow-lg bg-teal-100/50 border border-gray-900 hover:shadow-2xl"
+  class="max-w-lg rounded shadow-lg bg-teal-100/50 border border-teal-500/50 hover:shadow-2xl"
 >
   <img
-    class="w-full h-60 object-cover rounded-t border-b border-gray-900"
+    class="w-full h-60 object-cover rounded-t border-b border-teal-500/50"
     src={campaign.banner?.url}
     alt="banner de la campaña de donacion {campaign.name}"
   />

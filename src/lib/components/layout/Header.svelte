@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { clickOutside } from '$lib/action';
-  import type { HTMLAnchorAttributes } from 'svelte/elements';
-  import { slide } from 'svelte/transition';
-  import SiteLogo from './SiteLogo.svelte';
+  import { page } from "$app/stores";
+  import { clickOutside } from "$lib/action";
+  import type { HTMLAnchorAttributes } from "svelte/elements";
+  import { slide } from "svelte/transition";
+  import SiteLogo from "./SiteLogo.svelte";
 
   type NavLink = {
     href: string;
@@ -20,15 +20,13 @@
   $: onHome = $page.url.pathname === homePath;
   $: user = $page.data.user;
 
-  const NAV_ID = 'main-nav';
+  const NAV_ID = "main-nav";
 
   let menuOpen = false;
   let menuToggle: HTMLButtonElement;
 </script>
 
-<div
-  class="header flex w-full justify-between px-4 bg-teal-100 shadow-border-b"
->
+<div class="header flex w-full justify-between px-3 bg-teal-100">
   <div>
     <slot name="left">
       <slot name="beforeLogo">
@@ -50,7 +48,7 @@
           </button>
         {/if}
       </slot>
-      <SiteLogo link={onHome ? '#main' : homePath} onLink={onHome} />
+      <SiteLogo link={onHome ? "./" : homePath} onLink={onHome} />
       <slot name="afterLogo" />
     </slot>
   </div>
@@ -59,17 +57,17 @@
     {#if navLinks.length}
       <nav
         aria-label="Main navigation"
-        class=" hidden lg:flex lg:px-8 mx-auto scrollbar overflow-auto"
+        class=" hidden lg:flex lg:px-4 mx-auto scrollbar overflow-auto"
       >
         <ul class=" flex items-center" class:hidden={!navLinksOnHome && onHome}>
           <slot name="navLinks">
             {#each navLinks as { href, text, requiresLogin, className }}
               {@const current = $page.url.pathname === href}
               {#if !requiresLogin || user}
-                <li class=" w-max p-1 sm:p-2 md:px-4">
+                <li class=" w-max p-1 sm:p-2 md:px-2">
                   <a
-                    aria-current={current ? 'page' : false}
-                    href={current ? '#main' : href}
+                    aria-current={current ? "page" : false}
+                    {href}
                     class="nav-link-text p-2 {className ?? ''}"
                   >
                     {text}
@@ -98,8 +96,8 @@
                 {#if !requiresLogin || user}
                   <li>
                     <a
-                      aria-current={current ? 'page' : false}
-                      href={current ? '#main' : href}
+                      aria-current={current ? "page" : false}
+                      {href}
                       class="nav-link-text block text-lg px-4 py-2 {className ??
                         ''}"
                     >
