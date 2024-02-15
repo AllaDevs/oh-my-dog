@@ -1,6 +1,6 @@
 import type { Breed, Subsidiary } from '@prisma/client';
 import type { RequestEvent } from '@sveltejs/kit';
-import type { FieldPath, FormPathLeaves, SuperValidated, UnwrapEffects } from 'sveltekit-superforms/index';
+import type { FieldPath, FormPathLeaves, SuperValidated, UnwrapEffects } from 'sveltekit-superforms';
 import { setError } from 'sveltekit-superforms/server';
 import type { z } from 'zod';
 import type { PathType } from './types';

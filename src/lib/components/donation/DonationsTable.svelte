@@ -1,18 +1,18 @@
 <script lang="ts" context="module">
   const ANONYMOUS_DONOR = {
-    firstname: 'Anonimo',
-    lastname: '',
+    firstname: "Anonimo",
+    lastname: "",
   } as const;
 </script>
 
 <script lang="ts">
-  import A from '$cmp/element/A.svelte';
-  import { friendlyDate } from '$lib/utils/functions';
-  import type { Client, Donation } from '@prisma/client';
+  import A from "$cmp/element/A.svelte";
+  import { friendlyDate } from "$lib/utils/functions";
+  import type { Client, Donation } from "@prisma/client";
 
   type T = $$Generic<
     Donation & {
-      client: Pick<Client, 'id' | 'firstname' | 'lastname'> | null;
+      client: Pick<Client, "id" | "firstname" | "lastname"> | null;
     }
   >;
 
@@ -21,7 +21,7 @@
 
 <div class="relative overflow-x-auto scrollbar rounded border">
   <table
-    class="w-full text-sm text-left text-white-500 border-b md:border-none"
+    class="w-full text-sm text-left text-white-500 border-teal-500/50 md:border-none"
   >
     <thead class=" text-sm text-gray-100 uppercase bg-teal-900 w-max">
       <tr>
@@ -36,7 +36,7 @@
     <tbody>
       {#each donations as donation (donation.id)}
         {@const donor = donation.client ?? ANONYMOUS_DONOR}
-        <tr class=" border-b border-gray-200">
+        <tr class=" border-teal-500/50">
           <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
             {donor.firstname}
             {donor.lastname}
