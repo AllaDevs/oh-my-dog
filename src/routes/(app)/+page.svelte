@@ -1,6 +1,6 @@
 <script lang="ts">
-  import CampaignsCarousel from '$cmp/donation/CampaignsCarousel.svelte';
-  import Page from '$cmp/layout/Page.svelte';
+  import CampaignsCarousel from "$cmp/donation/CampaignsCarousel.svelte";
+  import Page from "$cmp/layout/Page.svelte";
 
   export let data;
 </script>
@@ -21,12 +21,12 @@
 
   <header class="text-center py-12">
     <h1 class="mt-4 text-4xl font-bold text-black" style:text-wrap="balance">
-      Bienvenido a Oh my dog!
+      Bienvenido a <b>Oh my dog!</b>
     </h1>
     <p class="mt-2 text-sm">
-      Que tengas un buen dia{data.client?.firstname
-        ? ' ' + data.client.firstname
-        : ''}!
+      ¡Que tengas un buen dia{data.client?.firstname
+        ? " " + data.client.firstname
+        : ""}!
     </p>
   </header>
 

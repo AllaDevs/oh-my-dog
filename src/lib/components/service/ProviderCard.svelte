@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Button from '$cmp/element/Button.svelte';
-  import FieldGroup from '$cmp/form/FieldGroup.svelte';
-  import EmailInput from '$cmp/styledInput/EmailInput.svelte';
-  import TextInput from '$cmp/styledInput/TextInput.svelte';
+  import Button from "$cmp/element/Button.svelte";
+  import FieldGroup from "$cmp/form/FieldGroup.svelte";
+  import EmailInput from "$cmp/styledInput/EmailInput.svelte";
+  import TextInput from "$cmp/styledInput/TextInput.svelte";
 
   export let id: string;
   export let firstname: string;
@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class="flex min-h-full flex-row justify-between rounded border border-teal-500/50 bg-teal-100/25 p-4"
+  class="flex min-h-full flex-col justify-between items-center rounded border border-teal-500/50 bg-teal-100/25 p-4 md:flex-row md:items-start"
 >
   <div>
     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
