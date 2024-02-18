@@ -26,7 +26,7 @@
   let menuToggle: HTMLButtonElement;
 </script>
 
-<div class="header flex w-full justify-between px-3 bg-teal-100">
+<div class="header flex w-full justify-between px-3 bg-orange-200 shadow-md">
   <div>
     <slot name="left">
       <slot name="beforeLogo">
@@ -87,9 +87,9 @@
             onEvent: () => (menuOpen = false),
             ignoredNodes: [menuToggle],
           }}
-          class="lg:hidden absolute top-[calc(3.5rem_+_1px)] sm:top-[calc(4rem_+_1px)] bg-teal-50 left-0 w-full z-10 shadow-border-b"
+          class="lg:hidden absolute top-[calc(3.5rem_+_1px)] sm:top-[calc(4rem_+_1px)] bg-teal-50 left-0 w-full z-10 shadow-border-b shadow-md"
         >
-          <ul class=" flex flex-col p-4 bg-teal-100/75">
+          <ul class=" flex flex-col p-4 bg-orange-200">
             <slot name="navLinks">
               {#each navLinks as { href, text, requiresLogin, className }}
                 {@const current = $page.url.pathname === href}
