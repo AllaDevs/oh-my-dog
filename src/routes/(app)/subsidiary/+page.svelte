@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { beforeNavigate } from '$app/navigation';
-  import { page } from '$app/stores';
-  import Button from '$cmp/element/Button.svelte';
-  import Map from '$cmp/google_maps/Map.svelte';
-  import Page from '$cmp/layout/Page.svelte';
-  import SubsidiaryCardPreview from '$cmp/subsidiary/SubsidiaryCardPreview.svelte';
-  import { subsidiariesToMarks } from '$lib/utils/functions.js';
-  import { fade, fly } from 'svelte/transition';
+  import { beforeNavigate } from "$app/navigation";
+  import { page } from "$app/stores";
+  import Button from "$cmp/element/Button.svelte";
+  import Map from "$cmp/google_maps/Map.svelte";
+  import Page from "$cmp/layout/Page.svelte";
+  import SubsidiaryCardPreview from "$cmp/subsidiary/SubsidiaryCardPreview.svelte";
+  import { subsidiariesToMarks } from "$lib/utils/functions.js";
+  import { fade, fly } from "svelte/transition";
 
   export let data;
 
@@ -23,7 +23,7 @@
     const id = e.detail;
     const subsidiary = data.subsidiaries.find((s) => s.id === id);
     if (!subsidiary) {
-      return console.error('No se encontro la sucursal');
+      return console.error("No se encontro la sucursal");
     }
 
     mapController.setCenter({
@@ -34,17 +34,17 @@
   }
 
   let showUrgencyMessage =
-    $page.url.searchParams.get('urgencyMessage') === 'true';
+    $page.url.searchParams.get("urgencyMessage") === "true";
 
   function closeUrgencyMessage() {
     showUrgencyMessage = false;
-    $page.url.searchParams.delete('urgencyMessage');
-    history.replaceState({}, '', $page.url);
+    $page.url.searchParams.delete("urgencyMessage");
+    history.replaceState({}, "", $page.url);
   }
 
   beforeNavigate((navigation) => {
     showUrgencyMessage =
-      navigation.to?.url.searchParams.get('urgencyMessage') === 'true';
+      navigation.to?.url.searchParams.get("urgencyMessage") === "true";
   });
 </script>
 
@@ -94,22 +94,18 @@
       <Map bind:mapController initialOpts={mapInitialOpts} {marks} />
     </div>
 
-    <div class="flex-1 flex flex-col overflow-y-hidden scrollbar">
-      <ul
-        class="flex md:grid gap-4 mb-auto overflow-y-auto scrollbar py-4 md:py-0 px-4"
-      >
-        {#each data.subsidiaries as subsidiary}
-          <li class=" w-full h-max">
-            <SubsidiaryCardPreview {subsidiary} on:relocate={relocate} />
-          </li>
-        {:else}
-          <li class="h-max">
-            <p class=" font-medium text-gray-700" style:text-wrap="balance">
-              No hay sucursales para mostrar en este momento.
-            </p>
-          </li>
-        {/each}
-      </ul>
+    <div
+      class="flex flex-row h-full w-full overflow-x-scroll md:overflow-y-scroll scrollbar md:flex-col"
+    >
+      {#each data.subsidiaries as subsidiary}
+        <SubsidiaryCardPreview {subsidiary} on:relocate={relocate} />
+      {:else}
+        <div class="h-max">
+          <p class=" font-medium text-gray-700" style:text-wrap="balance">
+            No hay sucursales para mostrar en este momento.
+          </p>
+        </div>
+      {/each}
     </div>
   </section>
 </Page>
